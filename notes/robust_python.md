@@ -35,7 +35,45 @@ Some useful declarations
     # we can mutate it f(x) = x+1 : f(SOME_CONSTANT) no error  
     ```
 
-## Chapter 6 -  Typing
+## Chapter 8 -  Enums
+
+```python
+from enum import Enum, auto
+class Color(Enum):
+    RED = 1
+    GREEN = 2
+    BLUE = 3
+    YELLOW = auto() # you can change the values to auto if you don't care about the values
+```
+`Literal` and `Enum` had a similar purpose, you usually use `Enums` when you also need to iterate over the values, otherwise `Literal` is enough for type checking
+
+`Flag`'s are another class of enum where you can combine them togetuer using `&, |, ^, ~`  and the result will also be a flag from the same class 
+
+```python
+from enum import Flag, auto
+class Color(Flag):
+    RED = auto() # use auto! (a defined number or string will generate problems)
+    BLUE = auto()
+    GREEN = auto()
+    WHITE = Color.RED & Color.GREEN & Color.BLUE #its a color too 
+    PRIMARY = Color.RED | Color.GREEN | Color.BLUE # is on if any other is on too 
+```
+
+`IntEnum` and `IntFlag` are the same as `Enum` and `Flag` but the value of the elements is forced to be an integer, this is good for comparison enums
+
+```python
+from enum import IntEnum
+class Priority(IntEnum):
+    HIGH = 5
+    MID = 1 
+    LOW = 0
+
+print(Priority.HIGH > Priority.LOW) # >> True
+```
+
+## Chapter 9 - DataClasses 
+
+`eq=True`
 
 
 
