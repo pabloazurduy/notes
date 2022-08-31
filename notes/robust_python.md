@@ -73,8 +73,14 @@ print(Priority.HIGH > Priority.LOW) # >> True
 
 ## Chapter 9 - DataClasses 
 
-`eq=True`
+Equality `eq=True`, using `@dataclass(eq=True)` option will automatically create a `__eq__()` method that will compare all the fields in a class against another object from the same class to verify if they are equal. 
 
+using `frozen=True` will only prevent to reasign the pointers from the attributes from a class, but you will be still able to mutate the objects on the pointers. 
+    
+    ```python 
+        object.attr = 0 # this will throw an error
+        object.attr.some_subattr = 0 # this is allowed
+    ```
 
 
 [Comment]: References 
