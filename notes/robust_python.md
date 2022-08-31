@@ -77,10 +77,10 @@ Equality `eq=True`, using `@dataclass(eq=True)` option will automatically create
 
 using `frozen=True` will only prevent to reasign the pointers from the attributes from a class, but you will be still able to mutate the objects on the pointers. 
     
-    ```python 
-        object.attr = 0 # this will throw an error
-        object.attr.some_subattr = 0 # this is allowed
-    ```
+```python 
+    object.attr = 0 # this will throw an error
+    object.attr.some_subattr = 0 # this is allowed
+```
 
 
 [Comment]: References 
