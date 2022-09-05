@@ -81,6 +81,9 @@ using `frozen=True` will only prevent to reasign the pointers from the attribute
     object.attr = 0 # this will throw an error
     object.attr.some_subattr = 0 # this is allowed
 ```
+## Chapter 10 - Classes 
+**SOLID** principles:
+1. S "Single responsibility Principle", any class should only have **one responsibility** -any object should have only one reason "to change"-
 
 
 [Comment]: References 
