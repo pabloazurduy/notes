@@ -49,8 +49,8 @@ This is incredibly powerful for causal inference. It says that I can build a mod
 Also is worth nothing that we should keep everything in the [regression world][5] in order to use orthogonalization
 
 [Comment]: References 
-[1]: (https://matheusfacure.github.io/python-causality-handbook/Debiasing-with-Orthogonalization.html#linear-regression-reborn)
-[2]: (https://en.wikipedia.org/wiki/Frisch%E2%80%93Waugh%E2%80%93Lovell_theorem)
-[3]: (https://hastie.su.domains/Papers/ESLII.pdf#page=71)
-[4]: (https://mixtape.scunning.com/05-matching_and_subclassification#propensity-score-methods)
-[5]: (https://matheusfacure.github.io/python-causality-handbook/Debiasing-with-Orthogonalization.html#key-ideas:~:text=Finally%2C%20before%20we,run%20the%20risk%3F)
+[1]: <https://matheusfacure.github.io/python-causality-handbook/Debiasing-with-Orthogonalization.html#linear-regression-reborn>
+[2]: <https://en.wikipedia.org/wiki/Frisch%E2%80%93Waugh%E2%80%93Lovell_theorem>
+[3]: <https://hastie.su.domains/Papers/ESLII.pdf#page=71>
+[4]: <https://mixtape.scunning.com/05-matching_and_subclassification#propensity-score-methods>
+[5]: <https://matheusfacure.github.io/python-causality-handbook/Debiasing-with-Orthogonalization.html#key-ideas:~:text=Finally%2C%20before%20we,run%20the%20risk%3F>
