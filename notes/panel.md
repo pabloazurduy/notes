@@ -1,4 +1,4 @@
-## Panel (causal Inference The mixtape)
+## Panel (causal Inference The Mixtape)
 
 A panel is a (randomly selected from a population) group of entities observed overtime. The outcome variable will be $Y_{i,t}$ for the unit $i \in N$ on the time $t \in T$. There is a covariate $D_{i,t}$ that represent the status of the treatment, and two other variables $X_i$ and $u_i$ both are different by entity but they both **don't change overtime** the only difference is that we know $X_i$ but we don't observe $u_i$. 
 
