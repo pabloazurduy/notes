@@ -7,17 +7,17 @@ A panel is a (randomly selected from a population) group of entities observed ov
 #### Assumptions:
 
 1. The treatment $D_{i,t}$ affects the value of the outcome $Y_{i,t}$ but also affects the next week treatment $D_{i,t+1}$
-2. $X_i$ and $u_i$ affect both the treatment ($D_{i,t}$) and the outcome($Y_{i,t}$), (this opens a backdoor), therefore the treatment is an endogenous variable when regressing, because $u_i$ (unobserved) will be absorbed by the error $\varepsilon$.
-3. **Unobserved heterogeneity**: there is no unobserved variable that varies overtime, in other words, the panel is heterogenic ($u_i, X_i$) but the panel entities **don't change over time** (except for $D,Y$) or if they change that variable don't affect $D,Y$. **This is a very strong assumption**
-4. **Past outcomes don't *directly* affect current outcomes** ($Y_{i,t-1}  \bot Y_{i,t}$). This is also a very strong assumption considering things like earnings/health/purchases, anything where $Y_{i,t} \sim Y_{i,t-1}$ 
-5. Past treatments do not directly affect current treatments. That means ($Y_{i,t-1}  \bot D_{i,t}$). This is a less strong assumption compared to 3. and 4., but still might be concerning in things such as $Y$ earnings, $D$ education (for example).  
-6. Past treatments do not affect present outcomes [not directly at least, but via $D_{i,t}$]($D_{i,t-1}  \bot Y_{i,t}$). This is also a more easy-to-meet assumption. 
+2. $X_i$ and $u_i$ affect both the treatment ( $D_{i,t}$ ) and the outcome( $Y_{i,t}$ ), (this opens a backdoor), therefore the treatment is an endogenous variable when regressing, because $u_i$ (unobserved) will be absorbed by the error $\varepsilon$.
+3. **Unobserved heterogeneity**: there is no unobserved variable that varies overtime, in other words, the panel is heterogenic ( $u_i, X_i$ ) but the panel entities **don't change over time** (except for $D,Y$) or if they change that variable don't affect $D,Y$. **This is a very strong assumption**
+4. **Past outcomes don't *directly* affect current outcomes** ( $Y_{i,t-1}  \bot Y_{i,t}$ ). This is also a very strong assumption considering things like earnings/health/purchases, anything where $Y_{i,t} \sim Y_{i,t-1}$ 
+5. Past treatments do not directly affect current treatments. That means ( $Y_{i,t-1}  \bot D_{i,t}$ ). This is a less strong assumption compared to 3. and 4., but still might be concerning in things such as $Y$ earnings, $D$ education (for example).  
+6. Past treatments do not affect present outcomes [not directly at least, but via $D_{i,t}$ ]( $D_{i,t-1}  \bot Y_{i,t}$ ). This is also a more easy-to-meet assumption. 
 
 Under this 6 assumptions we can estimate the effect of $D \to Y $ using the **Fixed Effect Estimator** (FE). Our estimations model will be something like the following linear formula:
 
 $$Y_{i,t} = \delta D_{i,t} + u_i + \varepsilon_{i,t}$$
 
-we will call $u_i$ the _"unobserved heterogeneity"_ (that varies by entity but not over time). and $\varepsilon_{i,t}$ called the "idiosyncratic error" will be the time-varying unobserved factors that determinate $Y_{i,t}$. Adding this factor is the same as adding a control by entity $u_i$, at the end $u_i$ is another parameter that we need to fit in our regression ($\beta_i$)
+we will call $u_i$ the _"unobserved heterogeneity"_ (that varies by entity but not over time). and $\varepsilon_{i,t}$ called the "idiosyncratic error" will be the time-varying unobserved factors that determinate $Y_{i,t}$. Adding this factor is the same as adding a control by entity $u_i$, at the end $u_i$ is another parameter that we need to fit in our regression ( $\beta_i$ )
 
 **Why not run directly the regression?** $Y_{i,t} \sim D_{i,t}$?. we will get something like this:
 
@@ -28,16 +28,17 @@ where $\eta_{i,t} = u_i + \varepsilon_{i,t}$ is a composite error. that means th
 ### Fixed Effects (FE)
 there are two methods to run that regression: 
 
-1. _"within regression"_ or _"absorbing the fixed effect"_ ($y-\overline{y}$)
-2. _"binary regression"_: adding the $u_i$ as binary variables ($\beta_i$)
+1. _"within regression"_ or _"absorbing the fixed effect"_ ( $y-\overline{y}$ )
+2. _"binary regression"_: adding the $u_i$ as binary variables ( $\beta_i$ )
 
 
-In the first method idea is to make a transformation over the model $Y_{i,t} = \delta D_{i,t} + u_i + \varepsilon_{i,t}$ so we can remove the $u_i$ variable from it ( $\beta_i$ ). Using the following transformations should be _numerically equivalent_ to the regression of $Y_{i,t} \sim D_{i,t} $ and **unit specific dummy variables** ($u_i$), as we said before, same to add a binary parameter $\beta_i$ that controls by entity. 
+In the first method idea is to make a transformation over the model $Y_{i,t} = \delta D_{i,t} + u_i + \varepsilon_{i,t}$ so we can remove the $u_i$ variable from it ( $\beta_i$ ). Using the following transformations should be _numerically equivalent_ to the regression of $Y_{i,t} \sim D_{i,t} $ and **unit specific dummy variables** ( $u_i$ ), as we said before, same to add a binary parameter $\beta_i$ that controls by entity. 
 
 $$\widetilde{Y_{i,t}} = Y_{i,t} - \overline{Y_{i}}$$
 $$\widetilde{D_{i,t}} = D_{i,t} - \overline{D_{i}}$$
 
 where:
+
 $$\overline{D}_i \equiv \dfrac{1}{T}\sum_{t=1}^TD_{it}$$
 $$\overline{Y}_i \equiv \dfrac{1}{T} \sum_{t=1}^T Y_{it}$$
 
