@@ -77,4 +77,4 @@ Given that we estimate the effect _"within"_ entities, we will weight the higher
 
 
 [comment]: References 
-[1]: (https://theeffectbook.net/ch-FixedEffects.html#:~:text=address%20the%20problem.-,23,-23%20The%20Gibbons)
+[1]: <https://theeffectbook.net/ch-FixedEffects.html#:~:text=address%20the%20problem.-,23,-23%20The%20Gibbons>

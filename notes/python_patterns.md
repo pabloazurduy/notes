@@ -34,5 +34,5 @@ class Figure:
 
 
 [comment]: References 
-[1]: (https://python-patterns.guide/gang-of-four/composition-over-inheritance/)
-[2]: (https://python-patterns.guide/gang-of-four/composition-over-inheritance/#problem-the-subclass-explosion)
+[1]: <https://python-patterns.guide/gang-of-four/composition-over-inheritance/>
+[2]: <https://python-patterns.guide/gang-of-four/composition-over-inheritance/#problem-the-subclass-explosion>

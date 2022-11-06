@@ -87,4 +87,4 @@ using `frozen=True` will only prevent to reasign the pointers from the attribute
 
 
 [Comment]: References 
-[1]: (https://www.amazon.com/Robust-Python-Write-Clean-Maintainable/dp/1098100662)
+[1]: <https://www.amazon.com/Robust-Python-Write-Clean-Maintainable/dp/1098100662>
