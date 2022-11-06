@@ -6,9 +6,9 @@ This procedure is a method to debiasing a dataset when there is a strong autocor
 
 $$Q = \beta_p * P + \beta_X*X + \beta_0$$
 
-the problem is that usually the price is a variable that is defined based on the demand or the expectation of the demand ($P =f(E(Q))$). by example summer icecream prices and demand in summer. 
+the problem is that usually the price is a variable that is defined based on the demand or the expectation of the demand ( $P =f(E(Q))$ ). by example summer icecream prices and demand in summer. 
 
-Orthogonalization is a method to somehow reduce that bias in the dataset, considering that the variable to study ($P$) is **not randomly assigned** rather than defined throw an optimization process. This method is based on the [Frisch–Waugh–Lovell theorem][2], and is also explained in the book [*The Elements of Statistical Learning : Data Mining, Inference, and Prediction*][3]. 
+Orthogonalization is a method to somehow reduce that bias in the dataset, considering that the variable to study ( $P$ ) is **not randomly assigned** rather than defined throw an optimization process. This method is based on the [Frisch–Waugh–Lovell theorem][2], and is also explained in the book [*The Elements of Statistical Learning : Data Mining, Inference, and Prediction*][3]. 
 
 ### The method 
 
@@ -23,8 +23,7 @@ m_t = smf.ols("price ~ cost + C(weekday) + temp", data=test).fit()
 test['price-Mt(X)'] = m_t.resid # price - pred_price(X)
 ```
 
-2. secondly we debiased the outcome variable $Q$ following a similar procedure that the first step, the idea behind this is to remove the effect of the confounders $X$ on $Q$ so we will keep only the _non explained by X_ variance of $Q$ ($\hat{Q}$.
-)
+2. secondly we debiased the outcome variable $Q$ following a similar procedure that the first step, the idea behind this is to remove the effect of the confounders $X$ on $Q$ so we will keep only the _non explained by X_ variance of $Q$ ( $\hat{Q}$ ).
 
 $$Q = \gamma_X*X + \gamma_0$$
 
