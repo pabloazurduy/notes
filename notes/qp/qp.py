@@ -4,11 +4,11 @@ import numpy as np
 
 # Generate data.
 np.random.seed(1)
-n_partners = 100
+n_partners = 2610
 score = np.random.rand(n_partners)
 
 # Define and solve the CVXPY problem.
-n_people = 20
+n_people = 58
 x = cp.Variable((n_people,n_partners ), boolean=True)
 mean_score = score.mean()*n_people
 # add constraints (this might reduce the complexity of the model)
