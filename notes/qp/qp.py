@@ -23,7 +23,7 @@ cost = cp.sum_squares(mean_score-x @ score)
 prob = cp.Problem(cp.Minimize(cost), 
                   constraints=constraints
                   ) #, warm_start=True)
-prob.solve(#verbose=True
+prob.solve(verbose=True
 ) # use scip install using https://www.cvxpy.org/install/#install-with-scip-support https://www.cvxpy.org/examples/basic/mixed_integer_quadratic_program.html#mixed-integer-quadratic-program
 
 

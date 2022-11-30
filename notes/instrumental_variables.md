@@ -43,14 +43,26 @@ Traditional conditional approach
 ```
 The procedure can be read in the following illustration:
 
- 1. **(a)** We have three variables $X$ and $Y$ 
+1. **(a)** We have three variables $X$, $Y$ and $Z$. $Z$ is the instrumental variable that will be colored in the plot (black and white). Our problem is to estimate the causal effect of $X \rightarrow Y$
+
+2. **(b)** We estimate the mean of $X$ for the two values of $Z = {0,1}$ this will be the _part of X explained by Z_. when $Z$ is binary this is the mean. 
+
+3. **(c)** We remove all the $X$ variance, replacing $X_i$ for the corresponding average for all samples in the dataset. This will only keep the explained part of $X$ from $Z$. This is the same as regressing $X = f(Z)$
+
+4. **(d)** We now do a similar thing predicting $Y = f(Z)$ and we keep only the predicted values, in this case, because is a binary variable therefore we use the $Y$ means of the two groups. 
+
+5. **(e)** we now regress the $X \rightarrow Y$ using the means after fixed by the effect of $Z$ that slope will be our predicted effect of $X$ in $Y$
 
 <p align="center">
 <img src="img/instrumentalvariables-animation-1.png" style='height:900px;align:center;'>
 </p>
 
 
+### Assumptions 
 
+1. Relevance of the instrument: we need that there is actually a causal relationship between $Z \rightarrow X$ 
+
+2. Validity of the instrument
 
 
 
