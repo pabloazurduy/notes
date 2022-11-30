@@ -4,11 +4,11 @@ import numpy as np
 
 # Generate data.
 np.random.seed(1)
-n_partners = 20
+n_partners = 100
 score = np.random.rand(n_partners)
 
 # Define and solve the CVXPY problem.
-n_people = 10
+n_people = 20
 x = cp.Variable((n_people,n_partners ), boolean=True)
 mean_score = score.mean()*n_people
 # add constraints (this might reduce the complexity of the model)
@@ -23,8 +23,12 @@ cost = cp.sum_squares(mean_score-x @ score)
 prob = cp.Problem(cp.Minimize(cost), 
                   constraints=constraints
                   ) #, warm_start=True)
-prob.solve(verbose=True
-) # use scip install using https://www.cvxpy.org/install/#install-with-scip-support https://www.cvxpy.org/examples/basic/mixed_integer_quadratic_program.html#mixed-integer-quadratic-program
+# use scip install using https://www.cvxpy.org/install/#install-with-scip-support https://www.cvxpy.org/examples/basic/mixed_integer_quadratic_program.html#mixed-integer-quadratic-program
+prob.solve(verbose=True, 
+           scip_params = {"limits/absgap":0.05,
+                          "lp/threads":8,
+                          'presolving/restartfac':0.05} # list of available parameters https://www.scipopt.org/doc-5.0.1/html/PARAMETERS.php
+           ) 
 
 
 # Print result.
