@@ -1,8 +1,29 @@
 *created on: 2022-12-13 11:20:09*
 ## Multiprocessing Snippets
 
+### run a function with arguments (return in dictionary)
+This is a regular mp run with a dictionary
+
+```python 
+import multiprocessing as mp
+import time 
+
+def my_function(df):
+    # do something time consuming
+    time.sleep(50)
+
+if __name__ == '__main__':
+    with mp.Pool(10) as pool:
+        res = {}
+        output = {}
+        for id, df in some_dict_of_dfs:
+            res[id] = pool.apply_async(my_function,(df, ))
+        output = {id : res[id].get() for id in id_list}
+```
+
+
 ### Run a void process 
-this is a snippet to run a function where a complex object is shared. using [map][1]
+this is a snippet to run a function where a complex object is shared. Using [map][1]
 
 ```python 
 import multiprocess as mp
