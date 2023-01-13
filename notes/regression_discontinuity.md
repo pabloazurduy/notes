@@ -96,7 +96,7 @@ There is now a version of the `rdrobust` package [available for python][2] The d
 Sometimes the cutoff does not apply directly the treatment, but it increases the probability of having it. This could also include self selection or opt-in treatments (such as admission or retirement). In the lower plot it's illustrated a fuzzy discontinuity vs a sharp design (traditional RDD). in the right plot you can observe that the percentage amount of treated samples is not straighten 100% but it is an increase in the population. 
 
 <p align="center">
-<img src="img/regressiondiscontinuity-treatmentshare-1.png" style='height:180px;align:center;'>
+<img src="img/regressiondiscontinuity-treatmentshare-1.png" style='height110px;align:center;'>
 </p>
 
 
