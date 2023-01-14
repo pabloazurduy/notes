@@ -25,7 +25,7 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
 
 3. There are a [few ways][5] that might work to directly do the connection with the DHT11 using [HACS][6] you can [install][7] manually [a repo][8]. But they didn't work (for me). So at the end, reading this [reddit-topic][10] and [this tutorial][1] that "the easiest" way was via an MQTT service. Let's diagram this mess. 
 
-    As you will soon understand, running the Home Assistant on a Container [successfully isolate][11] the app with the RPI SO, (where your sensors are located). This was recently enforced by [removing GPIO + Sensors support][11] (keeping a ["remote GPIO control"][15]  for "other" RPI). I kind of understand the reasoning behind that, but it is a PITA for the people that want to make use of their RPI. 
+    As you will soon understand, running the Home Assistant on a Container [successfully isolate][18] the app with the RPI SO, (where your sensors are located). This was recently enforced by [removing GPIO + Sensors support][11] (keeping a ["remote GPIO control"][15]  for "other" RPI). I kind of understand the reasoning behind that, but it is a PITA for the people that want to make use of their RPI. 
 
     The workaround its messy, but at the same time more "robust" -it is a more scalable and resilient solution-.  
     
@@ -143,7 +143,57 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
         home/sensor/temperature 27.00
         ...
 
-8. We should configure the sensor in the Home Assistant, to do that we add the [`MQQT` integration][14]
+8. We should configure the sensor in the Home Assistant, to do that we add the [`MQQT` integration][14]. We follow the instructions to add it and we use `localhost` as the address, and `1883` as the port (the default one)
+
+    <img src="img/rpi_mqtt_settings.png" style='height:290px;'>
+
+    Then we modify the `configuration.yaml` of the Home assistant installation to add the sensors from the queues of the broker. We add this on the bottom of the file.
+
+        # DHT sensor
+        mqtt:
+        sensor:
+            - name: "Temperature"
+            state_topic: "home/sensor/temperature"
+            unit_of_measurement: "°C"
+            force_update: true
+
+
+            - name: "Humidity"
+            state_topic: "home/sensor/humidity"
+            unit_of_measurement: "%"
+            force_update: true
+
+9. [Optional] Adding filters. There is a known issue that the DHT sensor can have miss readings from time to time. 
+    <img src="img/rpi_filter_sensor.png" style='height:220px;'>
+
+    To solve this we use the [filter integration][19]. There are several filters that we can stack on top of the signal, I use [outlier][20] and [lowpass][21] you can configure your parameters based on your needs. 
+
+
+        # DHT11 added filtered
+        sensor:
+        - platform: filter
+            name: "filtered humidity"
+            entity_id: sensor.humidity
+            filters:
+            - filter: outlier
+                window_size: 10
+                radius: 2.0
+            - filter: lowpass
+                time_constant: 10
+                precision: 2
+
+        - platform: filter
+            name: "filtered temperature"
+            entity_id: sensor.temperature
+            filters:
+            - filter: outlier
+                window_size: 10
+                radius: 2.0
+            - filter: lowpass
+                time_constant: 10
+
+10. [Optional] setup rules
+
 
 
 
@@ -165,6 +215,7 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
 [15]: <https://www.home-assistant.io/integrations/remote_rpi_gpio/>
 [16]: <https://www.dexterindustries.com/howto/run-a-program-on-your-raspberry-pi-at-startup/>
 [17]: <https://www.dexterindustries.com/howto/auto-run-python-programs-on-the-raspberry-pi/>
-
-[//]: <> (Some snippets)
-[//]: # (add an image <img src="" style='height:400px;'>)
+[18]: <https://community.home-assistant.io/t/supervised-on-docker/425635>
+[19]: <https://www.home-assistant.io/integrations/filter>
+[20]: <https://www.home-assistant.io/integrations/filter#outlier>
+[21]: <https://www.home-assistant.io/integrations/filter#low-pass>
