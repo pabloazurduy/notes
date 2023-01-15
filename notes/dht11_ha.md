@@ -166,7 +166,7 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
 9. [Optional] Adding filters. There is a known issue that the DHT sensor can have miss readings from time to time. 
     <img src="img/rpi_filter_sensor.png" style='height:220px;'>
 
-    To solve this we use the [filter integration][19]. There are several filters that we can stack on top of the signal, I use [outlier][20] and [lowpass][21] you can configure your parameters based on your needs. 
+    To solve this we use the [filter integration][19]. There are several filters that we can stack on top of the signal, I use [outlier][20] and [moving average][21] you can configure your parameters based on your needs. 
 
 
         # DHT11 added filtered
@@ -178,9 +178,8 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
             - filter: outlier
                 window_size: 10
                 radius: 2.0
-            - filter: lowpass
-                time_constant: 10
-                precision: 2
+            - filter: time_simple_moving_average
+                window_size: "00:01"
 
         - platform: filter
             name: "filtered temperature"
@@ -189,8 +188,8 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
             - filter: outlier
                 window_size: 10
                 radius: 2.0
-            - filter: lowpass
-                time_constant: 10
+            - filter: time_simple_moving_average
+                window_size: "00:01"
 
 10. [Optional] setup rules
 
@@ -218,4 +217,4 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
 [18]: <https://community.home-assistant.io/t/supervised-on-docker/425635>
 [19]: <https://www.home-assistant.io/integrations/filter>
 [20]: <https://www.home-assistant.io/integrations/filter#outlier>
-[21]: <https://www.home-assistant.io/integrations/filter#low-pass>
+[21]: <https://www.home-assistant.io/integrations/filter/#time-simple-moving-average>
