@@ -142,6 +142,17 @@ This is a tutorial on how to connect a DHT11 to a container home assistant versi
         home/sensor/humidity 25.00
         home/sensor/temperature 27.00
         ...
+    
+    you can also open the service to be accessible on the local network using the following configuration
+
+        sudo nano /etc/mosquitto/mosquitto.conf
+
+    then adding the following lines at the end of the config file
+        
+        listener 1883
+        allow_anonymous true
+        
+    to setup a user/key follow the [tutorial][13]
 
 8. We should configure the sensor in the Home Assistant, to do that we add the [`MQQT` integration][14]. We follow the instructions to add it and we use `localhost` as the address, and `1883` as the port (the default one)
 
