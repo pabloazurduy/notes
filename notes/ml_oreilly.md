@@ -213,6 +213,7 @@ We can regularize the Decision Trees using the hyperparameters but also using **
 
 ### Decision Trees - CART for Regression 
 We can use CART for regression as well just changing the Gini or Entropy error for the MSE to use it in a regression context 
+
 $$
 \min_{k, t_k} J(k,t_k) = \frac{m_{left}}{m} MSE_{left} + \frac{m_{right}}{m}MSE_{right}
 $$
@@ -255,7 +256,8 @@ Then we estimate the **predictor weight** for the model $j$: $\alpha_j$ this num
 
 Finally, we update the weights for all the samples and iterate
 
-4. 
+
+
 $$
 w^{(i)} \leftarrow 
 \begin{cases}
