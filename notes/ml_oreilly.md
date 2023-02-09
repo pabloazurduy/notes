@@ -248,11 +248,11 @@ The boosting methodology consist in consecutively update the models training the
 
 Then we estimated the **error rate**  of the model $j$ : $r_j$ over the train set using the following formula:
 
-2. $$r_j = \frac{\sum_{i \in m : \hat{y}_j^{(i)} \neq y_j^{(i)}}{w^{(i)}}}{\sum_{i \in m}w^{(i)}} $$
+2. $$r_j = \frac{\sum_{i \in m : \hat{y}_j^{(i)} \neq y_j^{(i)}}{w^{(i)}}}{\sum_{i \in m}w^{(i)}}$$
 
 Then we estimate the **predictor weight** for the model $j$: $\alpha_j$ this number will be used to ensample the predictions:
 
-3. $$ \alpha_j = \eta log(\frac{1-r_j}{r_j})$$
+3. $$\alpha_j = \eta log(\frac{1-r_j}{r_j})$$
 
 Finally, we update the weights for all the samples and iterate
 
