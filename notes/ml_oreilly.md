@@ -198,6 +198,7 @@ Finally the CART algorithm will operate iterating over this. Given a feature $k$
 $$
 \min_{k, t_k} J(k,t_k) = \frac{m_{left}}{m} G_{left} + \frac{m_{right}}{m}G_{right}
 $$
+
 This algorithm stops when a hyper parameter stopping criteria is reached, such as, `max_depth`, `max_leafs_nodes`, `min_samples_leaf` etc.
 
 There is a second metric that we can use in CART called `entropy`. Entropy is similar to Gini Impurity, in the sense that is 0 when there's only one class in the node and positive otherwise. 
