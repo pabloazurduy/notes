@@ -234,9 +234,7 @@ A random forest is a bagging of decision trees that also introduces randomness i
 #### Feature Importance
 Given a fitted random forest we can estimate the feature importance looking into how much each feature is used to split the dataset in all the trees. The importance will be given by the amount of samples $w_i$ that are in the node $i$ where the feature $f$ is being used to split (a proxy to the highness of a node).
 
-$$
-\text{feature\_score}_f = \frac{\sum_{i \in nodes} w_i}{|nodes|}
-$$
+$$\text{feature\_score}_f = \frac{\sum_{i \in nodes} w_i}{|nodes|}$$
 
 The score then is normalized across all features $score_f = \frac{score_f}{\sum_j{score_j}}$
 
@@ -255,8 +253,6 @@ Then we estimate the **predictor weight** for the model $j$: $\alpha_j$ this num
 3. $$\alpha_j = \eta log(\frac{1-r_j}{r_j})$$
 
 Finally, we update the weights for all the samples and iterate
-
-
 
 $$
 w^{(i)} \leftarrow 
