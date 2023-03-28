@@ -1,7 +1,7 @@
 *created on: 2022-12-13 11:20:09*
 ## Multiprocessing Snippets
 
-[link to an updated article][4] with limitations of `multiprocessing` and argues in favor of `threads`. It mentions the use of [shared_memory][5] that's limited to basic datatypes. For more complex types such as  `pd.DataFrame` you can read this [question][6] particularly one that suggest the use of [`joblib`][7]
+[link to an updated article][4] with the limitations of `multiprocessing` and argues in favor of `threads`. It mentions the use of [shared_memory][5] that's limited to basic datatypes. For more complex types such as  `pd.DataFrame` you can read this [question][6] particularly one that suggest the use of [`joblib`][7]
 
 
 ### run a function with arguments (return in dictionary)
