@@ -57,6 +57,7 @@ $$
 \sum_{m=1}^k v_m \bigg(X_{1m} - \sum_{j=2}^{J+1}w_jX_{jm} \bigg)^2
 \text{(2)}
 $$
+
 where $X_{i,m}$ is the value of the covariate $m$ for the unit $i$, $v_m$ represents **the weight that we assign to the covariate $m$** 
 
 The choice of $V$, as should be seen by now, is important because $W^*$ depends on one’s choice of $V$. The synthetic control $W(V)$ is meant to reproduce the behavior of the outcome variable for the treated unit in the absence of the treatment. $V$ it's nonetheless than the specification of the model. 
@@ -86,6 +87,7 @@ We do need to first drop the units that have a bad fitting on the training perio
 1. Iteratively apply the synthetic control method to each country/state in the donor pool and obtain a distribution of placebo effects.
 
 2. Calculate the RMSPE (RMSE of the outcome prediction for the "treated" unit) for each placebo for the **pre-treatment** period:
+
 $$
 RMSPE = \bigg (\dfrac{1}{T-T_0} \sum_{t=T_0+t}^T \bigg (Y_{1t} - \sum_{j=2}^{J+1} w_j^* Y_{jt} \bigg )^2 \bigg )^{\tfrac{1}{2}}
 $$ 
