@@ -39,8 +39,13 @@ $$\widetilde{D_{i,t}} = D_{i,t} - \overline{D_{i}}$$
 
 where:
 
-$$\overline{D}_i \equiv \dfrac{1}{T}\sum_{t=1}^TD_{it}$$
-$$\overline{Y}_i \equiv \dfrac{1}{T} \sum_{t=1}^T Y_{it}$$
+$$
+\overline{D_{i}} \equiv \dfrac{1}{T}\sum_{t=1}^TD_{it}
+$$
+
+$$
+\overline{Y_{i}} \equiv \dfrac{1}{T} \sum_{t=1}^T Y_{it}
+$$
 
 finally the model to run will be:
 
