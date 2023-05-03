@@ -56,7 +56,9 @@ The idea is that, if we control for the larger category therefore we will be con
 
 There is a difference in the $R^2$ value from the first method (*within* regression) vs the second one (*binary regression*) and that's because 
 
-$$R^2 = 1- \frac{\sum_i{y_i-\hat{y_i}}}{\sum_i{y_i-\overline{y}}}$$
+$$
+R^2 = 1- \frac{\sum_i{y_i-\hat{y_i}}}{\sum_i{y_i-\overline{y}}}
+$$
 
 but the $y$ is different in both regressions, in the *within* method $y_i = y_i-\overline{y}$ and in the _binary regression_ y is simply y. basically $R^2$ explains the variance of the ind variable over the residuals variance, I think that the _within regression_ tends to reduce the variance, therefore reduce the $R^2$ against the _binary regression_
 
