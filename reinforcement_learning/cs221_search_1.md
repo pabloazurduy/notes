@@ -91,14 +91,14 @@ s -->|"cost(s,a2)"| s''
 s' -.->|"FutureCost(s')"| end_state
 s'' -.->|"FutureCost(s'')"| end_state
 ```
-In the upper diagram we are in the state $s$ and we have two possible actions $a_{1}$ and $a_{2}$ we know their cost $cost(s,a_{i})$ and we, somehow, have the future cost of both next states $FutureCost(s'')$ we don't know the next curse of actions, and we don't know how we will ended up in the end_state, but we know that we will have some way to get there, and we have an estimation of the cost. 
+In the upper diagram we are in the state $s$ and we have two possible actions $a_{1}$ and $a_{2}$ we know their cost $cost(s,a_{i})$ and we, somehow, have the future cost of both next states $FutureCost(s'')$ we don't know the next curse of actions, and we don't know how we will ended up in the `end_state`, but we know that we will have some way to get there, and we have an estimation of the cost. 
 
 We will define the $FutureCost(s)$ function as:
 
 $$ FutureCost(s) = 
 \begin{cases}
       0 & \text{if $isEnd(s)$} \\
-      min_{a \in A(s)}{Cost(s,a) + FutureCost(succ(s,a))} & \text{if condition2} \\
+      min_{a \in A(s)}{\{Cost(s,a) + FutureCost(succ(s,a))\}} & \text{otherwise} \\
 \end{cases} 
 $$
 
@@ -118,8 +118,7 @@ def dynamic_programming(problem:TransportationProblem) -> Tuple[float,Any] :
         if state in cache: # Exponential savings
             return cache[state]
         # Actually doing work
-        result = min(cost+futureCost(newState) \
-                for action, newState, cost in problem.succAndCost(state))
+        result = min([cost+futureCost(newState) for action, newState, cost in problem.succAndCost(state)])
         cache[state] = result
         return result
     return (futureCost(problem.startState()), [])
@@ -134,7 +133,41 @@ For example on the min routing problem, lets add a constraint: "Can't visit thre
 
 In that example having the state as $S=\{ prev\_city, current\_city\}$ or $S \{prev\_city\_is\_odd , current\_city\}$ both will solve the problem, however the dimensional space of the first one its way bigger than the second one $|S_{1}| = N^2$ vs $|S_{2}| = 2N$
 
-## Uniform Cost Search 
+## Uniform Cost Search (UCS)
+
+This search is very similar to Dijkstra's Algorithm (apparently it's a generalization). The idea is that this algorithm can be applied to graphs with cycles without having to enforce the non-cycle condition as in dynamic programming. The key concept is that in dynamic programming, you need some order to estimate the `futureCost(s)`. However, UCS makes use of a way of enumerating the states not based on their topology but rather on their increasing _"past cost"_. 
+
+The only condition that we enforce is that the cost needs to be all positive (so we can sort them without non-ending cost reduction cycles). however this will not allow us to use this algorithm where there is rewards on actions, for those cases we need Bellman-Ford algorithm. This algorithm receives his cost based on the fact that the `pastCost(s)` is uniformly for all future state.  
+
+In general, the algorithm works by having 3 different sets: `Explored`, `Frontier`, `Unexplored`. The pseudo algorithm works like this:
+
+#### USC Pseudo Code 
+
+1. all nodes start in the `Unexplored` set 
+2. we move the starting node to the `Frontier` (we have a starting and an ending node)
+3. we move the node with the lowest cost in the `Frontier` (Starting node with cost 0) to the `Explored` set. We are gonna call this node the `current_node`
+4. we add to the `Frontier` all the nodes from the `Unexplored` set that are one degree away from our `current_node`". For all the nodes in the `frontier` we estimate the cost from our `current_node` and update if its lower than the previously estimated or add it in case that it was empty.  
+5. we repeat (3) and (4) until we reach the `end_node`
+
+In general, there are three sets:
+- `Explored`: states that we have visited and know the minimum cost from the start state 
+- `Frontier`: states that we know how to reach and have an estimation of the cost, but we don't know for sure if the path we found is the minimum 
+- `Unexplored`: states that we don't know anything about yet
+
+
+```python
+def uniformCostSearch(problem):
+    frontier = util.PriorityQueue()
+    frontier.update(problem.startState(), 0)
+    while True:
+        # Move from frontier to explored
+        state, pastCost = frontier.removeMin()
+        if problem.isEnd(state):
+            return (pastCost, [])
+        # Push out on the frontier
+        for action, newState, cost in problem.succAndCost(state):
+            frontier.update(newState, pastCost+cost)
+ ```
 
 [//]: <> (References)
 [1]: <https://www.youtube.com/watch?v=aIsgJJYrlXk&list=PLoROMvodv4rO1NB9TD4iUZ3qghGEGtqNX>
