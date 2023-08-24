@@ -1,4 +1,4 @@
-# Bayesian Methods for hackers - PYMC4 snippets  
+# Bayesian Methods [random notes] 
 This is a collection of some snippets founded in the book [Probabilistic Programming and Bayesian Methods for Hackers][14] ported to `pymc4` (`pymc==4.1.2`). The last version of the book (available [online][5] was implemented on `pymc3`, but the library has suffered strong changes in the classes and implementations since then. I have a physical copy of the book and is impossible to follow. I use the `pymc3` notebooks available in the [github repository][5]. 
 
 ## Notes in Changelog from pymc3 to pymc4
