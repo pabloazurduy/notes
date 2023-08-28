@@ -1,6 +1,7 @@
 import numpy as np
 import pymc as pm
 from scipy import stats
+from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 import arviz as az
 
@@ -19,15 +20,13 @@ with pm.Model() as model_city:
     sigma = pm.HalfNormal("sigma", sigma=10, shape=2)
     
     mu = b0 + b1 * education_years
-    income = pm.Normal("income", mu=mu, sigma=sigma, observed=income, shape=income.shape)
+    inc_mu = pm.Normal("inc_mu", mu=mu, sigma=sigma, observed=income, shape=income.shape)
 
-    trace = pm.sample(draws=1000, cores=4, target_accept=0.99)
-    posterior_predictive = pm.sample_posterior_predictive(trace, var_names=['b0', 'b1', 'income', 'sigma'])
+    trace = pm.sample(draws=500, cores=4, target_accept=0.80)
+    posterior_predictive = pm.sample_posterior_predictive(trace, var_names=['b0', 'b1', 'inc_mu', 'sigma'])
     map = pm.find_MAP()
 
 az.plot_forest(trace, combined=True, hdi_prob=0.95)
-
-
 
 # plot and add linear trend 
 fig, axs = plt.subplots(1, 2, figsize=(10, 5))
@@ -43,4 +42,13 @@ for i, ax in enumerate(axs):
     b1, b0, r_value, p_value, std_err = stats.linregress(x, y)
     ax.plot(x, b0 + b1*x, 'r', label=f'fitted line {b0=:.2} {b1=:.2}')
     ax.legend()
+    y_pred = posterior_predictive['posterior_predictive']['inc_mu'].mean(axis=(0)).to_numpy()
+    ax.scatter(x=x,y=y_pred.mean(axis=0)[:,i], color='lightblue', label='prediction_mean', s=1) 
+    p05 = np.percentile(y_pred[:, :, i], 5, axis=0)
+    p95 = np.percentile(y_pred[:, :, i], 95, axis=0)
+    f_p05 = interp1d(x, p05, kind='linear')
+    f_p95 = interp1d(x, p95, kind='linear')
+    xnew = np.linspace(min(x), max(x), 500)
+    ax.fill_between(xnew, f_p05(xnew), f_p95(xnew), alpha=0.2, color='gray', interpolate=True)
+
 plt.show()
