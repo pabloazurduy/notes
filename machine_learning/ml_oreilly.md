@@ -115,7 +115,7 @@ $$
 $$
 We usually use a stopping criteria such as $\theta^{next} - \theta<\epsilon $. We call $\epsilon$ the `"tolerance"`
 
-**Stochastic Gradient Descent**: we can perform the same Gradient Descent methodology but using just a sample from the entire dataset (to improve speed). It only uses one sample, therefore the convergence is very noisy. Because this algorithm is super noise it hardly converges to a minima and stays there, therefore we could iteratively reduce the learning rate $\eta$ this is call **Simulated Annealing**. The reduction rate function is called _learning schedule_.
+**Stochastic Gradient Descent**: we can perform the same Gradient Descent methodology but using just a sample from the entire dataset (to improve speed). It only uses one sample, therefore the convergence is very noisy. Because this algorithm is super noise it hardly converges to a minimum and stays there, therefore we could iteratively reduce the learning rate $\eta$ this is call **Simulated Annealing**. The reduction rate function is called _learning schedule_.
 
 **MiniBatch Gradient Descent**: Minibatch Is the same as Stochastic Gradient Descent, but, instead of adding one sample at the time, it adds a batch of `n_samples` therefore making the computation harder, but increasing the stability of the convergence. 
 #### Learning Curves 
@@ -191,15 +191,15 @@ $$
 \text{Gini Impurity}: \quad G_i = 1 - \sum_{k = 1}^{n}{p_{i,k}^{2}}
 $$
 
-A Gini coefficient of 0 will represent a leaf with only one class, while a Gini of anything positive will have more than one class. The Gini coefficient is `1 - sum((ratios)**2)` the only clear scenario is when one ratio is 1 and the others are 0 (pure node), the other distances are more weird to explain, but probably a more impure node is when the ratios are equal (same number of samples of all classes). In the case of 2 classes, the Gini coefficient will have numbers between `0` to `0.5` (50%/50%) any other proportion eg: (70%/30%) will have something less than `<0.5`.
+A Gini coefficient of 0 will represent a leaf with only one class, while a Gini of anything positive will have more than one class. The Gini coefficient is `1 - sum((ratios)**2)` the only clear scenario is when one ratio is 1 and the others are 0 (pure node), the other distances are weirder to explain, but probably a more impure node is when the ratios are equal (same number of samples of all classes). In the case of 2 classes, the Gini coefficient will have numbers between `0` to `0.5` (50%/50%) any other proportion e.g.: (70%/30%) will have something less than `<0.5`.
 
-Finally the CART algorithm will operate iterating over this. Given a feature $k$ and a split-threshold $t_k$ we will choose those values minimizing the following cost function:
+Finally, the CART algorithm will operate by iterating over this. Given a feature $k$ and a split-threshold $t_k$ we will choose those values minimizing the following cost function:
 
 $$
 \min_{k, t_k} J(k,t_k) = \frac{m_{left}}{m} G_{left} + \frac{m_{right}}{m}G_{right}
 $$
 
-This algorithm stops when a hyper parameter stopping criteria is reached, such as, `max_depth`, `max_leafs_nodes`, `min_samples_leaf` etc.
+This algorithm stops when a hyperparameter stopping criteria is reached, such as, `max_depth`, `max_leafs_nodes`, `min_samples_leaf` etc.
 
 There is a second metric that we can use in CART called `entropy`. Entropy is similar to Gini Impurity, in the sense that is 0 when there's only one class in the node and positive otherwise. 
 
@@ -223,7 +223,7 @@ $$
 
 1. **Soft Voting Classifier**: Ensemble a List of models a predict certain sample, we average the probability of each class $k$: $\mathbb{P^i_k}$ where $i$ is the prediction of the $i$ model, then we choose the highest probability as the prediction of the ensemble. This method usually outperforms the Hard Voting One. 
 
-1. **Bagging**: (or Bootstrap Aggregating) We split the training set `X` in `m` subsets **with replacement**. We train a model on every subset. Then we use a voting system as the ones described before. If we also sample features we call this method **Random Patches**, if we only sample features and not samples we call this **Random Subspaces**.
+1. **Bagging**: (or Bootstrap Aggregating) We split the training set `X` in `m` subsets **with replacement**. We train a model on every subset. Then we use a voting system like the ones described before. If we also sample features we call this method **Random Patches**, if we only sample features and not samples we call this **Random Subspaces**.
 
 1. **Pasting**: same as bagging but we split the training set **without replacement**
 
@@ -240,31 +240,31 @@ The score then is normalized across all features $score_f = \frac{score_f}{\sum_
 
 ### Boosting
 #### Ada Boosting (Adaptive Boosting)
-The boosting methodology consist in consecutively update the models training the samples that are more miss-classified by the previous models. To do that we basically train and predict a dataset with a week-learner, using a weighted sample where all the weights are equal
+The boosting methodology consists of consecutively updating the models training the samples that are more misclassified by the previous models. To do that we basically train and predict a dataset with a week-learner, using a weighted sample where all the weights are equal
 
 1. $$w_i = \frac{1}{m}$$
 
 Then we estimated the **error rate**  of the model $j$ : $r_j$ over the train set using the following formula:
 
-2. $$r_j = \frac{\sum_{i \in m : \hat{y}_j^{(i)} \neq y_j^{(i)}}{w^{(i)}}}{\sum_{i \in m}w^{(i)}}$$
+2. $$r_{j} = \frac{\sum_{i \in m : \hat{y}_{j}^{(i)} \neq y_{j}^{(i)}}{w^{(i)}}}{\sum_{i \in m}w^{(i)}}$$
 
-Then we estimate the **predictor weight** for the model $j$: $\alpha_j$ this number will be used to ensample the predictions:
+Then we estimate the **predictor weight** for the model $j$: $\alpha_j$ this number will be used to ensemble the predictions:
 
-3. $$\alpha_j = \eta log(\frac{1-r_j}{r_j})$$
+3. $$\alpha_{j} = \eta log(\frac{1-r_j}{r_j})$$
 
 Finally, we update the weights for all the samples and iterate
 
 $$
 w^{(i)} \leftarrow 
 \begin{cases}
-w^{(i)}  & \text{if} \; \hat{y}_j^{(i)}=y^{(i)} \\
+w^{(i)}  & \text{if} \; \hat{y}_{j}^{(i)}=y^{(i)} \\
 
-w^{(i)}exp(\alpha_j)  & \text{if} \; \hat{y}_j^{(i)} \neq y^{(i)}
+w^{(i)}exp(\alpha_{j})  & \text{if} \; \hat{y}_{j}^{(i)} \neq y^{(i)}
 \end{cases}
 $$
 
 #### Gradient Boosting 
-Gradient boosting on the other hand is different to ADABosst in the sense that it actually predicts the residuals from the previous models ensemble. Each new tree will try to predict the error, Then the final prediction will be nothing more than the sum of all predictions. 
+Gradient boosting on the other hand is different from ADABosst in the sense that it actually predicts the residuals from the previous models' ensemble. Each new tree will try to predict the error, Then the final prediction will be nothing more than the sum of all predictions. 
 
 #### Stacking 
 
