@@ -86,5 +86,10 @@ using `frozen=True` will only prevent to reasign the pointers from the attribute
 1. S "Single responsibility Principle", any class should only have **one responsibility** -any object should have only one reason "to change"-
 
 
+## Chapter 12 - "Subtyping"
+
+The Liskov Substitution Principle (LSP): It states that objects of a `superclass` should be replaceable with objects of its `subclasses` (inheritance) without affecting the correctness of the program. In other words, if a program is designed to work with a certain type of object, it should also work correctly with any subtype of that object. Violating the LSP can lead to unexpected behavior and can make the codebase more fragile.
+
+
 [Comment]: References 
 [1]: <https://www.amazon.com/Robust-Python-Write-Clean-Maintainable/dp/1098100662>
