@@ -1,12 +1,14 @@
 
-*notes based on [cs221 AI class][1]*
 *created on: 2023-06-24 19:02:29*
+
+*notes based on [cs221 AI class][1]*
+
+*To find more about this course, take a look at the [syllabus][2]*
 
 ## CS221: Dynamic Programming - Search Problems
 
-For more class material look into the [course syllabus][2]. 
 
-In general, a search problem (and its "model solution") can be defined as a sequential set of actions. When the problem is deterministic, the search solution is simply a set of sequential actions. However, when the problem is dynamic, we rely on a policy function (f).
+We will define a search problem as a sequential set of actions to achieve certain "objective". When the problem is deterministic, the search solution is simply a set of sequential actions. However, when the problem is dynamic, we rely on a policy function (f).
 
 <img src="img_cs221/search_problem.png" style='height:80px;'>
 
