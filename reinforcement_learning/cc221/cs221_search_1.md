@@ -8,9 +8,7 @@
 ## CS221: Dynamic Programming - Search Problems
 
 
-We define a search problem as a series of actions aimed at achieving a specific objective. In deterministic problems, the solution is straightforward: a sequence of actions. However, in dynamic problems, we must rely on a policy function (f) to guide our actions.
-
-On a general sense, solutions to dynamic and deterministic problems can be specified by a policy function $f$.
+We define a search problem as: *"a series of actions aimed at achieving a specific objective"*. In deterministic problems, the solution can be determined by a sequence of actions. However, in dynamic problems, we must rely on a policy function (f) to guide our actions. All problems, deterministic and stochastic/dynamic, can be specified by a policy function $f$.
 
 <img src="img_cs221/search_problem.png" style='height:80px;'>
 
