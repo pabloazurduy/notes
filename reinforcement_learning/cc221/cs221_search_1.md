@@ -8,11 +8,15 @@
 ## CS221: Dynamic Programming - Search Problems
 
 
-We will define a search problem as a sequential set of actions to achieve certain "objective". When the problem is deterministic, the search solution is simply a set of sequential actions. However, when the problem is dynamic, we rely on a policy function (f).
+We define a search problem as a series of actions aimed at achieving a specific objective. In deterministic problems, the solution is straightforward: a sequence of actions. However, in dynamic problems, we must rely on a policy function (f) to guide our actions.
+
+On a general sense, solutions to dynamic and deterministic problems can be specified by a policy function $f$.
 
 <img src="img_cs221/search_problem.png" style='height:80px;'>
 
-### Search Problems: The Farmer Example
+$x$ in this context will represent a state and $f$ will be the policy function. 
+
+### Example: The Farmer 
 
 Consider the following problem: a farmer (F) has a goat (G), a wolf (W) and a cabbage (C). The farmer has a boat that can only fit one of the three (plus the farmer). The farmer wants to transport all the assets from one side of the river to the other side. However, if the farmer leaves the goat and the cabbage alone on one side of the river, the goat will eat the cabbage. If the farmer leaves the wolf and the goat alone on one side of the river, the wolf will eat the goat. The goal is to find a sequence of actions that allows the farmer to transport all the assets safely to the other side of the river.
 
@@ -21,17 +25,27 @@ We will define a set of actions as $A =\{ F> , FC>, FW>, ..., F<\}$ that represe
 
 ### Tree Search Algorithms (the concept)
 
-A search tree is an "exhaustive" search of every possible action from the starting node. Each pair of state and action $(s,a)$ is assigned a cost or reward value based on a cost function $C(s,a)$. Although it is not always necessary to visit every node in the tree, as we can do a smarter search and ignore nodes that have higher cost than the incumbent, the idea is that in the worst case scenario, we have to visit the entire action space. This is similar to doing a branch and bound search. 
+We will represent our problem in a tree graph, where each node signifies a state, and each edge represents an action. Once this tree is computed, it will facilitate an "exhaustive" search of every possible course of actions (policy). Upon completion of the tree, we can find the best path based on a reward function $C(s,a)$
+
+It is not always necessary to visit every node in the tree, as we can do a smarter search and ignore nodes that have higher cost than the incumbent, the idea is that in the worst case scenario, we have to visit the entire action space. 
+
+In the following image, we have each node as a state (position of `FCGW`), an action `entities >`, and its cost `entity>:<cost>`. In this example, the cost is always 1 (because we are minimizing the total number of actions, therefore each action costs 1).
 
 <img src="img_cs221/boat_crossing_search_tree.png" style='height:400px;'>
 
-To formalize a search problem we will have the following 
+Let's formalize the definition of a search problem
 
 ### Formal Definition: Search Problem 
 
-We will have a set of states $S$ with  origin node or state $s_{start}$. A set of possible actions $A(s)$, a cost or reward function $R(s,a)$, a set of successor nodes $Successor(s,a)$ which will be deterministic in a search problem, and a indicator of end state $IsEnd(s)$
+A search problem can be defined as:
 
-### Search Problem: The Transportation Example 
+1. Set of states $S$ with an origin node or state $s_{start}$.
+2. Set of possible actions $A(s)$.
+3. Cost or reward function $R(s,a)$.
+4. Set of successor nodes $Successor(s,a)$ (which can be deterministic in a search problem).
+5. Indicator of end state $IsEnd(s)$.
+
+### Example: The Transportation  
 
 <img src="img_cs221/transportation_example.png" style='height:180px;'>
 
