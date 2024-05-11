@@ -40,10 +40,10 @@ A search problem can be defined as:
 1. Set of states $S$ with an origin node or state $s_{start}$.
 2. Set of possible actions $A(s)$.
 3. Cost or reward function $R(s,a)$.
-4. Set of successor nodes $Successor(s,a)$ (which can be deterministic in a search problem).
+4. Set of successor nodes $Succ(s,a)$ (which can be deterministic in a search problem).
 5. Indicator of end state $IsEnd(s)$.
 
-### Example: The Transportation  
+### Example: Transportation Problem
 
 <img src="img_cs221/transportation_example.png" style='height:180px;'>
 
@@ -53,7 +53,7 @@ Aditionally, if I'm in the state $s$ and $2s>N$ I can't take the "magic tram".
 
 ### 1. **Backtracking Search**
 
-Exhaustively search for all possible action sequence and estimate their cost. Time $O(b^{D})$ where $b$ it's the amount of actions $|A(s)|$ (assuming that this is fixed, for the transportation example $b=2$), and D the tree depth (number of states $|S|$). Memory: $O(D)$
+Exhaustively search for all possible action sequence and estimate their cost. Time $O(b^{D})$ where $b$ it's the amount of actions $|A(s)|$ (assuming that this is fixed, for the transportation example $b=2$), and D the tree depth (number of states $|S|$). Memory: $O(D)$ (because I only keep track of the incumbent)
 
 We can implement this algorithm as a function that receives a `TransportationProblem` (see `tram_tree_search.py` )
 
@@ -76,7 +76,7 @@ def backtracking_search(problem:TransportationProblem) -> Tuple[float,Any] :
             return
         # Recurse on children
         for action, newState, cost in problem.succAndCost(state):
-            recurse(newState, history+[(action, newState, cost)], totalCost+cost)
+            recurse(newState, history + [(action, newState, cost)], totalCost+cost)
     # call the function from the starting state of the problem 
     recurse(problem.startState(), history=[], totalCost=0) 
     return (best['cost'], best['history'])
@@ -88,11 +88,23 @@ Depth-first search (DFS) is a search algorithm that assumes the cost of all acti
 
 ### 3. Breadth-first search (BFS)
 
-This algorithm will assume that the cost of each action its constant and equal $C(s,a) = c$. Instead of searching for all possible solutions, we explore the tree level by level and stop whenever we find a solution. By exhaustively searching every single level, we know that we have found the shortest solution.
+This algorithm will assume that the cost of each action its constant and equal $C(s,a) = c$. Instead of searching for all possible solutions, we explore the tree level by level and stop whenever we find a solution. By exhaustively searching every single level, we know that we have found the shortest solution. Assuming that the solution its found at the level $d<D$ then our time will be $O(b^d) <O(b^D)$, which is a small improvement.  
 
-### 4. DFS with iterative deeping (DFS-ID) 
+<img src="img_cs221/BFS.png" style='height:300px;'>
+
+### 4. DFS with iterative deepening (DFS-ID) 
 
 This algorithm will assume that the cost of each action is constant and equal to $C(s,a) = c$. It combines DFS with BFS. The idea is to iteratively call DFS on the subtree of depth $d$. If we find a solution, we finish; otherwise, we add one more level. This algorithm is an improvement over BFS because we don't need to store all the tree levels until we find a solution. Instead, we simply call DFS ("low" memory) and stop if we find a solution. It's just an improvement on memory not in complexity level over BFS.
+
+## Summary table 
+
+| Algorithm                 | Cost function allowed | Time     | Space  |
+|---------------------------|-----------------------|----------|--------|
+| Backtracking Search       | Any                   | $O(b^D)$ | $O(D)$ |
+| Depth-first Search (DFS)  | $C(s,a)=0$            | $O(b^D)$ | $O(D)$ |
+| Breadth-first search (BFS)| $C(s,a) = c$          | $O(b^d)$ |$O(b^d)$|
+| DFS with iterative deepening (DFS-ID)| $C(s,a) = c$| $O(b^d)$ | $O(d)$ |
+
 
 ## Dynamic Programming (Search Problem)
 
@@ -118,7 +130,7 @@ $$
 
 where $succ(s,a)$ its the next state $s'$ when taking action $a$ from node $s$.
 
-This is basically Dijkstra algorithm, start from end node and add the cost iteratively until you find the staring node. We basically instead of estimate the cost of each possible action that ended up in the state $s$ after we estimate the cost of that node (or the "$FutureCost(s)$") we don't need to re-estimate that cost like in the trees algorithms, we just store the value that cost us form the node $s$ to get into the `final_state` and every time that I need to use that cost I have it stored somewhere.  
+This is similar to Dijkstra algorithm, start from end node and add the cost iteratively until you find the staring node. We basically instead of estimate the cost of each possible action that ended up in the state $s$ after we estimate the cost of that node (or the "$FutureCost(s)$") we don't need to re-estimate that cost like in the trees algorithms, we just store the value that cost us form the node $s$ to get into the `final_state` and every time that I need to use that cost I have it stored somewhere.  
 
 In the following code we implement a general view of a dynamic programming algorithm. 
 
