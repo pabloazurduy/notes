@@ -47,7 +47,7 @@ A search problem can be defined as:
 
 <img src="img_cs221/transportation_example.png" style='height:180px;'>
 
-Aditionally, if I'm in the state $s$ and $2s>N$ I can't take the "magic tram". 
+Additionally, if I'm in the state $s$ and $2s>N$ I can't take the "magic tram". 
 
 ## Tree Search Algorithms (search problem)
 
@@ -98,12 +98,14 @@ This algorithm will assume that the cost of each action is constant and equal to
 
 ## Summary table 
 
-| Algorithm                 | Cost function allowed | Time     | Space  |
-|---------------------------|-----------------------|----------|--------|
-| Backtracking Search       | Any                   | $O(b^D)$ | $O(D)$ |
-| Depth-first Search (DFS)  | $C(s,a)=0$            | $O(b^D)$ | $O(D)$ |
-| Breadth-first search (BFS)| $C(s,a) = c$          | $O(b^d)$ |$O(b^d)$|
-| DFS with iterative deepening (DFS-ID)| $C(s,a) = c$| $O(b^d)$ | $O(d)$ |
+| Algorithm                 | Cost function allowed | Time     | Space  | Notes                      |
+|---------------------------|-----------------------|----------|--------|----------------------------|
+| Backtracking Search       | Any                   | $O(b^D)$ | $O(D)$ |                            |
+| Depth-first Search (DFS)  | $C(s,a)=0$            | $O(b^D)$ | $O(D)$ |                            |
+| Breadth-first search (BFS)| $C(s,a) = c$          | $O(b^d)$ |$O(b^d)$|                            |
+| DFS with iterative deepening (DFS-ID)| $C(s,a) = c$| $O(b^d)$ | $O(d)$ |                           |
+| Dynamic Programming       | Any                   | $O(n)$   | $O(n)$ | only acyclic               |
+| Uniform Cost Search       | $C(s,a)>0$            | $O(nlog(n))$| $O(nlog(n))$|only positive cost if cycles|
 
 
 ## Dynamic Programming (Search Problem)
@@ -130,7 +132,7 @@ $$
 
 where $succ(s,a)$ its the next state $s'$ when taking action $a$ from node $s$.
 
-This is similar to Dijkstra algorithm, start from end node and add the cost iteratively until you find the staring node. We basically instead of estimate the cost of each possible action that ended up in the state $s$ after we estimate the cost of that node (or the "$FutureCost(s)$") we don't need to re-estimate that cost like in the trees algorithms, we just store the value that cost us form the node $s$ to get into the `final_state` and every time that I need to use that cost I have it stored somewhere.  
+This is similar to Dijkstra algorithm -but reverse-, start from end node and add the cost iteratively until you find the staring node. We basically instead of estimate the cost of each possible action that ended up in the state $s$ after we estimate the cost of that node (or the "$FutureCost(s)$") we don't need to re-estimate that cost like in the trees algorithms, we just store the value that cost us form the node $s$ to get into the `final_state` and every time that I need to use that cost I have it stored somewhere.  
 
 In the following code we implement a general view of a dynamic programming algorithm. 
 
@@ -155,13 +157,17 @@ One key Idea of the dynamic programming its that the current **state** or moreov
 
 The essence of **our state definition**, for a particular problem, is to forget the past while still considering its impact on future actions. **The fewer states we have, the more efficient our algorithm**. The goal is to find the minimal set of states that allow us to solve the problem. 
 
-For example on the min routing problem, lets add a constraint: "Can't visit three odd cities in a row", in that case, using the state as the current city would not solve the problem because we will fail to identify feasible action space $A(s)$. therefore we will need to redefine the states so we can hold that constraint. 
+### Example: Min routing with constraint
 
-In that example having the state as $S=\{ prev\_city, current\_city\}$ or $S \{prev\_city\_is\_odd , current\_city\}$ both will solve the problem, however the dimensional space of the first one its way bigger than the second one $|S_{1}| = N^2$ vs $|S_{2}| = 2N$
+For example on the min routing problem; find the shortest path from city 1 -> N. Lets add a constraint: "Can't visit three odd cities in a row". In that case, using the state as the current city would not solve the problem because we will fail to identify feasible action space $A(s)$. Therefore, we will need to redefine the states so we can hold that constraint. 
+
+In that example having the state as $S_1  =\{ prev\_city, current\_city\}$ or $S_2 = \{prev\_city\_is\_odd , current\_city\}$ both will solve the problem, however the dimensional space of the first one its way bigger than the second one $|S_{1}| = N^2$ vs $|S_{2}| = 2N$
+
+Efficiently defining the states becomes a game changer on the Dynamic Programming implementation 
 
 ## Uniform Cost Search (UCS)
 
-This search is very similar to Dijkstra's Algorithm (apparently it's a generalization). The idea is that this algorithm can be applied to graphs with cycles without having to enforce the non-cycle condition as in dynamic programming. The key concept is that in dynamic programming, you need some order to estimate the `futureCost(s)`. However, UCS makes use of a way of enumerating the states not based on their topology but rather on their increasing _"past cost"_. 
+This search is very similar to Dijkstra's Algorithm (apparently it's a generalization). The idea is that this algorithm can be applied to graphs with cycles without having to enforce the non-cycle condition as in dynamic programming. The key concept is that in dynamic programming, you need some order to estimate the `futureCost(s)`. However, UCS makes use of a way of enumerating the states not based on their topology but rather on their increasing `pastCost(s)`. 
 
 The only condition that we enforce is that the cost needs to be all positive (so we can sort them without non-ending cost reduction cycles). however this will not allow us to use this algorithm where there is rewards on actions, for those cases we need Bellman-Ford algorithm. This algorithm receives his cost based on the fact that the `pastCost(s)` is uniformly for all future state.  
 
@@ -182,8 +188,10 @@ In general, there are three sets:
 
 
 ```python
+# similar to Dijkstra, but we only explore nodes until a solution is reach 
+# whereas in Dijkstra you explore them all
 def uniformCostSearch(problem):
-    frontier = util.PriorityQueue()
+    frontier = util.PriorityQueue() # its a stack that also store the cost per element (to remove min)
     frontier.update(problem.startState(), 0)
     while True:
         # Move from frontier to explored
@@ -193,7 +201,9 @@ def uniformCostSearch(problem):
         # Push out on the frontier
         for action, newState, cost in problem.succAndCost(state):
             frontier.update(newState, pastCost+cost)
- ```
+```
+**Theorem: correctness:** When a state $s$ is popped from the frontier and moved to explored, its priority is `pastCost(s)` , the minimum cost to $s$.
+
 
 [//]: <> (References)
 [1]: <https://www.youtube.com/watch?v=aIsgJJYrlXk&list=PLoROMvodv4rO1NB9TD4iUZ3qghGEGtqNX>
