@@ -10,7 +10,7 @@
 
 We define a search problem as: *"a series of actions aimed at achieving a specific objective"*. In deterministic problems, the solution can be determined by a sequence of actions. However, in dynamic problems, we must rely on a policy function (f) to guide our actions. All problems, deterministic and stochastic/dynamic, can be specified by a policy function $f$.
 
-<img src="img_cs221/search_problem.png" style='height:80px;'>
+<img src="img_cs221_search/search_problem.png" style='height:80px;'>
 
 $x$ in this context will represent a state and $f$ will be the policy function. 
 
@@ -29,7 +29,7 @@ It is not always necessary to visit every node in the tree, as we can do a smart
 
 In the following image, we have each node as a state (position of `FCGW`), an action `entities >`, and its cost `entity>:<cost>`. In this example, the cost is always 1 (because we are minimizing the total number of actions, therefore each action costs 1).
 
-<img src="img_cs221/boat_crossing_search_tree.png" style='height:400px;'>
+<img src="img_cs221_search/boat_crossing_search_tree.png" style='height:400px;'>
 
 Let's formalize the definition of a search problem
 
@@ -45,7 +45,7 @@ A search problem can be defined as:
 
 ### Example: Transportation Problem
 
-<img src="img_cs221/transportation_example.png" style='height:180px;'>
+<img src="img_cs221_search/transportation_example.png" style='height:180px;'>
 
 Additionally, if I'm in the state $s$ and $2s>N$ I can't take the "magic tram". 
 
@@ -90,7 +90,7 @@ Depth-first search (DFS) is a search algorithm that assumes the cost of all acti
 
 This algorithm will assume that the cost of each action its constant and equal $C(s,a) = c$. Instead of searching for all possible solutions, we explore the tree level by level and stop whenever we find a solution. By exhaustively searching every single level, we know that we have found the shortest solution. Assuming that the solution its found at the level $d<D$ then our time will be $O(b^d) <O(b^D)$, which is a small improvement.  
 
-<img src="img_cs221/BFS.png" style='height:300px;'>
+<img src="img_cs221_search/BFS.png" style='height:300px;'>
 
 ### 4. DFS with iterative deepening (DFS-ID) 
 
@@ -205,9 +205,9 @@ def uniformCostSearch(problem):
 **Theorem: correctness:** When a state $s$ is popped from the frontier and moved to explored, its priority is `pastCost(s)` , the minimum cost to $s$.
 
 
-[//]: <> (References)
+[//]:cs221_1_search_1.md> (References)
 [1]: <https://www.youtube.com/watch?v=aIsgJJYrlXk&list=PLoROMvodv4rO1NB9TD4iUZ3qghGEGtqNX>
 [2]: <https://stanford-cs221.github.io/autumn2019/#schedule>
-[3]: <"">
-[//]: <> (Some snippets)
+[3]: ""
+[//]:cs221_1_search_1.md> (Some snippets)
 [//]: # (add an image <img src="" style='height:400px;'>)

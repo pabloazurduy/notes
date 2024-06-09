@@ -10,7 +10,7 @@ before some notation:
 
 In the image the T is a decision node (square) the Disease it's a random variable that it's independent (no upper dependency), the $O_i$ nodes are the test results that depend on the Disease, and the $U$ node will represent the utility, that depends on the Treatment and the Disease $D$. 
 
-<img src="img/afdm_7_1.png" style='height:300px;'>
+<img src="img_adfm/afdm_7_1.png" style='height:300px;'>
 
 ### Markov Decision Process (MDP)
 
