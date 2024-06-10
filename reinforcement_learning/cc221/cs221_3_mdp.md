@@ -73,7 +73,7 @@ $$\text{value}: \mathbb{E}(u)$$
 In terms of the MDP graph, one can think of the value $V_{\pi}(s)$ as labeling the state nodes, and the Q-value $Q_{\pi}(s,a)$  as labeling the chance nodes.
 This label refers to the expected utility if we were to start at that node and continue the dynamics of the game.
 
-<img src="img_mdp/mdp_qpi.png" style='height:330px;'>
+<img src="img_mdp/mdp_qpi.png" style='height:300px;'>
 
 
 let's go back to the dice example and estimate the V-values of the policy $\pi(s) = \text{stay}$
