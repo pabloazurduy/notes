@@ -36,6 +36,7 @@ $$Succ(s,a) \Rightarrow T(s,a,s')$$
 $$Cost(s,a) \Rightarrow Reward(s,a,s')$$
 
 The main difference is the move from a deterministic successor function $Succ(s,a)$ to a transition probability over $s'$. We can think of the successor function $Succ(s,a)$ as a special case of the transition probability
+
 $$T(s, a, s') = \begin{cases} 1 & \text{if $s' = Succ(s, a)$} \\ 0 & \text{otherwise} \end{cases}$$
 
 A minor difference is that we've gone from minimizing costs to maximizing rewards. The two are really equivalent: you can negate one to get the other.
@@ -76,15 +77,20 @@ This label refers to the expected utility if we were to start at that node and c
 <img src="img_mdp/mdp_qpi.png" style='height:300px;'>
 
 
-let's go back to the dice example and estimate the V-values of the policy $\pi(s) = \text{stay}$
+let's go back to the dice example and estimate the V-values of the policy $\pi(s) = \text{stay}$ 
 
 by definition end state value is 0
 $$V_{\pi}(end)=0$$ 
 lets estimate the value of the state "in" :
+
 $$V_{\pi}(in) = Q_{\pi}(s, \pi(s)) = Q_{\pi}(s, \text{stay}) $$
-$$  = \sum_{s'} T(\text{in},\text{stay},s')*(reward(\text{in},\text{stay},s')+\gamma*V_{\pi}(s'))$$
+
+$$ V_{\pi}(in) = \sum_{s'} T( \text{in}, \text{stay},s')(reward( \text{in}, \text{stay},s')+\gamma*V_{\pi}(s'))$$
+
 replacing values
-$$ V_{\pi}(in)= \frac{1}{3}(4+V_{\pi}(\text{end})) + \frac{2}{3}(4+V_{\pi}(\text{in}))$$
+
+$$ V_{\pi}(in) = \frac{1}{3}(4+V_{\pi}(\text{end})) + \frac{2}{3}(4+V_{\pi}(\text{in}))$$
+
 solving for $V_{\pi}(in)$ and replacing also $V_{\pi}(end)=0$ we have 
 
 $$V_{\pi}(in)=12$$
@@ -97,7 +103,8 @@ Initialize $V_{\pi}^{(0)}(s) \leftarrow 0$ for all states $s$
 
 for iteration $t = 1, \dots ,t_{PE}$
 
-$\qquad\text{for each state } s:$
+$$\qquad\text{for each state } s:$$
+
    $$V^{t}_{\pi}(s) \leftarrow \sum_{s'}T(s, \pi(s), s') [reward(s,\pi(s),s') +\gamma V^{t-1}_{\pi}(s')]$$
 
 ___
@@ -134,7 +141,8 @@ Initialize $V_{opt}^{(0)}(s) \leftarrow 0$ for all states $s$
 for iteration $t = 1, \dots ,t_{VI}$
 
 $\qquad\text{for each state } s:$
-   $$V^{t}_{opt}(s) \leftarrow \max_{a \in Actions(s)}\sum_{s'}T(s, \pi(s), s') [reward(s,a,s') +\gamma V^{t-1}_{opt}(s')]$$
+
+   $$ V^{t}_{opt}(s) \leftarrow \max_{a \in Actions(s)} \sum_{s'} T(s, \pi(s), s')[reward(s,a,s') + \gamma V^{t-1}_{opt}(s')] $$
 
 ___
 What about the optimal policy? We get it as a byproduct. The optimal value $V_{opt}(s)$ is computed by taking a max over actions. If we take the argmax, then we get the optimal policy $\pi_{opt}(s)$.
