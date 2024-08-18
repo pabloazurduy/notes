@@ -3,25 +3,139 @@ _Some notes from the book [Hands On Machine Learning - OReilly][1]_
 _created on: 2022-11-06 11:01:20_
 ## Hands On Machine Learning Notes
 ### Chapter 1
+
+#### how can we classify machine learning models:
+
+1. how are they trained: supervised, unsupervised, semi-supervised, "self supervised", RL.
+    
+    1. **Supervised**: labeled data 
+    
+    1. **Unsupervised**: unlabeled data; clustering, anomaly detection, dimensonality reduction
+
+    1. **Semi-supervised**: semi-labeled data (non random). 
+
+    1. **Self-supervised**: non-labeled dataset and then is first classified with an unsupervised learning model and then we train a supervised model on top. 
+
+1. can they be updated ? Batch Learning vs Online Learning
+    
+    1. **Batch learning**. Train once (offline), and predict online. This models can suffer from **data drift** or **model rot** that means don't update the model enough for fitting new datasets. 
+
+    1. **Online learning or Incremental learning**. Instead of using a batch of data this model is trained with batches of data and then it has the capability to be re-trained with new batches but keeping the old weights from previous trainings. helpful for large datasets or fast-evolving problems. Learning rate: inertia of the model against new batches. 
+
+1. How they generalize: Instance base vs Model based. 
+    1. In a nutshell, **instance based** is an exact matching algorithm, i.e. we look for "closer" known instances and we "predict" based on that (ex `KNeighborRegressor`). 
+    1. **Model based** is a learning algorithm that can interpolate or extrapolate based on the previous samples (it assumes a "model"). 
+
 #### The Unreasonable effectiveness of Data 
 
 >In a famous paper published in 2001, Microsoft researchers Michele Banko and Eric Brill showed that very different Machine Learning algorithms, including fairly simple ones, performed almost identically well on a complex problem of natural language disambiguation once they were given enough data.
 
 <img src="img/unreasonable_effectiveness_of_data.png" style='height:300px;'>
 
+
+#### Representativeness of data 
+
+Is important that the data used for training is a well representation for the test data. If the data is subject to **sampling bias** we will encounter an issue afterwards. 
+**Irrelevant features**: adding noise features can damage the performance of the model. 
+**regularization**: punish the amount of features used by the model adding a cost on the objective function. 
+
+#### Test and validation 
+we use always an **out-of-sample validation** that means that we calculate the score on a test set, different to the dataset that we use for training. 
+
+when doing hyperparameter optimization we usually split the dataset in three: **"train set", "validation set", "test set"**. we use the first one to train all the models and the second one to choose the best model (or the best hyperparameters). finally, we train the "best model" in the train-set+validation set and we evaluate it in the "test-set"
+
+#### NFL theorem
+The No-Free-Lunch (NFL) theorem is a concept in machine learning  that essentially states there is no universally superior algorithm for all tasks. It suggests that the performance of any optimization algorithm, including machine learning models, is averaged out across all possible problems, meaning that **no single algorithm can be considered the best for every problem**. This theorem highlights the importance of choosing an algorithm based on the specifics of the problem at hand rather than relying on a one-size-fits-all solution. The theorem implies that the effectiveness of an algorithm is highly dependent on the problem space, and improvements in performance on one set of problems often come at the expense of reduced performance on other sets of problems. In simpler terms, there's no free lunch; every algorithm has its strengths and weaknesses, and what works well in one scenario might not work as well in another.
+
 ### Chapter 2 
+
+#### Performance Metrics 
+to measure the performance of a model we have multiples metrics
+
+$$  RMSE(X, h_0) =  \sqrt{\frac{1}{m} \sum_{i \in m}{(\theta^{T}X^{(i)}-y^{i})^{2}}}
+$$
+
+the RMSE is the $\ell_2$ norm (Also known as the euclidean norm), whereas the $MAE$ is equal to the norm $\ell_1$ (also known as the Manhattan distance)
+
+$$  MAE(X, h_0) =  \frac{1}{m} \sum_{i \in m}{ \lVert{\theta^{T}X^{(i)}-y^{i}} \rVert}
+$$
+
+Given the nature of the norms, a higher value norm $\geq \ell_2$ will overweight larger distances higher, meaning it tends to be more sensitive to outliers. Whereas, lower norms tend to be less sensitive.
+
+
+**STD deviation:** The standard deviation is generally denoted $\sigma$ (the Greek letter sigma), and it is the square root of the variance, which is the average of the squared deviation from the mean. When a feature has a bell-shaped normal distribution (also called a Gaussian distribution), which is very common, the “68-95-99.7” rule applies:about 68% of the values fall within $1\sigma$ of the mean, 95% within $2\sigma$, and 99.7% within $3\sigma$.
+
 #### Stratified Sampling Split 
-> do stratified sampling based on the income category. For this you can use Scikit-Learn’s StratifiedShuffleSplit class:
+> do stratified sampling based on the income category. For this you can use Scikit-Learn’s `StratifiedShuffleSplit` class:
 
 ```python 
 from sklearn.model_selection import StratifiedShuffleSplit 
 
-split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42) #initialize splitter 
 
-for train_index, test_index in split.split(housing, housing["income_cat"]):
-    strat_train_set = housing.loc[train_index]
+#stratified sample that keeps the proportion of the categorical
+# variable "income_cat" -in this case-
+split_datasets_indexes= split.split(housing, housing["income_cat"]) 
+
+for train_index, test_index in split_datasets_indexes: 
+    #n_splits (param on splitter)
+    #it yield the indexes not the data
+    strat_train_set = housing.loc[train_index] 
     strat_test_set = housing.loc[test_index]
 ``` 
+
+there's another way using sklearn `train_test_split()` and the argument `stratify`
+
+```python
+strat_train_set, strat_test_set = train_test_split(housing_df, test_size=0.2, stratify=housing["income_cat"], random_state=42)
+```
+#### Correlation (Pearson's r)
+
+The correlation coefficient only measures linear correlations (“as x goes up, y generally goes up/down”). It may completely miss out on nonlinear relationships (e.g., “as x approaches 0, y generally goes up”). Figure 2-16 shows a variety of datasets along with their corre‐ lation coefficient. Note how all the plots of the bottom row have a correlation coefficient equal to 0, despite the fact that their axes are clearly not independent: these are examples of nonlinear relation‐ ships. Also, the second row shows examples where the correlation coefficient is equal to 1 or –1; notice that this has nothing to do with the slope. For example, your height in inches has a correlation coefficient of 1 with your height in feet or in nanometers.
+
+![alt text](img/correlation_patterns.png)
+#### Data Imputation 
+you will use a handy Scikit-Learn class: `SimpleImputer`. The benefit is that it will store the median value of each feature: this will make it possible to impute missing values not only on the training set, but also on the validation set, the test set, and any new data fed to the mode
+
+```python
+from sklearn.impute import SimpleImputer imputer = SimpleImputer(strategy="median")
+housing_num = housing.select_dtypes(include=[np.number])
+imputer.fit(housing_num)
+# median per numeric feature 
+>>> imputer.statistics_
+array([-118.51 , 34.26 , 29. , 2125. , 434. , 1167. , 408. , 3.5385])
+# add imputation
+X = imputer.transform(housing_num)
+
+```
+some other imputers: 
+
+1. `KNNImputer` replaces each missing value with the mean of the k-nearest neighbors’ values for that feature. The distance is based on all the available features.
+1. `IterativeImputer` trains a regression model per feature to predict the missing values based on all the other available features. It then trains the model again on the updated data, and repeats the process several times, improving the models and the replacement values at each iteration.
+
+#### Value Normalization 
+
+Min-max scaling (many people call this normalization) is the simplest: for each attribute, the values are shifted and rescaled so that they end up ranging from 0 to 1. This is performed by subtracting the min value and dividing by the difference between the min and the max. Scikit-Learn provides a transformer called `MinMaxScaler` for this. It has a feature_range hyperparameter that lets you change the range if, for some reason, you don’t want 0–1 (e.g., neural networks work best with zero-mean inputs, so a range of –1 to 1 is preferable). It’s quite easy to use:
+
+```python
+from sklearn.preprocessing import MinMaxScaler min_max_scaler = MinMaxScaler(feature_range=(-1, 1))
+    housing_num_min_max_scaled = min_max_scaler.fit_transform(housing_num)
+```
+
+Standardization is different: first it subtracts the mean value (so standardized values have a zero mean), then it divides the result by the standard deviation (so standardized values have a standard deviation equal to 1). Unlike min-max scaling, standardization does not restrict values to a specific range. However, standardization is much less affected by outliers. For example, suppose a district has a median income equal to 100 (by mistake), instead of the usual 0–15. Min-max scaling to the 0–1 range would map this outlier down to 1 and it would crush all the other values down to 0–0.15, whereas standardization would not be much affected. Scikit-Learn provides a transformer called `StandardScaler` for standardization:
+```python
+from sklearn.preprocessing import StandardScaler std_scaler = StandardScaler()
+    housing_num_std_scaled = std_scaler.fit_transform(housing_num)
+```
+
+
+A way of Normalizing and transforming multimodal distributions is to add a feature for each of the modes (at least the main ones), using for example a similarity to the kernel value. The similarity measure is typically computed using a radial basis function (RBF)—any function that depends only on the distance between the input value and a fixed point. The most commonly used RBF is the `Gaussian RBF`, whose output value decays exponentially as the input value moves away from the fixed point. For example, the Gaussian RBF similarity between the housing age x and 35 is given by the equation $exp(–\gamma(x – 35)^2)$. The hyperparameter γ (gamma) determines how quickly the similarity measure decays as x moves away from 35. Using Scikit-Learn’s `rbf_kernel()` function, you can create a new Gaussian RBF feature measuring the similarity between the housing median age and 35:
+```python
+from sklearn.metrics.pairwise import rbf_kernel
+age_simil_35 = rbf_kernel(housing[["housing_median_age"]], [[35]], gamma=0.1)
+```
+Figure 2-18 shows this new feature as a function of the housing median age (solid line). It also shows what the feature would look like if you used a smaller gamma value. As the chart shows, the new age similarity feature peaks at 35, right around the spike in the housing median age distribution: if this particular age group is well correlated with lower prices, there’s a good chance that this new feature will help.
+![alt text](img/rbf_value_normalization.png)
 
 #### Randomized Search
 
@@ -42,6 +156,8 @@ ic = np.sqrt(stats.t.interval(
     ))
 ```
 ### Chapter 3 - Classification 
+
+
 #### Metrics - Confusion Matrix 
 
 |predicted|values|
@@ -50,7 +166,9 @@ ic = np.sqrt(stats.t.interval(
 | FN | TP |
 
 $$Precision = \frac{TP}{FP+TP}$$
+
 $$Recall = \frac{TP}{FN+TP}$$
+
 $$F1 = \frac{2}{\frac{1}{Precision} + \frac{1}{Recall}} = \frac{Precision*Recall}{Precision +  Recall}$$
 
 #### Precision Recall Trade-off 
