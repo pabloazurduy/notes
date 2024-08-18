@@ -242,9 +242,11 @@ We usually use a stopping criteria such as $\theta^{next} - \theta<\epsilon $. W
 
 #### Bias Variance Trade-off 
 An important theoretical result of statistics and Machine Learning is the fact that a model’s generalization error can be expressed as the sum of three very different errors:
+
 $$ 
 \text{Model Generalization Error} = \text{Bias} + \text{Variance} +  \text{Irreductible Error} 
 $$
+
 **Bias**: Wrong assumptions on the data $f(X)$ is not a good fit to the data (**underfit**)
 
 **Variance**: Too much sensitivity to data variance (**overfit**)
