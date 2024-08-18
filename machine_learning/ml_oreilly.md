@@ -224,13 +224,17 @@ The complexity of this estimation is between $O(n^{2.4})$ and $O(n^{3})$ dependi
 #### Gradient Descent 
 
 Direction of descent: 
+
 $$
 \nabla_{\theta}MSE(\Theta) = \frac{2}{m}X^t(X\theta-y)
 $$
+
 Step calculation. Where $\eta$ is the learning rate.
+
 $$
 \theta^{(next step)} = \theta - \eta\nabla_{\theta}MSE(\Theta)
 $$
+
 We usually use a stopping criteria such as $\theta^{next} - \theta<\epsilon $. We call $\epsilon$ the `"tolerance"`
 
 **Stochastic Gradient Descent**: we can perform the same Gradient Descent methodology but using just a sample from the entire dataset (to improve speed). It only uses one sample, therefore the convergence is very noisy. Because this algorithm is super noise it hardly converges to a minimum and stays there, therefore we could iteratively reduce the learning rate $\eta$ this is call **Simulated Annealing**. The reduction rate function is called _learning schedule_.
