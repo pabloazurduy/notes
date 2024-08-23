@@ -155,10 +155,9 @@ ic = np.sqrt(stats.t.interval(
         scale=stats.sem(squared_errors) # SE of the mean 
     ))
 ```
-### Chapter 3 - Classification 
+### Chapter 3 
 
-
-#### Metrics - Confusion Matrix 
+#### Classification Metrics - Confusion Matrix 
 
 |predicted|values|
 |----|----|
@@ -169,34 +168,54 @@ $$Precision = \frac{TP}{FP+TP}$$
 
 $$Recall = \frac{TP}{FN+TP}$$
 
+$F1$ is the harmonic mean. Whereas the regular mean treats all values equally, the harmonic mean gives much more weight to low values. As a result, the classifier will only get a high F1 score if both recall and precision are high.
+
+
 $$F1 = \frac{2}{\frac{1}{Precision} + \frac{1}{Recall}} = \frac{Precision*Recall}{Precision +  Recall}$$
 
-#### Precision Recall Trade-off 
-you first get the scores from the model (this is the cross validate way to get the scores) `"decision_function"` returns the scores from the model. 
 
-```python 
-# the plain way to get the scores 
-y_scores = sgd_clf.decision_function([some_digit])
-# using cross validation (a more reliable way)
-y_scores = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3,method="decision_function")
+#### Precision Recall Trade-off 
+
+Scikit-Learn does not let you set the threshold directly, but it does give you access to the decision scores that it uses to make predictions. Instead of calling the classifier’s `predict()` method, you can call its `decision_function()` method, which returns a score for each instance, and then use any threshold you want to make predictions based on those scores.
+
+```python
+y_scores = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3,
+                                 method="decision_function")
+from sklearn.metrics import precision_recall_curve
+precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
+                               
 ```
+![alt text](img/precission_recall_curve.png)
+
+You may wonder why the precision curve is bumpier than the recall curve in Figure 3-5. The reason is that precision may sometimes go down when you raise the threshold (although in general it will go up). To understand why, notice what happens when you start from the central threshold and move it just one digit to the right: precision goes from 4/5 (80%) down to 3/4 (75%). On the other hand, recall can only go down when the threshold is increased, which explains why its curve looks smooth.
+
+Another way to select a good precision/recall trade-off is to plot precision directly against recall, as shown in Figure 3-6 (the same threshold is shown)
+
+
+![alt text](img/precicion_recall_area.png)
+
 
 #### ROC curve 
-Is a plot with the `recall (TPR)` against the `false positive rate (FPR)` (this is equal to `1-TNR` also called `"specificity"`). We said than the ROC curve is the plot between `Recall/1-Specificity`. The trade-off is the higher the recall the higher false positives we will generate.
 
->Since the ROC curve is so similar to the precision/recall (or PR) curve, you may wonder how to decide which one to use. As a rule of thumb, **you should prefer the PR curve whenever the positive class is rare** or when you care more about the false positives than the false negatives, and the ROC curve otherwise.
+Is a plot with the `recall (TPR)` against the `false positive rate (FPR)` (this is equal to `1-TNR` also called `"specificity"`). We said than the ROC curve is the plot between `Recall/1-Specificity`. 
+
+Once again there is a trade-off: the higher the recall (TPR), the more false positives (FPR) the classifier produces. The dotted line represents the ROC curve of a purely random classifier; a good classifier stays as far away from that line as possible (toward the top-left corner).
+
+![alt text](img/auc_plot.png)
+
+
+Since the ROC curve is so similar to the precision/recall (or PR) curve, you may wonder how to decide which one to use. As a rule of thumb, **you should prefer the PR curve whenever the positive class is rare** or when you care more about the false positives than the false negatives, and the ROC curve otherwise.
 
 #### Multiclass Classificator 
 
-If you want to force Scikit Learn to use one-versus-one or one-versus-all, you can use the `OneVsOneClassifier` or `OneVsRestClassifier` classes. Simply create an instance and pass a binary classifier to its constructor. For example, this code creates a multiclass classifier using the OvO strategy, based on a `SGDClassifier`:
+#####  **one-versus-the-rest (OvR)**
+One way to create a system that can classify the digit images into 10 classes (from 0 to 9) is to train 10 binary classifiers, one for each digit (a 0-detector, a 1-detector, a 2-detector, and so on). Then when you want to classify an image, you get the decision score from each classifier for that image and you select the class whose classifier outputs the highest score. This is called the **one-versus-the-rest (OvR)** strategy
 
-```python 
-from sklearn.multiclass import OneVsOneClassifier
-ovo_clf = OneVsOneClassifier(SGDClassifier(random_state=42))
-ovo_clf.fit(X_train, y_train)
-ovo_clf.predict([some_digit])
-array([ 5.])
-```
+##### **one-versus-one (OvO) strategy**
+Another strategy is to train a binary classifier for every pair of digits: one to distinguish 0s and 1s, another to distinguish 0s and 2s, another for 1s and 2s, and so on. This is called the **one-versus-one (OvO) strategy**. If there are N classes, you need to train N × (N – 1) / 2 classifiers. For the MNIST problem, this means training 45 binary classifiers! When you want to classify an image, you have to run the image through all 45 classifiers and see which class wins the most duels.
+
+##### **OvO vs OvA?**
+Some algorithms (such as support vector machine classifiers) scale poorly with the size of the training set. For these algorithms OvO is preferred because it is faster to train many classifiers on small training sets than to train few classifiers on large training sets. For most binary classification algorithms, however, OvR is preferred.
 
 #### MultiLabel/Multioutput Classification 
 Some models in SKlearn provide the possibility to generate many labels for the same sample. Also you can create multioutput Models than generate from multiples samples multiples outputs (but one output per sample)
@@ -210,7 +229,9 @@ direction LR
     Model --> img_clean
 ```
 each pixel will be one prediction with a number between `[0,255]` 
+
 ### Chapter 4 
+fitting models 
 #### Linear Regression 
 
 $$ \min \quad MSE(X, h_0) =  \frac{1}{m} \sum_{i \in m}{(\theta^{T}X^{(i)}-y^{i})^{2}}
@@ -219,7 +240,7 @@ $$
 \text{solution: } \hat{\theta} = (X^{t}X)^{-1}X^{t}Y
 $$
 
-The complexity of this estimation is between $O(n^{2.4})$ and $O(n^{3})$ depending on the matrix to invert $(X^{t}X)^{-1}$. There is a pseudo inversion using SVD that can lead to a reduction in complexity of $O(n^{2})$. Regardless, when the number of samples is too big, the approach is to use gradient descent. 
+The complexity of this estimation (pseudo inversion), which consist on inverting $X^tX$, is between $O(n^{2.4})$ and $O(n^{3})$ depending on the matrix to invert $(X^{t}X)^{-1}$. There is a pseudo inversion using SVD that can lead to a reduction in complexity of $O(n^{2})$. Regardless, when the number of samples is too big, the approach is to use gradient descent. 
 
 #### Gradient Descent 
 
@@ -237,12 +258,32 @@ $$
 
 We usually use a stopping criteria such as $\theta^{next} - \theta<\epsilon $. We call $\epsilon$ the `"tolerance"`
 
-**Stochastic Gradient Descent**: we can perform the same Gradient Descent methodology but using just a sample from the entire dataset (to improve speed). It only uses one sample, therefore the convergence is very noisy. Because this algorithm is super noise it hardly converges to a minimum and stays there, therefore we could iteratively reduce the learning rate $\eta$ this is call **Simulated Annealing**. The reduction rate function is called _learning schedule_.
+While the cost function has the shape of a bowl, it can be an elongated bowl if the features have very different scales.Figure 4-7 shows gradient descent on a training set where features 1 and 2 have the same scale (on the left), and on a training set where feature 1 has much smaller values than feature 2 (on the right)
+
+![alt text](img/gradient_descent_scaling.png)
+
+**When using gradient descent, you should ensure that all features have a similar scale** (e.g., using Scikit-Learn’s StandardScaler class), or else it will take much longer to converge.
+
+Each iteration over the training set is called an epoch. You may wonder how to set the number of epochs. If it is too low, you will still be far away from the optimal solution when the algorithm stops; but if it is too high, you will waste time while the model parameters do not change anymore. A simple solution is to set a very large number of epochs but to interrupt the algorithm when the gradient vector becomes tiny that is, when its norm becomes smaller than a tiny number $\epsilon$ (called the tolerance)
+
+#### Stochastic Gradient Descent
+
+we can perform the same Gradient Descent methodology but using just a sample from the entire dataset (to improve speed). It only uses one sample, therefore the convergence is very noisy. Because this algorithm is super noise it hardly converges to a minimum and stays there, therefore we could iteratively reduce the learning rate $\eta$ this is call **Simulated Annealing**. The reduction rate function is called _learning schedule_.
+
+![alt text](img/stochastic_gradient.png)
 
 **MiniBatch Gradient Descent**: Minibatch Is the same as Stochastic Gradient Descent, but, instead of adding one sample at the time, it adds a batch of `n_samples` therefore making the computation harder, but increasing the stability of the convergence. 
+
+<img src="img/table_comparison_opt_algorithms_fit.png" style='height:250px;'>
+
 #### Learning Curves 
+
+Another way to tell is to look at the learning curves, which are plots of the model’s training error and validation error as a function of the training iteration: just evaluate the model at regular intervals during training on both the training set and the validation set, and plot the results. If the model cannot be trained incrementally (i.e., if it does not support `partial_fit()` or `warm_start`), then you must train it several times on gradually larger subsets of the training set.
+
+
 <img src="img/learning_curves.png" style='height:300px;'>
 
+if the two curves have a gap is a sign of overfitting, but if they both overlap and they have no gap it can mean that we are underfitting 
 
 #### Bias Variance Trade-off 
 An important theoretical result of statistics and Machine Learning is the fact that a model’s generalization error can be expressed as the sum of three very different errors:
@@ -261,9 +302,11 @@ $$
 1. Less Model Complexity => More Bias, Less Variance 
 1. Adding Regularization => More Bias, Less Variance 
 
-### Regularization
+#### Regularization
 
 with regularization we basically add a penalty term to the objective function to punish based on the number of features used, there are two common [norms][2] to use here $|\theta|$ (Lasso) and $|\theta|_2$ (Ridge). Also known as L1 and L2 norms. $\theta$ is a vector with the coefficients, therefore we will try to make the $\beta$ coefficients `0` ( $\beta=\theta$  in this context). 
+
+Note that the regularization terms use $\theta$ on the cost function, that means that **the cost is sensible to the scale of the parameters, always normalize before using regularization**.
 
 $$
 \text{Ridge Regression} = MSE(\theta)+\alpha\frac{1}{2}\sum_{i}{\theta_i^2}
@@ -271,6 +314,8 @@ $$
 $$
 \text{Lasso Regression} = MSE(\theta)+\alpha\sum_{i}|{\theta_i}|
 $$
+
+An important characteristic of lasso regression is that it tends to eliminate the weights of the least important features (i.e., set them to zero). 
 
 There is a third way that is called **Elastic Net** that is basically a convex combination of the L1 and L2 Norms, using a mix ratio called $r \in [0,1]$
 
@@ -284,7 +329,7 @@ to reduce the useless features’ weights down to zero as we have discussed. In 
 #### Early Stopping 
 Another way to add regularization to a model (that uses gradient descent or other iterative optimization technique) is to stop the iterations whenever the test score reaches a minimum. To detect that you wait for a few iterations where the score haven't improve and you go back to the point were you have the highest score (or the lowest error).
 
-### Logistic Regression 
+#### Logistic Regression 
 Is the same as a regular regression but the output is transformed before using the [sigmoid function][3] Therefore we have a better estimator for probabilities. 
 
 $$
@@ -297,14 +342,19 @@ $$
 J(\theta) = -\frac{1}{m}\sum_{i \in m}{[y^{(i)} log(\hat{p}^{(i)}) + (1-y^{(i)}) log(1-\hat{p}^{(i)})]}
 $$
 
-The softmax Regression is nothing more than the extension of the Logit function to be used in a multiclass setup. The importance is that is not necessary to train multiples models because we can just extend the logit. 
+The bad news is that there is no known closed-form equation to compute the value of θ that minimizes this cost function (there is no equivalent of the Normal equation). But the good news is that this cost function is convex, so gradient descent (or any other optimization algorithm) is guaranteed to find the global minimum (if the learning rate is not too large and you wait long enough). 
+
+
+The Softmax Regression is nothing more than the extension of the Logit function to be used in a multiclass setup. The importance is that is not necessary to train multiples models because we can just extend the logit. 
 
 
 $$
 \hat{\mathbb{P}_k} = \frac{exp(X^t\theta_k)}{\sum_{j \in k}{exp(X^t\theta_j)}}
 $$
 
-### Support Vector Machine 
+### Chapter 5
+
+#### Support Vector Machine 
 
 skipped
 
