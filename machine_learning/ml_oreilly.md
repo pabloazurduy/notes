@@ -354,11 +354,59 @@ $$
 
 ### Chapter 5
 
+#### Classification and Regression Equivalence
+
+1. Regression models can be transformed into classification models by applying the sigmoid function. (or other transformation function - $arctan(y_r)$)
+2. Classification models can be adapted into regression models through the use of a continuous probability estimator.
+Some classification models output probabilities, while others provide scores, which can be more discrete and fluctuating. These scores can be converted into probabilities using [Platt scaling](https://en.wikipedia.org/wiki/Platt_scaling) or logistic regression based on the score, a method attributed to Vladimir Vapnik, the inventor of the Support Vector Machine. Platt Scaling consist on fitting this model ($A$, $B$ params) using the true labels $y$. It also recommends a transformation before the fitting. 
+
+$$\mathrm{P}(y=1 | x) = \frac{1}{1 + \exp(Af(x) + B)}$$
+
+
 #### Support Vector Machine 
 
-skipped
+_based on: The Hundred-Page Machine Learning Book_
 
-### Decision Trees - CART algorithm 
+
+support vector machine is a linear separation algorithm that fits a linear curve and two wider bounds (determinate by $\propto \frac{1}{c}$)
+
+![alt text](img/svm_c_param.png)
+
+Given that SVM is a linear separation -and not all feature spaces can be separated by linear separators- we do transformations on the space to fit a linear separator, the most common one being kernel transformations.
+
+the prediction function for SVM is equal to:
+
+$$f(x)= sign(w*x-b^*)$$ 
+
+The output of this function is $\{+1,-1\}$  that can easily be mapped to $\{1,0\}$ the binary output -in this case $y_i = \{+1,-1\}$. In the "hard" version of the algorithm we solve the following optimization problem
+
+$$\min ||w||_2$$
+
+$$s.t. \quad y_i (w*x_i-b)\ge 1$$
+
+In simple terms we have two hyperplanes $(wx-b=-1)$ and $(wx-b=1)$ and we want to maximize the "margin" $= \frac{2}{||w||_2}$. which is equal to minimize the norm of the weights $||w||_2$ while keeping all the samples separated (guaranteed by the constraint)
+
+<img src="img/svm_strict_algorithm.png" style='height:500px;'>
+
+#### The separation problem
+To extend SVM for **non hyperplane separable problems** we introduce **hinge loss**:
+
+$$\max (0, 1 − y_i(wx_i − b))$$
+
+The hinge loss function is zero if the constraints in the "hard" optimization problem are satisfied. but increases in size proportional to the distance violated from the hyperplane to the sample misclassified. Or in other words, it represents the slack value of the relaxation of the constraint when positive. 
+
+We then wish to minimize the following cost function. Which is nothing more than the original minimization function plus the hinge loss
+
+$$\min C||w||^2 + \frac{1}{N}\sum_{i=1}^{N} \max (0, 1 − y_i(wx_i − b))$$
+
+
+There's an interesting property given by this optimization problem and the kernel transformations. The optimization problem solved by SVM is a QP, given that minimizing the norm is equivalent to minimize the square of the norm. QP's are often solved using lagrange multipliers. 
+
+Kernels are transformations from n-spaces to higher-n-spaces. solving the QP in a higher dimensional space tends to be more expensive -if solved directly-. however, kernel transformations (usually denoted as $\phi(a,b)$) have an interesting property, you can compute $\phi(a)*\phi(b)$ only knowing $a$ and $b$. Using this property + the use of lagrangian multipliers on the solver you can "cheaply" apply kernels on top of SVM. 
+
+
+### Chapter 6
+#### Decision Trees - CART algorithm 
 We first define `"Gini Impurity"`. Given a particular leaf of a tree $i$ we estimate the ratio of the $k$ class on that leaf $p_{i,k}$. Therefore we can estimate the "Impurity" of a leaf using the following formula:
 
 $$
