@@ -433,26 +433,44 @@ As you can observe the CART algorithm is a greedy algorithm and will not guarant
 
 We can regularize the Decision Trees using the hyperparameters but also using **Pruning**. Pruning is a technique that will reduce the amount of leafs using certain criteria, usually we use a chi-squared test $\chi^2$ to validate that certain leaf is statistical insignificant using a p-value criteria, such as 5%, if is higher, then remove that leaf and their children's. 
 
-### Decision Trees - CART for Regression 
+#### Decision Trees - CART for Regression 
 We can use CART for regression as well just changing the Gini or Entropy error for the MSE to use it in a regression context 
 
 $$
 \min_{k, t_k} J(k,t_k) = \frac{m_{left}}{m} MSE_{left} + \frac{m_{right}}{m}MSE_{right}
 $$
 
-### Ensemble Methods 
-1. ***Hard Voting Classifier**: Ensemble a List of models a predict certain sample, **The Most Voted Class** will be the prediction of the ensemble. This method often gets a performance that is better than the best model in the ensemble. 
+### Chapter 7
+#### Ensemble Methods
+--aggregated method categories-- 
+1. **Hard Voting Classifier**: Ensemble a List of models a predict certain sample, **The Most Voted Class** will be the prediction of the ensemble. This method often gets a performance that is better than the best model in the ensemble. 
 
 1. **Soft Voting Classifier**: Ensemble a List of models a predict certain sample, we average the probability of each class $k$: $\mathbb{P^i_k}$ where $i$ is the prediction of the $i$ model, then we choose the highest probability as the prediction of the ensemble. This method usually outperforms the Hard Voting One. 
+
+--fitting categories--
 
 1. **Bagging**: (or Bootstrap Aggregating) We split the training set `X` in `m` subsets **with replacement**. We train a model on every subset. Then we use a voting system like the ones described before. If we also sample features we call this method **Random Patches**, if we only sample features and not samples we call this **Random Subspaces**.
 
 1. **Pasting**: same as bagging but we split the training set **without replacement**
-
 Generarly, the **Bagging** and **Pasting** methods effectively reduced variance while keeping the bias similar to a simple model trained on the dataset. Usually **bagging** outperforms **pasting** with a slightly higher computational cost. 
 
-### Random Forest
-A random forest is a bagging of decision trees that also introduces randomness in the splits. This extra randomness is added choosing the best split within a random subset of the available features on each tree. This increases the tree diversity among the forest. This increase in randomness trades a slightly increase in bias to an expected higher reduction in variance. 
+1. **Random Patches**: you could also sample the features, with or without replacement. if you sample both, features and instances this is known as Random Patches. 
+
+1. **Random Subspaces**: if you only sample features but all training samples are given to all learners, we call this "Random Subspaces"
+
+#### Out of Bag Evaluation 
+by default when we do bagging, on average, each learner is trained using 63% of the samples (each sample size is `m` samples, where m is the size of the original dataset). that means that we could evaluate each learner using the 37% of samples not using on his training, also known as "out of bag samples" (**OOB**). in Sklearn we can use the parameter `oob_score =True` to get the score of the OOB samples on the learners. 
+
+```python 
+bag_clf = BaggingClassifier(DecisionTreeClassifier(), n_estimators=500,
+                            oob_score=True, n_jobs=-1, random_state=42)
+bag_clf.fit(X_train, y_train)
+bag_clf.oob_score_
+> 0.896
+```
+#### Random Forest
+A random forest is a bagging of decision trees that also introduces randomness in the splits. This extra randomness is added **choosing the best split within a random subset of the available features on each tree** $\sqrt{n}$ features out of $n$. Remember that the CART algorithm is greedy,therefore it always choose the feature with the lower cost for each split, so we control that via sampling set of features- This increases the tree diversity among the forest. This increase in randomness trades a slightly increase in bias to an expected higher reduction in variance. 
+
 #### Feature Importance
 Given a fitted random forest we can estimate the feature importance looking into how much each feature is used to split the dataset in all the trees. The importance will be given by the amount of samples $w_i$ that are in the node $i$ where the feature $f$ is being used to split (a proxy to the highness of a node).
 
@@ -460,17 +478,18 @@ $$\text{feature\_score}_f = \frac{\sum_{i \in nodes} w_i}{|nodes|}$$
 
 The score then is normalized across all features $score_f = \frac{score_f}{\sum_j{score_j}}$
 
-### Boosting
-#### Ada Boosting (Adaptive Boosting)
-The boosting methodology consists of consecutively updating the models training the samples that are more misclassified by the previous models. To do that we basically train and predict a dataset with a week-learner, using a weighted sample where all the weights are equal
+#### Boosting
+##### Ada Boosting (Adaptive Boosting)
+The boosting methodology consists of consecutively updating the models training the samples that are more misclassified by the previous models. To do that we basically train and predict a dataset with a week-learner, using a weighted sample where all the weights are equal, then we train a second classifier based on the misclassified samples from the first learner, we will overweight this misclassified samples and train a second algorithm (using this new weights), and we will do that with a third one too, the algorithm is described next:
 
+Train a learner using all samples with the same weight $w_i$
 1. $$w_i = \frac{1}{m}$$
 
 Then we estimated the **error rate**  of the model $j$ : $r_j$ over the train set using the following formula:
 
 2. $$r_{j} = \frac{\sum_{i \in m : \hat{y}_{j}^{(i)} \neq y_{j}^{(i)}}{w^{(i)}}}{\sum_{i \in m}w^{(i)}}$$
 
-Then we estimate the **predictor weight** for the model $j$: $\alpha_j$ this number will be used to ensemble the predictions:
+Basically the error rate will be sum the weights of the sample if it was misclassified. Then we estimate the **predictor weight** for the model $j$: $\alpha_j$ this number will be used to ensemble the predictions:
 
 3. $$\alpha_{j} = \eta log(\frac{1-r_j}{r_j})$$
 
@@ -485,12 +504,71 @@ w^{(i)}exp(\alpha_{j})  & \text{if} \; \hat{y}_{j}^{(i)} \neq y^{(i)}
 \end{cases}
 $$
 
+the weights are normalized before feeding into the new learner. it's called "boosting" because we "boost" the weights of the misclassified samples each iteration.
+To make predictions we do with a soft voting but weighting each learner prediction based on their $\alpha_{j}$ score.
+
 #### Gradient Boosting 
-Gradient boosting on the other hand is different from ADABosst in the sense that it actually predicts the residuals from the previous models' ensemble. Each new tree will try to predict the error, Then the final prediction will be nothing more than the sum of all predictions. 
+Gradient boosting on the other hand is different from `ADABost` in the sense that it actually predicts the residuals from the previous models' ensemble. Each new tree will try to **predict the error**, Then the final prediction will be nothing more than the sum of all predictions. 
+
+<img src="img/gradient_boosting.png" style='height:800px;'>
+
+
+The `learning_rate` hyperparameter scales the contribution of each tree. If you set it to a low value, such as 0.05, you will need more trees in the ensemble to fit the training set, but the predictions will usually generalize better. This is a regularization technique called _shrinkage_
+
+$$
+h(x_1) = h_1(x_1) +lr*h_2(x_1)+lr*h_3(x_1) 
+$$
+
+or something like that. You can use the parameter `n_iter_no_change` to do "early stopping" and set a threshold of number of new trees that don't improve the score on the `validation_fraction` set (inner CV from the algorithm) 
+
+to apply gradient in a classification problem is not that straightforward, we estimate the error based on the observed value $\{0,1\}$ and the "predicted probability" (the ratio from the leaf). this will be called "residual", the residual of the tree needs to be transformed given that each leaf starts from a node with different proportions. This is not very easy to understand, but in simple we try to fit that "new residual" with a transformation into probability. Hard to understand
+
+#### Histogram-Based Gradient Boosting 
+
+Scikit-Learn also provides another GBRT implementation, optimized for large data‐ sets: histogram-based gradient boosting (HGB). It works by binning the input features, replacing them with integers. The number of bins is controlled by the max_bins hyperparameter, which defaults to 255 and cannot be set any higher than this. 
 
 #### Stacking 
 
 Stacking is an improved voting system, whereas instead of using a hard or soft voting system we train a meta-learner that will try to predict the train-set using the predictions of all models as features. **We usually train the meta-learner in a hold-out group** not used by the train of the other models. 
+
+### Chatpter 8 
+#### The curse of dimensionality 
+Adding more features increase the probability of having sparse datasets (similar to stratified sampling -> stratum size). even when the data is randomly generated an n-space on average has a higher distance between two generated points than a n-1 space. 
+
+you can reduce, in general, a higher dimensional space into a lower dimensional space using projection ( a hyperplane with lower dimension will act as a new plane). If this plane is flat on the n-lower dimension is called projection, but if the plane is generated curving that plane on the higher dimensional space is called "manifold"
+
+**projection**
+(PCA, random projection)
+
+<img src="img/plane_projection.png" style='height:350px;'>
+
+**manifold**
+
+<img src="img/manifold_projection.png" style='height:450px;'>
+
+#### PCA 
+
+This is a projection algorithm that finds the principal components and then makes a plane with n-k dimensions using the components with higher variance explained. you can optimize the amount of dimensions using a thershold on explained variance percentage, choosing the `n_components` parameter. -or alternative the actual n dimensions of your desired new space-
+
+```python
+pca = PCA(n_components=0.95)
+X_reduced = pca.fit_transform(X_train)
+```
+#### LLE (local linear embeding)
+
+Locally linear embedding (LLE) is a nonlinear dimensionality reduction (NLDR) technique. It is a manifold learning technique that does not rely on projections, unlike PCA and random projection. In a nutshell, LLE works by first measuring how each training instance linearly relates to its nearest neighbors, and then looking for a low-dimensional representation of the training set where these local relationships are best preserved
+
+### Chapter 9 
+#### K Means algorithm 
+Start by placing the centroids randomly (e.g., by picking k instances at random from the dataset and using their locations as centroids). Then label the instances, update the centroids, label the instances, update the centroids, and so on until the centroids stop moving. The algorithm is guaranteed to converge in a finite number of steps (usually quite small). That’s because the mean squared distance between the instances and their closest centroids can only go down at each step, and since it cannot be negative, it’s guaranteed to converge.
+
+k-means algorithm does not behave very well when the blobs have very different diameters because all it cares about when assigning an instance to a cluster is the distance to the centroid.
+
+by default kmeans will have `n_init` different initiation centroids, and it will keep the solution with the lower cost, the cost is equal to the sum of distance of all samples to their centroid (also called inertia):
+
+$$ \text{intertia:  } C=\sum_{i,j-centroid}{min_j{||x_i-C_j||^2}} $$
+
+An important improvement to the k-means algorithm, k-means++, was proposed in a 2006 paper by David Arthur and Sergei Vassilvitskii. They introduced a smarter initialization step that tends to select centroids that are distant from one another, and this improvement makes the k-means algorithm much less likely to converge to a suboptimal solution. **The `KMeans` class uses this initialization method by default**.
 
 
 [//]: <> (References)
