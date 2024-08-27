@@ -30,7 +30,7 @@ _created on: 2022-11-06 11:01:20_
 
 >In a famous paper published in 2001, Microsoft researchers Michele Banko and Eric Brill showed that very different Machine Learning algorithms, including fairly simple ones, performed almost identically well on a complex problem of natural language disambiguation once they were given enough data.
 
-<img src="img/unreasonable_effectiveness_of_data.png" style='height:300px;'>
+<img src="P1-img/unreasonable_effectiveness_of_data.png" style='height:300px;'>
 
 
 #### Representativeness of data 
@@ -93,7 +93,7 @@ strat_train_set, strat_test_set = train_test_split(housing_df, test_size=0.2, st
 
 The correlation coefficient only measures linear correlations (“as x goes up, y generally goes up/down”). It may completely miss out on nonlinear relationships (e.g., “as x approaches 0, y generally goes up”). Figure 2-16 shows a variety of datasets along with their corre‐ lation coefficient. Note how all the plots of the bottom row have a correlation coefficient equal to 0, despite the fact that their axes are clearly not independent: these are examples of nonlinear relation‐ ships. Also, the second row shows examples where the correlation coefficient is equal to 1 or –1; notice that this has nothing to do with the slope. For example, your height in inches has a correlation coefficient of 1 with your height in feet or in nanometers.
 
-![alt text](img/correlation_patterns.png)
+![alt text](P1-img/correlation_patterns.png)
 #### Data Imputation 
 you will use a handy Scikit-Learn class: `SimpleImputer`. The benefit is that it will store the median value of each feature: this will make it possible to impute missing values not only on the training set, but also on the validation set, the test set, and any new data fed to the mode
 
@@ -135,7 +135,7 @@ from sklearn.metrics.pairwise import rbf_kernel
 age_simil_35 = rbf_kernel(housing[["housing_median_age"]], [[35]], gamma=0.1)
 ```
 Figure 2-18 shows this new feature as a function of the housing median age (solid line). It also shows what the feature would look like if you used a smaller gamma value. As the chart shows, the new age similarity feature peaks at 35, right around the spike in the housing median age distribution: if this particular age group is well correlated with lower prices, there’s a good chance that this new feature will help.
-![alt text](img/rbf_value_normalization.png)
+![alt text](P1-img/rbf_value_normalization.png)
 
 #### Randomized Search
 
@@ -185,14 +185,14 @@ from sklearn.metrics import precision_recall_curve
 precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
                                
 ```
-![alt text](img/precission_recall_curve.png)
+![alt text](P1-img/precission_recall_curve.png)
 
 You may wonder why the precision curve is bumpier than the recall curve in Figure 3-5. The reason is that precision may sometimes go down when you raise the threshold (although in general it will go up). To understand why, notice what happens when you start from the central threshold and move it just one digit to the right: precision goes from 4/5 (80%) down to 3/4 (75%). On the other hand, recall can only go down when the threshold is increased, which explains why its curve looks smooth.
 
 Another way to select a good precision/recall trade-off is to plot precision directly against recall, as shown in Figure 3-6 (the same threshold is shown)
 
 
-![alt text](img/precicion_recall_area.png)
+![alt text](P1-img/precicion_recall_area.png)
 
 
 #### ROC curve 
@@ -201,7 +201,7 @@ Is a plot with the `recall (TPR)` against the `false positive rate (FPR)` (this 
 
 Once again there is a trade-off: the higher the recall (TPR), the more false positives (FPR) the classifier produces. The dotted line represents the ROC curve of a purely random classifier; a good classifier stays as far away from that line as possible (toward the top-left corner).
 
-![alt text](img/auc_plot.png)
+![alt text](P1-img/auc_plot.png)
 
 
 Since the ROC curve is so similar to the precision/recall (or PR) curve, you may wonder how to decide which one to use. As a rule of thumb, **you should prefer the PR curve whenever the positive class is rare** or when you care more about the false positives than the false negatives, and the ROC curve otherwise.
@@ -260,7 +260,7 @@ We usually use a stopping criteria such as $\theta^{next} - \theta<\epsilon $. W
 
 While the cost function has the shape of a bowl, it can be an elongated bowl if the features have very different scales.Figure 4-7 shows gradient descent on a training set where features 1 and 2 have the same scale (on the left), and on a training set where feature 1 has much smaller values than feature 2 (on the right)
 
-![alt text](img/gradient_descent_scaling.png)
+![alt text](P1-img/gradient_descent_scaling.png)
 
 **When using gradient descent, you should ensure that all features have a similar scale** (e.g., using Scikit-Learn’s StandardScaler class), or else it will take much longer to converge.
 
@@ -270,18 +270,18 @@ Each iteration over the training set is called an epoch. You may wonder how to s
 
 we can perform the same Gradient Descent methodology but using just a sample from the entire dataset (to improve speed). It only uses one sample, therefore the convergence is very noisy. Because this algorithm is super noise it hardly converges to a minimum and stays there, therefore we could iteratively reduce the learning rate $\eta$ this is call **Simulated Annealing**. The reduction rate function is called _learning schedule_.
 
-![alt text](img/stochastic_gradient.png)
+![alt text](P1-img/stochastic_gradient.png)
 
 **MiniBatch Gradient Descent**: Minibatch Is the same as Stochastic Gradient Descent, but, instead of adding one sample at the time, it adds a batch of `n_samples` therefore making the computation harder, but increasing the stability of the convergence. 
 
-<img src="img/table_comparison_opt_algorithms_fit.png" style='height:250px;'>
+<img src="P1-img/table_comparison_opt_algorithms_fit.png" style='height:250px;'>
 
 #### Learning Curves 
 
 Another way to tell is to look at the learning curves, which are plots of the model’s training error and validation error as a function of the training iteration: just evaluate the model at regular intervals during training on both the training set and the validation set, and plot the results. If the model cannot be trained incrementally (i.e., if it does not support `partial_fit()` or `warm_start`), then you must train it several times on gradually larger subsets of the training set.
 
 
-<img src="img/learning_curves.png" style='height:300px;'>
+<img src="P1-img/learning_curves.png" style='height:300px;'>
 
 if the two curves have a gap is a sign of overfitting, but if they both overlap and they have no gap it can mean that we are underfitting 
 
@@ -370,7 +370,7 @@ _based on: The Hundred-Page Machine Learning Book_
 
 support vector machine is a linear separation algorithm that fits a linear curve and two wider bounds (determinate by $\propto \frac{1}{c}$)
 
-![alt text](img/svm_c_param.png)
+![alt text](P1-img/svm_c_param.png)
 
 Given that SVM is a linear separation -and not all feature spaces can be separated by linear separators- we do transformations on the space to fit a linear separator, the most common one being kernel transformations.
 
@@ -386,7 +386,7 @@ $$s.t. \quad y_i (w*x_i-b)\ge 1$$
 
 In simple terms we have two hyperplanes $(wx-b=-1)$ and $(wx-b=1)$ and we want to maximize the "margin" $= \frac{2}{||w||_2}$. which is equal to minimize the norm of the weights $||w||_2$ while keeping all the samples separated (guaranteed by the constraint)
 
-<img src="img/svm_strict_algorithm.png" style='height:500px;'>
+<img src="P1-img/svm_strict_algorithm.png" style='height:500px;'>
 
 #### The separation problem
 To extend SVM for **non hyperplane separable problems** we introduce **hinge loss**:
@@ -510,7 +510,7 @@ To make predictions we do with a soft voting but weighting each learner predicti
 #### Gradient Boosting 
 Gradient boosting on the other hand is different from `ADABost` in the sense that it actually predicts the residuals from the previous models' ensemble. Each new tree will try to **predict the error**, Then the final prediction will be nothing more than the sum of all predictions. 
 
-<img src="img/gradient_boosting.png" style='height:800px;'>
+<img src="P1-img/gradient_boosting.png" style='height:800px;'>
 
 
 The `learning_rate` hyperparameter scales the contribution of each tree. If you set it to a low value, such as 0.05, you will need more trees in the ensemble to fit the training set, but the predictions will usually generalize better. This is a regularization technique called _shrinkage_
@@ -540,11 +540,11 @@ you can reduce, in general, a higher dimensional space into a lower dimensional 
 **projection**
 (PCA, random projection)
 
-<img src="img/plane_projection.png" style='height:350px;'>
+<img src="P1-img/plane_projection.png" style='height:350px;'>
 
 **manifold**
 
-<img src="img/manifold_projection.png" style='height:450px;'>
+<img src="P1-img/manifold_projection.png" style='height:450px;'>
 
 #### PCA 
 
@@ -571,12 +571,12 @@ $$ \text{intertia:  } C=\sum_{i,j-centroid}{min_j{||x_i-C_j||^2}} $$
 An important improvement to the k-means algorithm, k-means++, was proposed in a 2006 paper by David Arthur and Sergei Vassilvitskii. They introduced a smarter initialization step that tends to select centroids that are distant from one another, and this improvement makes the k-means algorithm much less likely to converge to a suboptimal solution. **The `KMeans` class uses this initialization method by default**.
 
 
-[//]: <> (References)
+[//]:1.sklearn-oreilly.md> (References)
 [1]: <https://github.com/yanshengjia/ml-road/blob/master/resources/Hands%20On%20Machine%20Learning%20with%20Scikit%20Learn%20and%20TensorFlow.pdf>
 [2]: <https://en.wikipedia.org/wiki/Norm_(mathematics)>
 [3]: <https://en.wikipedia.org/wiki/Sigmoid_function>
 
 
 
-[//]: <> (Some snippets)
+[//]:1.sklearn-oreilly.md> (Some snippets)
 [//]: # (add an image <img src="" style='height:400px;'>)
