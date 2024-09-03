@@ -95,7 +95,11 @@ for train_index, test_index in split_datasets_indexes:
 there's another way using sklearn `train_test_split()` and the argument `stratify`
 
 ```python
-strat_train_set, strat_test_set = train_test_split(housing_df, test_size=0.2, stratify=housing["income_cat"], random_state=42)
+strat_train_set, strat_test_set = train_test_split(housing_df, 
+                                                   test_size=0.2, 
+                                                   stratify=housing["income_cat"], 
+                                                   random_state=42)
+
 ```
 #### Correlation (Pearson's r)
 
@@ -151,7 +155,7 @@ The grid search approach is fine when you are exploring relatively few combinati
 
 #### Comparing two errors samples from CV
 
-In some examples using the mean error of a number of CVsamples might be missing some variance of the error, to compare more effectively use a `scioy.stats.t.interval()` test. (a t-test confidence interval)
+In some examples using the mean error of a number of CVsamples might be missing some variance of the error, to compare more effectively use a `scipy.stats.t.interval()` test. (a t-test confidence interval)
 
 ```python 
 from scipy import stats 
@@ -191,7 +195,15 @@ y_scores = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3,
                                  method="decision_function")
 from sklearn.metrics import precision_recall_curve
 precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
-                               
+
+
+
+#plot
+import matplotlib.pyplot as plt
+plt.plot(thresholds, precisions[:-1], "b--", label="Precision", linewidth=2) 
+plt.plot(thresholds, recalls[:-1], "g-", label="Recall", linewidth=2) 
+plt.vlines(threshold, 0, 1.0, "k", "dotted", label="threshold")
+plt.show()                               
 ```
 ![alt text](P1-img/precission_recall_curve.png)
 
