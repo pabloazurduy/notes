@@ -191,12 +191,10 @@ $$F1 = \frac{2}{\frac{1}{Precision} + \frac{1}{Recall}} = \frac{Precision*Recall
 Scikit-Learn does not let you set the threshold directly, but it does give you access to the decision scores that it uses to make predictions. Instead of calling the classifier’s `predict()` method, you can call its `decision_function()` method, which returns a score for each instance, and then use any threshold you want to make predictions based on those scores.
 
 ```python
-y_scores = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3,
+y_scores = cross_val_predict(sgd_clf, X_train, y_train, cv=3,
                                  method="decision_function")
 from sklearn.metrics import precision_recall_curve
-precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
-
-
+precisions, recalls, thresholds = precision_recall_curve(y_train, y_scores)
 
 #plot
 import matplotlib.pyplot as plt
