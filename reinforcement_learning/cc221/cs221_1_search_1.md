@@ -110,7 +110,7 @@ This algorithm will assume that the cost of each action is constant and equal to
 
 ## Dynamic Programming (Search Problem)
 
-In this model we will consider the following, we will assume that there it's an expectation cost function that will estimate the future cost of a $s'$ state. we will call this function "$FutureCost(s')$". The idea is that if we stand on the state $s$ we will choose the action $a$ that minimize the cost and the future costs of the deterministic next state. 
+In this model we will consider the following, we will assume that there it's an expectation cost function that will estimate the future cost of a $s'$ state. we will call this function " $FutureCost(s')$ ". The idea is that if we stand on the state $s$ we will choose the action $a$ that minimize the cost and the future costs of the deterministic next state. 
 
 ```mermaid 
 flowchart LR
