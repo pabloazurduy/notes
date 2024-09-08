@@ -469,5 +469,106 @@ It is a fairly simple algorithm: at every training step, every neuron (including
 
 **The hyperparameter p is called the dropout rate, and it is typically set between 10% and 50%: closer to 20%–30% in recurrent neural nets. and closer to 40%–50% in convolutional neural networks**.
 
+## Chapter 14 Convolutional Neural Networks 
+
+Neurons in the first convolutional layer are not connected to every single pixel in the input image (like they were in the layers discussed in previous chapters), but only to pixels in their receptive fields (see Figure 14-2). In turn, each neuron in the second convolutional layer is connected only to neurons located within a small rectangle in the first layer.
+
+<img src="P2-img/convolutional_layer.png" style='height:400px;'>
+
+Convolutional layers can have the same size as the image but we need to extend the image size to have data for the border networks, we can do this filling the data with 0. this is called zero padding. 
+
+If the conv layer is smaller, we can start spacing out the "recepive field", this distance is called "stride"
+
+<img src="P2-img/cn_stride.png" style='height:350px;'>
+
+## Chapter 15 RNN
+Let’s look at the simplest possible RNN, composed of one neuron receiving inputs, producing an output, and sending that output back to itself, as shown in Figure 15-1 (left). At each time step t (also called a frame), this recurrent neuron receives the inputs x(t) as well as its own output from the previous time step, ŷ(t–1). Since there is no previous output at the first time step, it is generally set to 0. We can represent this tiny network against the time axis, as shown in Figure 15-1 (right). This is called unrolling the network through time (it’s the same recurrent neuron represented once per time step).
+
+<img src="P2-img/rnn_one_neuron.png" style='height:225px;'>
+
+A recurrent layer, is the same layer plotted over time to show that the next "iteration" the layer will receive his own prediction of t-1.
+
+<img src="P2-img/recurrent_layer.png" style='height:250px;'>
+
+Each recurrent neuron has two sets of weights: one for the inputs $x(t)$ and the other for the outputs of the previous time step, $\hat{y}(t–1)$. Let’s call these weight vectors $W_x$ and $W_{\hat{y}}$.
+
+$$ŷ_{(t)} =φ(W_x^tx_{(t)} +W_{\hat{y}}^t\hat{y}_{(t-1)} +b)$$
+
+where $φ()$ is the activation function. 
+
+Just as with feedforward neural networks, we can compute a recurrent layer’s output in one shot for an entire mini-batch by placing all the inputs at time step t into an input matrix X(t)
+
+**Memory Cells**
+
+Since the output of a recurrent neuron at time step t is a function of all the inputs from previous time steps, you could say it has a form of memory. A part of a neural network that preserves some state across time steps is called a memory cell (or simply a cell). 
+
+A cell’s state at time step t, denoted h(t) (the “h” stands for “hidden”), is a function of some inputs at that time step and its state at the previous time step: h(t) = f(x(t), h(t–1)). Its output at time step t, denoted ŷ(t), is also a function of the previous state and the current inputs. **In the case of the basic cells we have discussed so far, the output is just equal to the state**, but in more complex cells this is not always the case.
+
+<img src="P2-img/hidden_state.png" style='height:300px;'>
+
+### taining 
+
+To train an RNN, the trick is to unroll it through time (like we just did) and then use regular backpropagation (see Figure 15-5). This strategy is called **backpropagation through time (BPTT)**.
+
+Just like in regular backpropagation, there is a first forward pass through the unrolled network (represented by the dashed arrows). Then the output sequence is evaluated using a loss function L(Y(0), Y(1), ..., Y(T); Ŷ(0), Ŷ(1), ..., Ŷ(T)) (where Y(i) is the ith target, Ŷ(i) is the ith prediction, and T is the max time step). Note that this loss function may ignore some outputs. For example, in a sequence-to-vector RNN, all outputs are ignored except for the very last one. In Figure 15-5, the loss function is computed based on the last three outputs only. 
+
+
+<img src="P2-img/bptt.png" style='height:350px;'>
+
+## Chapter 16 NLP
+
+### Character RNN
+In a famous 2015 blog post titled “The Unreasonable Effectiveness of Recurrent Neural Networks”, Andrej Karpathy showed how to train an RNN to predict the next character in a sentence. This char-RNN can then be used to generate novel text, **one character at a time**.
+
+```python 
+    #tokenization per char, this will asociate each char a int
+    text_vec_layer = tf.keras.layers.TextVectorization(split="character", # char level vectorization can be onehot or tf_idf
+                                                       standardize="lower")
+    
+    text_vec_layer.adapt([shakespeare_text])
+    encoded = text_vec_layer([shakespeare_text])[0]
+```
+
+The model can be written as follow:
+
+```python
+model = tf.keras.Sequential([ # Embedding the vector text to a 16 dim output - to connect with the next layer
+                            tf.keras.layers.Embedding(input_dim=n_tokens, output_dim=16), 
+                             # gated recurrent unit (GRU) is a RNN layer that has a "short term status" and "long term status" 
+                              tf.keras.layers.GRU(128, return_sequences=True), 
+                              # predict the probability of the next char (out of n_tokens)
+                              tf.keras.layers.Dense(n_tokens, activation="softmax")
+    ])
+    model.compile(loss="sparse_categorical_crossentropy", optimizer="nadam",
+                  metrics=["accuracy"])
+    model_ckpt = tf.keras.callbacks.ModelCheckpoint(
+"my_shakespeare_model", monitor="val_accuracy", save_best_only=True) history = model.fit(train_set, validation_data=valid_set, epochs=10,
+                        callbacks=[model_ckpt])
+
+
+```
+
+Embeddings are vectorial representations of words/text/chars. it consist on a srinked space than the original space (for example a one hot encoding space). can be trained using a neural network to predict the words near any given word, or to predict the same X_train data (as a GAN). 
+
+Autoencoders simply learn to copy their inputs to their outputs. This may sound like a trivial task, but as you will see, constraining the network in various ways can make it rather difficult. For example, you can limit the size of the latent rep‐ resentations, or you can add noise to the inputs and train the network to recover the original inputs. These constraints prevent the autoencoder from trivially copying the inputs directly to the outputs, which forces it to learn efficient ways of representing the data. In short, the codings are byproducts of the autoencoder learning the identity function under some constraints.
+
+GANs are composed of two neural networks: a generator that tries to generate data that looks similar to the training data, and a discriminator that tries to tell real data from fake data. This architecture is very original in deep learning in that the generator and the discriminator compete against each other during training: the generator is often compared to a criminal trying to make realistic counterfeit money, while the discriminator is like the police investigator trying to tell real money from fake. Adversarial training (training competing neural networks) is widely considered one of the most important innovations of the 2010s. In 2016, Yann LeCun even said that it was “the most interesting idea in the last 10 years in machine learning”.
+
+### Stateless and Stateful RNN 
+
+the upper network is a stateless network in the sense that each iteration the hidden states are erased and started from 0 again. but we could store the last states from the previous prediction and use it for the next batch this is called a "Stateful RNN". 
+
+### Reusing Pretrained Embeddings and Language Models
+
+instead of training word embeddings, we could just download and use pretrained embeddings, such as Google’s Word2vec embeddings, Stanford’s GloVe embeddings, or Facebook’s FastText embeddings.
+
+Using pretrained word embeddings was popular for several years, but this approach has its limits. In particular, a word has a single representation, no matter the context.
+
+### An Encoder–Decoder Network for Neural Machine Translation
+
+In short, the architecture is as follows: English sentences are fed as inputs to the encoder, and the decoder outputs the Spanish translations. 
+
+![alt text](P2-img/translation.png)
+
 [//]:1.sklearn-oreilly.md> (References)
 [1]: <https://github.com/yanshengjia/ml-road/blob/master/resources/Hands%20On%20Machine%20Learning%20with%20Scikit%20Learn%20and%20TensorFlow.pdf>
