@@ -576,6 +576,51 @@ X_reduced = pca.fit_transform(X_train)
 
 Locally linear embedding (LLE) is a nonlinear dimensionality reduction (NLDR) technique. It is a manifold learning technique that does not rely on projections, unlike PCA and random projection. In a nutshell, LLE works by first measuring how each training instance linearly relates to its nearest neighbors, and then looking for a low-dimensional representation of the training set where these local relationships are best preserved
 
+#### How to choose the number of dimensions
+
+two alternatives:
+1. Explained Variance; and a threshold (ex 0.95) or the elbow criteria 
+
+```python
+pca = PCA()
+pca.fit(X_train)
+cumsum = np.cumsum(pca.explained_variance_ratio_) 
+d = np.argmax(cumsum >= 0.95) + 1 # d equals 154
+```
+
+![alt text](P1-img/explained_variance.png)
+
+2. use it as an hyper parameter and then evaluate the model 
+
+```python 
+    from sklearn.ensemble import RandomForestClassifier 
+    from sklearn.model_selection import RandomizedSearchCV 
+    from sklearn.pipeline import make_pipeline
+    clf = make_pipeline(PCA(random_state=42),
+                        RandomForestClassifier(random_state=42))
+    param_distrib = {
+        "pca__n_components": np.arange(10, 80),
+        "randomforestclassifier__n_estimators": np.arange(50, 500)
+    }
+    rnd_search = RandomizedSearchCV(clf, param_distrib, n_iter=10, cv=3,
+                                    random_state=42)
+    rnd_search.fit(X_train[:1000], y_train[:1000])
+
+```
+
+### Learning To Recommend (from 100 pages ML)
+
+Traditionally, two approaches were used to give recommendations: **content-based filtering** and **collaborative filtering**.
+
+**Content-based filtering** consists of learning what users like based on the description of the content they consume. For example, if the user of a news site often reads news articles on science and technology, then we would suggest more documents on science and technology to this user. More generally, we could create one training set per user and add news articles to this dataset as a feature vector x and whether the user recently read this news article as a label y. Then we build the model of each user and can regularly examine each new piece of content to determine whether a specific user would read it or not
+
+**Collaborative filtering** has a significant advantage over content-based filtering: the recommendations to one user are computed based on what other users consume or rate. For instance, if two users gave high ratings to the same ten movies, then it’s more likely that user 1 will appreciate new movies recommended based on the tastes of the user 2 and vice versa. The drawback of this approach is that the content of the recommended items is ignored.
+
+In collaborative filtering, the information on user preferences is organized in a matrix. Each row corresponds to a user, and each column corresponds to a piece of content that user rated or consumed. Usually, this matrix is huge and extremely sparse, which means that most of its cells aren’t filled (or filled with a zero). The reason for such a sparsity is that most users consume or rate just a tiny fraction of available content items. It’s is very hard to make meaningful recommendations based on such sparse data.
+Most real-world recommender systems use a hybrid approach: they combine recommendations obtained by the content-based and collaborative filtering models.
+
+
+
 ### Chapter 9 
 #### K Means algorithm 
 Start by placing the centroids randomly (e.g., by picking k instances at random from the dataset and using their locations as centroids). Then label the instances, update the centroids, label the instances, update the centroids, and so on until the centroids stop moving. The algorithm is guaranteed to converge in a finite number of steps (usually quite small). That’s because the mean squared distance between the instances and their closest centroids can only go down at each step, and since it cannot be negative, it’s guaranteed to converge.
