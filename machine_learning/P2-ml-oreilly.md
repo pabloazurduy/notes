@@ -352,7 +352,7 @@ $$Swish_{\beta}(z) = z\sigma(\beta z)$$
 
 Swish is a generalization of GELU approximation. In their paper, Swish outperformed every other function, including GELU. Ramachandran et al. later generalized Swish by adding an extra hyperparameter β to scale the sigmoid function’s input.
 
-### conclusions (on activation functions)
+### Conclusions (on activation functions)
 
 1. ReLU remains a good default for simple tasks: it’s often just as good as the more sophisticated activation functions, plus it’s very fast to compute, and many libraries and hardware accelerators provide ReLU-specific optimizations
 
