@@ -608,16 +608,66 @@ d = np.argmax(cumsum >= 0.95) + 1 # d equals 154
 
 ```
 
-### Learning To Recommend (from 100 pages ML)
+### [Recomendation Systems](https://developers.google.com/machine-learning/recommendation/overview)
 
-Traditionally, two approaches were used to give recommendations: **content-based filtering** and **collaborative filtering**.
+Elements: 
+1. Items (or Documents)
+2. Query (or context): user info, items from user, time of day, device, etc 
 
-**Content-based filtering** consists of learning what users like based on the description of the content they consume. For example, if the user of a news site often reads news articles on science and technology, then we would suggest more documents on science and technology to this user. More generally, we could create one training set per user and add news articles to this dataset as a feature vector x and whether the user recently read this news article as a label y. Then we build the model of each user and can regularly examine each new piece of content to determine whether a specific user would read it or not
+Steps:
+1. **Candidate Generation**:  In this first stage, the system starts from a potentially huge corpus and generates a much smaller subset of candidates. For example, the candidate generator in YouTube reduces billions of videos down to hundreds or thousands
+2. **Scoring**: Next, another model scores and ranks the candidates in order to select the set of items (on the order of 10) to display to the user. Since this model evaluates a relatively small subset of items, the system can use a more precise model relying on additional queries.
+3. **Re-Ranking**: Finally, the system must take into account additional constraints for the final ranking. For example, the system removes items that the user explicitly disliked or boosts the score of fresher content.
 
-**Collaborative filtering** has a significant advantage over content-based filtering: the recommendations to one user are computed based on what other users consume or rate. For instance, if two users gave high ratings to the same ten movies, then it’s more likely that user 1 will appreciate new movies recommended based on the tastes of the user 2 and vice versa. The drawback of this approach is that the content of the recommended items is ignored.
 
-In collaborative filtering, the information on user preferences is organized in a matrix. Each row corresponds to a user, and each column corresponds to a piece of content that user rated or consumed. Usually, this matrix is huge and extremely sparse, which means that most of its cells aren’t filled (or filled with a zero). The reason for such a sparsity is that most users consume or rate just a tiny fraction of available content items. It’s is very hard to make meaningful recommendations based on such sparse data.
-Most real-world recommender systems use a hybrid approach: they combine recommendations obtained by the content-based and collaborative filtering models.
+#### Candidate Generation:
+1. **content-based filtering**: Uses similarity between items to recommend items similar to what the user likes. If user A watches two cute cat videos, then the system can recommend cute animal videos to that user.
+
+1. **collaborative filtering**: Uses similarities between queries and items simultaneously to provide recommendations.If user A is similar to user B, and user B likes video 1, then the system can recommend video 1 to user A (even if user A hasn’t seen any videos similar to video 1).
+
+Both, content based and collaborative filtering are based in the same priciples, 
+
+1. we first build a "common embedding space" - size d<<D- 
+2. we calculate the similarity between two items or users, using distance metrics: Cosine, Dot product $<x,y>$, Euclidean distance **If the embeddings are normalized, then dot-product and cosine coincide. and  the squared Euclidean distance coincides with dot-product (and cosine)** Compared to the cosine, the dot product similarity is sensitive to the norm of the embedding.
+
+#### Collaborative Filtering
+
+collaborative filtering uses similarities between users and items simultaneously to provide recommendations. This allows for serendipitous recommendations; that is, collaborative filtering models can recommend an item to user A based on the interests of a similar user B.
+
+we have a matrix where each row has the embeddings for each user and each column has the embeddings for each movie. on each cell we have the -observed-interaction with the user and the item. 
+
+![alt text](P1-img/2d_embedding_rec_system.png)
+
+To fit this model our aim is that the product of the user embeddings $U$ and the item embeddings $V$ is as close as possible to the observed matrix $A_{i,j}$. we do that minimizing RMSE
+
+$$
+\min_{U \in \mathbb R^{m \times d},\ V \in \mathbb R^{n \times d}} \sum_{(i, j) \in \text{obs}} (A_{ij} - \langle U_{i}, V_{j} \rangle)^2.
+$$
+
+the problem of this method is that the matrix $A_{i,j}$ is very sparse and the 0's are not considered as part of the error. to fix that we have a few alternatives:
+
+$$
+\min_{U \in \mathbb R^{m \times d},\ V \in \mathbb R^{n \times d}} \sum_{(i, j) \in \text{obs}} (A_{ij} - \langle U_{i}, V_{j} \rangle)^2 + w_0 \sum_{(i, j) \not \in \text{obs}} (\langle U_i, V_j\rangle)^2.
+$$
+
+In this formulation we add a weight $w_0$ that will penalize for 0's. To solve this optimization problem we have SGD (classic), but also another algorithm called WALS (Weighted Alternating Least Squares).
+
+**Disadvantages of Collaborative Flittering**
+
+1. Cannot handle fresh items: The prediction of the model for a given (user, item) pair is the dot product of the corresponding embeddings. So, if an item is not seen during training, the system can't create an embedding for it and can't query the model with this item. Solutions: approximate embeddings ? (with another model), or use training information -canary test- 
+
+#### Softmax DNN for recomendation 
+
+One possible DNN model is softmax, which treats the problem as a multiclass prediction problem in which:
+
+1. The input is the user query.
+2. The output is a probability vector with size **equal to the number of items in the corpus**, representing the probability to interact with each item; for example, the probability to click on or watch a YouTube video.
+
+The input to a DNN can include:
+1. dense features (for example, watch time and time since last watch)
+1. sparse features (for example, watch history and country)
+
+
 
 
 
@@ -632,6 +682,8 @@ by default kmeans will have `n_init` different initiation centroids, and it will
 $$ \text{intertia:  } C=\sum_{i,j-centroid}{min_j{||x_i-C_j||^2}} $$
 
 An important improvement to the k-means algorithm, k-means++, was proposed in a 2006 paper by David Arthur and Sergei Vassilvitskii. They introduced a smarter initialization step that tends to select centroids that are distant from one another, and this improvement makes the k-means algorithm much less likely to converge to a suboptimal solution. **The `KMeans` class uses this initialization method by default**.
+
+
 
 
 [//]:1.sklearn-oreilly.md> (References)
