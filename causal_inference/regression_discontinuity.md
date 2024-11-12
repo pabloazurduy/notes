@@ -2,6 +2,7 @@
 *created on: 2022-11-27 11:48:47*
 
 ## Regression Discontinuity
+
 Regression Discontinuity is the study of analyzing two very similar groups where a treatment is assigned based in an arbitrary *cutoff* that separates very similar people (and therefore where "the only difference" is the treatment). Usually the treatment is a binary variable. 
 
 - Running Variable or Forcing Variable $X$: The variable that will be used to evaluate if you receive the treatment or not $D$. Ex: some admissions test score 
@@ -62,7 +63,8 @@ There are many **Local Regression** models, some of them included weighted regre
 ### Implementation 
 
 Manual Implementation (a quadratic version and a kernel one)
-```
+
+```python
 import numpy as np
 import statsmodels.formula.api as smf
 from causaldata import gov_transfers
