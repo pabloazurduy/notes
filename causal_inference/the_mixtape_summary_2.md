@@ -1,4 +1,4 @@
-*based on ["Causal Inference The Mixtape"][1] *
+*based on ["Causal Inference The Mixtape"][1]*
 *created on: 2024-11-12 20:00:43*
 
 
@@ -169,11 +169,11 @@ $$V(\widehat{\beta_1})=\dfrac{\sigma^2}{SST_x}$$
 
 As the error variance increases—that is, as $\sigma^2$ increases—so does the variance in our estimator. The more “noise” in the relationship between $y$ and $x$ (i.e., the larger the variability in $u$), the harder it is to learn something about $\beta_1$. In constrat, more variation in $(x_i)$ reduces the variance of the estimator.
 
-[//]: <> (References)
+[//]:the_mixtape_summary_2.md> (References)
 [1]: <https://mixtape.scunning.com/>
 [2]: <https://stats.stackexchange.com/a/55891/274422>
 [3]: <https://en.wikipedia.org/wiki/Ramsey_RESET_test>
 
 
-[//]: <> (Some snippets)
+[//]:the_mixtape_summary_2.md> (Some snippets)
 [//]: # (add an image <img src="" style='height:400px;'>)
