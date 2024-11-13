@@ -8,7 +8,7 @@ Backdoor criterion: we say that $A \rightarrow B$ satisfies the backdoor criteri
 2. Closing the path using a collider. 
 
 
-## Chapter 3 Potential Outcomes Model
+## Chapter 3: Potential Outcomes Model
 ### Potential Outcomes 
 
 A unit’s observable outcome is a function of its potential outcomes determined according to the **switching equation**:
@@ -137,12 +137,37 @@ However, Imbens and Rubin (2015) note that focusing solely on a few features of 
 
 Therefore, we may be interested in a test statistic that can detect differences in the overall distributions between the treatment and control units. One such test statistic is the Kolmogorov-Smirnov (K-S) test statistic. The K-S test is important because it compares the entire distributions of the two groups, not just the means or specific quantiles. It is sensitive to differences in both location and shape of the empirical cumulative distribution functions (ECDFs) of the two samples. This makes the K-S test more powerful in detecting any differences between the groups, especially when the differences are not limited to the mean but involve variability, skewness, or other distributional features that mean difference tests might miss.
 
+### Confidence Interval Estimation
+
+Based on the Article of [Matt Blackwell][4] we can estimate confidence intervals for the average treatment effect based on this procedure:
+
+We can create confidence intervals using the duality between confidence intervals and hypothesis tests. A $(100(1-\alpha))$ confidence interval is the set of null hypotheses that are not rejected at the $\alpha$ significance level. To construct a 95% confidence interval for the treatment effect $\tau$:
+
+1. **Select a Grid of Possible Treatment Effects:**
+    Choose a range of $\tau_0$ values (e.g., $-0.9, -0.8, \dots, 0.8, 0.9$).
+
+2. **Compute P-values for Each Hypothesis:**
+    For each $\tau_0$, perform the hypothesis test $H_0: \tau = \tau_0$ and calculate the p-value.
+
+3. **Identify Non-rejected Hypotheses:**
+    Find all $\tau_0$ where the p-value satisfies $p > 0.05$.
+
+4. **Formulate the Confidence Interval:**
+    The 95% confidence interval consists of all $\tau_0$ values from Step 3.
+
+**Notes:**
+
+- In small samples, exact 95% confidence intervals may not be available due to discrete p-values, leading to conservative coverage (at least $100(1-\alpha)\%$).
+- A two-sided confidence interval requires a two-sided hypothesis test.
+
+
 
 
 [//]:the_mixtape_summary_32.md> (References)
 [1]: <https://mixtape.scunning.com/>
 [2]: <https://stats.stackexchange.com/a/55891/274422>
 [3]: <https://en.wikipedia.org/wiki/Ramsey_RESET_test>
+[4]: <https://www.mattblackwell.org/files/teaching/s05-fisher.pdf>
 
 
 [//]:the_mixtape_summary_32.md> (Some snippets)
