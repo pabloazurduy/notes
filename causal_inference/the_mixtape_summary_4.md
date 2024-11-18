@@ -89,6 +89,59 @@ $$
 
 Where $\widehat{\mu}^0(X)$ is an estimate of $E[Y\mid X=x,D=0]$ using, for example, OLS. In a nutshell $\widehat{\mu}^0(X)$ is the regression  prediction of $Y$ using $X$, in this case we are predicting $Y$ given that $D=0$ in other words, predicting the control conterfactual of the treated unit. 
 
+The variance of this estimator (if matching wihout replacement) will be given by:
+
+$$
+\begin{align}
+   \widehat{\sigma}^2_{ATT} = \dfrac{1}{N_T} \sum_{D_i=1} \bigg ( Y_i - \dfrac{1}{M} \sum_{m=1}^M Y_{j_m(i)} - \widehat{\delta}_{ATT} \bigg )^2
+\end{align}
+$$
+
+### Propensity Score Matching
+
+Despite some early excitement caused by Dehejia and Wahba (2002), subsequent enthusiasm was more tempered (Smith and Todd 2001, 2005; King and Nielsen 2019). The most common reason given for this is that economists are oftentimes skeptical that CIA can be achieved in any data set—almost as an article of faith. This is because for many applications, economists as a group are usually more concerned about selection on unobservables than they are selection on observables, and as such, they reach for matching methods less often.
+
+Propensity score matching takes those necessary covariates, estimates a maximum likelihood model of the conditional probability of treatment (usually a logit or probit so as to ensure that the fitted values are bounded between 0 and 1), and uses the predicted values from that estimation to collapse those covariates into a single scalar called the propensity score. All comparisons between the treatment and control group are then based on that value.
+
+The idea with propensity score methods is to compare units who, based on observables, had very similar probabilities of being placed into the treatment group even though those units differed with regard to actual treatment assignment. If conditional on $X$, two units have the same probability of being treated, then we say they have similar propensity scores, and all remaining variation in treatment assignment is due to chance. And insofar as the two units A and B have the same propensity score of 0.6, but one is the treatment group and one is not, and the conditional independence assumption credibly holds in the data, then differences between their observed outcomes are attributable to the treatment.
+
+Implicit in that example, though, we see another assumption needed for this procedure, and that’s the **common support assumption**. Common support simply requires that there be units in the treatment and control group across the estimated propensity score.
+
+The propensity score is the fitted values of the logit model. Put differently, we used the estimated coefficients from that logit regression to estimate the conditional probability of treatment, assuming that probabilities are based on the cumulative logistic distribution:
+
+$$\Pr\big(D=1\mid X\big) = F(\beta_0 + \alpha X)$$
+
+we need, as any matching methodology, to fulfill the CIA and the common support assumption. Propensity Score is based on a theorem that states if we hold CIA we can also hold "CPS":
+
+$$
+(Y^1,Y^0) \perp D\mid X 
+$$
+then 
+$$
+(Y^1,Y^0) \perp D \mid p(X)
+$$
+
+The ATE estimator will be given by:
+
+$$
+\begin{align}
+   \delta_{ATE} & =E[Y^1-Y^0] \nonumber                                                      
+   \\
+            & =E \left[ Y \cdot \dfrac{D - p(X)}{p(X) \cdot (1-p(X))} \right]            
+   \\
+
+   
+   \widehat{\delta}_{ATE} & =\dfrac{1}{N} \sum_{i=1}^N Y_i \cdot \dfrac{D_i - \widehat{p}(X_i)}{\widehat{p}(X_i) \cdot (1-\widehat{p}(X_i))}
+
+\end{align}
+$$
+
+
+Recall what inverse probability weighting is doing. It is weighting treatment and control units according to $\widehat{p}(X)$
+, which is causing units with very small values of the propensity score to blow up and become unusually influential in the calculation of ATT. Thus, we will need to trim the data. Here we will do a very small trim to eliminate the mass of values at the far-left tail. Crump et al. (2009) develop a principled method for addressing a lack of overlap. A good rule of thumb, they note, is to keep only observations on the interval [0.1,0.9], which was performed at the end of the program.
+
+
+
 [//]:the_mixtape_summary_32.md> (References)
 [1]: <https://mixtape.scunning.com/>
 
