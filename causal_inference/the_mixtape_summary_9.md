@@ -147,7 +147,29 @@ What we know now is that there are two fundamental problems with the DD design. 
 But this is not really the fatal problem, you might say, with twoway fixed-effects estimates of a DD design. The bigger issue was what we saw in the Bacon decomposition—you will inevitably use past treated units as controls for future treated units, or what I called the “late to early 2x2”. This happens both in the event study and in the designs modeling the average treatment effect with a dummy variable. Insofar as it takes more than one period for the treatment to be fully incorporated, then insofar as there’s substantial weight given to the late to early 
 2x2s, the existence of heterogeneous treatment effects skews the parameter away from the ATT—maybe even flipping signs!
 
-The theoretical insight from all these papers is the coefficients on the static twoway fixed-effects leads and lags will be unintelligible if there is heterogeneity in treatment effects over time. In this sense, we are back in the world that Goodman-Bacon (2019) revealed, in which heterogeneity treatment effect biases create real challenges for the DD design using twoway fixed effects.
+The theoretical insight from all these papers is the coefficients on the static twoway fixed-effects leads and lags will be unintelligible if there is heterogeneity in treatment effects over time. In this sense, we are back in the world that Goodman-Bacon (2019) revealed, in which heterogeneity treatment effect biases create real challenges for the DD design using twoway fixed effects. (TWFE) especification:
+
+$$
+Y_{it} = \tau_{gt}D_{it}+\alpha_i + \gamma_t +\epsilon_{it}
+$$
+
+where $g$ is the group index adoption (cohort). $D_{it}$ is the treatment indicator, $\tau_{gt}$ is the treatment effect, $\alpha_i$ is the individual fixed effect, $\gamma_t$ is the time fixed effect, and $\epsilon_{it}$ is the error term.
+
+```python 
+formula = "downloads ~ treated:post:C(cohort):C(date) + C(city)+C(date)"
+ twfe_model = smf.ols(formula, data=mkt_data_cohorts_w).fit()
+
+df_pred = (
+ mkt_data_cohorts_w
+ .query("post==1 & treated==1")
+ .assign(y_hat_0=lambda d: twfe_model.predict(d.assign(treated=0))) # create conterfactual prediction
+ .assign(effect_hat=lambda d: d["downloads"] - d["y_hat_0"]) #estimate the lift based on the conterfactual prediction
+ )
+ print("Number of param.:", len(twfe_model.params))
+ print("True Effect: ", df_pred["tau"].mean())
+ print("Pred. Effect: ", df_pred["effect_hat"].mean())
+```
+
 
 
 
