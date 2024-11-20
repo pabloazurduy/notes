@@ -104,10 +104,10 @@ Sometimes the cutoff does not apply directly the treatment, but it increases the
 
 
 
-[//]: <> (References)
+[//]:the_effect_regression_discontinuity.md> (References)
 [1]: <https://theeffectbook.net/ch-RegressionDiscontinuity.html>
 [2]: <https://github.com/rdpackages/rdrobust/blob/master/Python/rdrobust/src/rdrobust/rdrobust.py>
 [3]: <https://github.com/rdpackages/rdrobust/blob/master/Python/rdrobust_illustration.py>
 
-[//]: <> (Some snippets)
+[//]:the_effect_regression_discontinuity.md> (Some snippets)
 [//]: # (add an image <img src="" style='height:400px;'>)
