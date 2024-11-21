@@ -1,0 +1,27 @@
+
+question;answer;tags
+"What is Regression Discontinuity Design (RDD)?";"A research design where treatment is assigned based on a threshold/cutoff score over a running variable. Units just above and below the cutoff are compared to estimate treatment effects.";rdd basic
+"What is a running variable in RDD?";"The variable used to determine treatment assignment, where units above or below a certain threshold receive different treatments (e.g., test scores, age, income).";rdd basic
+"What is the continuity assumption in RDD?";"The assumption that potential outcomes are continuous functions of the running variable at the cutoff, meaning all other unobserved determinants of the outcome are continuously related to the running variable.";rdd basic
+"What is the difference between Sharp and Fuzzy RDD?";"Sharp RDD has deterministic treatment assignment at cutoff (0 to 1), while Fuzzy RDD has probabilistic treatment assignment (treatment probability changes at cutoff but not deterministically).";rdd basic
+"What is LATE in RDD context?";"Local Average Treatment Effect - the average causal effect at the cutoff point. In RDD, we technically only identify treatment effects for units near the cutoff.";rdd basic
+"What does 'local' mean in LATE for RDD?";"'Local' refers to the fact that the treatment effect is only identified for units close to the cutoff point, not for the entire population.";rdd basic
+"Why is common support not possible in RDD?";"Because we never observe the same unit both above and below the cutoff simultaneously, making direct comparison impossible and requiring extrapolation.";rdd basic
+"What is the role of bandwidth in RDD?";"Bandwidth determines how far from the cutoff point observations are included in the analysis, affecting the bias-variance tradeoff in estimation.";rdd intermediate
+"What is the purpose of recentering the running variable?";"Recentering (subtracting the cutoff value) makes interpretation easier and places the discontinuity at zero, simplifying the analysis.";rdd intermediate
+"Why are higher-order polynomials discouraged in RDD?";"Following Gelman and Imbens (2019), higher-order polynomials can lead to noisy estimates and poor inference in local linear regressions.";rdd intermediate
+"What is the McCrary density test in RDD?";"A test checking for manipulation of the running variable by examining if there's a discontinuity in its density at the cutoff point.";rdd intermediate
+"What is the main difference between reduced form and 2SLS in Fuzzy RDD?";"Reduced form estimates the effect of the instrument (cutoff) on the outcome, while 2SLS estimates the actual treatment effect using the cutoff as an instrument.";rdd intermediate
+"What are the key assumptions for Fuzzy RDD?";"1. Continuity assumption\n2. Exclusion restriction\n3. Monotonicity\n4. SUTVA\n5. Strong first stage";rdd intermediate
+"How is the Wald estimator used in Fuzzy RDD?";"It calculates the ratio of the jump in the outcome to the jump in treatment probability at the cutoff, similar to IV estimation.";rdd advanced
+"What is the two-stage specification in Fuzzy RDD?";"First stage: Estimate effect of cutoff on treatment probability\nSecond stage: Use predicted treatment values to estimate effect on outcome.";rdd advanced
+"Why might covariate balance be important in RDD?";"To verify the validity of RDD by checking that observable characteristics don't change discontinuously at the cutoff.";rdd intermediate
+"What are signs of manipulation in RDD?";"1. Discontinuous density at cutoff\n2. Bunching just above/below threshold\n3. Discontinuities in covariates\n4. Prior knowledge of cutoff\n5. Ability to precisely manipulate running variable";rdd advanced
+"How can the single treatment assumption be violated in RDD?";"When multiple treatments or policy changes occur at the same threshold (e.g., multiple rights/responsibilities at age 18).";rdd advanced
+"What is a placebo test in RDD?";"Testing for discontinuities at non-cutoff points where there should be none, helping validate the design.";rdd intermediate
+"Why is local linear regression preferred in RDD?";"It reduces bias at boundary points compared to kernel regression and handles boundary problems better than global polynomial regression.";rdd advanced
+"What is the boundary problem in RDD?";"The challenge of estimating treatment effects at the cutoff point where data is sparse on one side, potentially leading to biased estimates.";rdd advanced
+"How does treatment effect heterogeneity affect RDD interpretation?";"It limits the external validity of findings since effects are only identified locally at the cutoff and may not generalize to units far from the threshold.";rdd advanced
+"What makes a running variable ideal for RDD?";"1. Known and precise cutoff\n2. No manipulation possible\n3. Not tightly related to outcome\n4. Sufficient density around cutoff\n5. Clear discontinuity in treatment";rdd intermediate
+"How can anticipatory effects threaten RDD validity?";"If units can anticipate and react to the cutoff (e.g., by strategic behavior), it violates the continuity assumption and biases estimates.";rdd advanced
+"What are the main advantages of RDD over other designs?";"1. Clear treatment assignment rule\n2. Strong internal validity near cutoff\n3. Often uses natural policy thresholds\n4. Transparent identification strategy\n5. Testable assumptions";rdd basic

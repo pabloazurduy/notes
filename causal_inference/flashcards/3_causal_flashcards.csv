@@ -1,0 +1,27 @@
+
+question;answer;tags
+"What is the switching equation in potential outcomes framework?";"$Y_i = D_iY_i^1 + (1-D_i)Y_i^0$ where $D_i$ is treatment assignment, $Y_i^1$ is outcome under treatment, and $Y_i^0$ is outcome under control";po basic
+"How is the unit-specific treatment effect defined?";"$\delta_i = Y^1_i-Y^0_i$ (difference between potential outcomes under treatment and control)";po basic
+"What is the Average Treatment Effect (ATE)?";"$ATE = E[Y^1_i] - E[Y^0_i]$ (expected difference between potential outcomes across entire population)";po basic
+"What is the Average Treatment Effect on Treated (ATT)?";"$ATT = E[Y^1_i|D_i=1] - E[Y^0_i|D_i=1]$ (average treatment effect for those who received treatment)";po intermediate
+"What is the Average Treatment Effect on Untreated (ATU)?";"$ATU = E[Y^1_i|D_i=0] - E[Y^0_i|D_i=0]$ (average treatment effect for those who did not receive treatment)";po intermediate
+"What is the Simple Difference in Outcomes (SDO)?";"$SDO = E[Y^1|D=1] - E[Y^0|D=0]$ (difference in means between treatment and control groups)";po basic
+"What are the three components of SDO decomposition?";"1. Average Treatment Effect (ATE)<br>2. Selection Bias: $E[Y^0|D=1] - E[Y^0|D=0]$<br>3. Heterogeneous Treatment Effect Bias: $(1-\pi)(ATT - ATU)$";po advanced
+"What is the independence assumption in potential outcomes?";"$(Y^1,Y^0) \perp D$ (treatment assignment is independent of potential outcomes)";po assumptions
+"What are the two key components of SUTVA?";"1. Homogeneity of treatment effects (same sized dose)<br>2. No spillovers (treatment of one individual doesn't affect others)";po assumptions
+"What is Fisher's sharp null hypothesis?";"$H_0: \delta_i = 0$ for all $i$ (treatment effect is zero for all individuals)";po inference
+"What is Neyman's null hypothesis?";"$H_0: ATE = 0$ (average treatment effect is zero)";po inference
+"How is the p-value calculated under Fisher's sharp null?";"$\Pr(t(D',Y)\geq t(D_{observed},Y) | \delta_i=0, \forall i)= \frac{\sum_{D'\in \Omega} I(t(D',Y) \geq t(D_{observed},Y))}{K}$";po inference
+"Why might selecting between treatment and control groups cause bias?";"Selection bias occurs when treatment and control groups have systematic differences in their potential outcomes under control: $E[Y^0|D=1] \neq E[Y^0|D=0]$";po advanced
+"What is the fundamental problem of causal inference?";"We can only observe one potential outcome for each unit, never both simultaneously, making direct calculation of individual treatment effects impossible.";po basic
+"What advantage does the Kolmogorov-Smirnov test offer over mean difference tests?";"K-S test compares entire distributions between treatment and control groups, detecting differences in location, shape, and other distributional features that mean difference tests might miss.";po inference
+"What does the term 'selection bias' measure in the SDO decomposition?";"$E[Y^0|D=1] - E[Y^0|D=0]$ measures inherent differences between treatment and control groups in their outcomes under no treatment";po intermediate
+"How do we construct confidence intervals for treatment effects?";"1. Select grid of possible treatment effects<br>2. Compute p-values for each hypothesized effect<br>3. Identify non-rejected hypotheses<br>4. Include all values with p > 0.05 in 95% CI";po inference
+"What is the relationship between ATT and ATE?";"ATT may differ from ATE when treatment effects are heterogeneous and selection into treatment is related to potential benefits";po intermediate
+"When can we use SDO to estimate ATE?";"SDO estimates ATE when:<br>1. No selection bias exists<br>2. Treatment effects are homogeneous<br>3. SUTVA holds";po intermediate
+"What is the backdoor criterion in causal DAGs?";"A path $A \rightarrow B$ satisfies the backdoor criterion if there are no other unmeasured paths from A to B that could create confounding";dag basic
+"What are two ways to address omitted variable bias?";"1. Conditioning on confounders<br>2. Closing backdoor paths using colliders";dag basic
+"Why is randomization considered the 'gold standard'?";"Randomization ensures treatment assignment is independent of potential outcomes, eliminating selection bias and allowing for unbiased estimation of causal effects";po basic
+"What causes heterogeneous treatment effect bias?";"This bias occurs when treatment effects vary across units and selection into treatment is related to these individual-specific effects";po advanced
+"What is the main advantage of using potential outcomes framework?";"It provides a clear mathematical framework for defining causal effects and highlighting the assumptions needed for causal inference";po basic
+"Why is SUTVA important for causal inference?";"SUTVA ensures that treatment effects are well-defined and that interference between units doesn't contaminate causal estimates";po assumptions

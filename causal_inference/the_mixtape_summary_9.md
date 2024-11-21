@@ -76,6 +76,22 @@ $$
 Y_{its} = \gamma_s + \lambda_t + \sum_{\tau=-q}^{-1}\gamma_{\tau}D_{s\tau} + \sum_{\tau=0}^m\delta_{\tau}D_{s\tau}+x_{ist}+ \varepsilon_{ist}
 $$
 
+In the equation above:
+- $Y_{its}$ is the outcome variable for individual $i$, in time $t$, in state $s$
+- $\gamma_s$ represents state fixed effects
+- $\lambda_t$ represents time fixed effects
+- $D_{s\tau}$ is a dummy variable equal to 1 when state $s$ is $\tau$ periods away from treatment
+- The summation $\sum_{\tau=-q}^{-1}\gamma_{\tau}D_{s\tau}$ represents pre-treatment effects (leads)
+- The summation $\sum_{\tau=0}^m\delta_{\tau}D_{s\tau}$ represents post-treatment effects (lags)
+- $x_{ist}$ represents time-varying covariates
+- $\varepsilon_{ist}$ is the error term
+
+This model allows us to:
+1. Test pre-trends by examining if $\gamma_{\tau}$ coefficients are statistically zero
+2. Analyze dynamic treatment effects through the $\delta_{\tau}$ coefficients
+3. Account for state-specific and time-specific unobserved factors
+
+
 <img src="img/leads_and_lags.png" style="max-height:500px;">
 
 ### Triple Differences
