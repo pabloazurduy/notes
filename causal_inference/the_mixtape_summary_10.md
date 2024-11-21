@@ -113,7 +113,7 @@ But, ultimately, inference is based on those exact $p$-values. So the way we do 
 Another valid way to check for the validity of our models is to use a "placebo" treatment date, [Abadie, Diamond, and Hainmueller (2015)][7] to check if the synthetic control model is actually a good predictor of the outcome value in the treatment city. 
 
 
-[//]: <> (References)
+[//]:the_mixtape_summary_10.md> (References)
 [1]: <https://mixtape.scunning.com/10-synthetic_control>
 [2]: <https://mixtape.scunning.com/09-difference_in_differences>
 [3]: <https://mixtape.scunning.com/references.html#ref-Abadie2003>
@@ -123,5 +123,5 @@ Another valid way to check for the validity of our models is to use a "placebo" 
 [7]: <https://mixtape.scunning.com/references.html#ref-Abadie2015>
 
 
-[//]: <> (Some snippets)
+[//]:the_mixtape_summary_10.md> (Some snippets)
 [//]: # (add an image <img src="" style='height:400px;'>)
