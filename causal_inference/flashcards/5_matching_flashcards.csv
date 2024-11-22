@@ -1,0 +1,28 @@
+question;answer;tags
+"What is the Conditional Independence Assumption (CIA)?";"$(Y^1,Y^0) \perp D \mid X$ (potential outcomes are independent of treatment assignment conditional on covariates X)";matching basic
+"What is Common Support in matching?";"$0<Pr(D=1 \mid X) <1$ (every unit has a positive probability of being in treatment or control group)";matching basic
+"What is subclassification in causal inference?";"A method of satisfying the backdoor criterion by weighting differences in means by strata-specific weights";matching basic
+"How is the ATE estimator defined in subclassification?";"$\widehat{\delta}_{ATE} = \sum_{k=1}^K(\overline{Y}^{1,k} - \overline{Y}^{0,k})\times (\dfrac{N^k_T}{N_T})$ where K are the strata";matching intermediate
+"What is the curse of dimensionality in subclassification?";"The problem where some strata have insufficient units as the dimension of X increases, making estimation difficult";matching intermediate
+"What is exact matching?";"A methodology that matches units with identical or very similar X values to create unit-wise counterfactual estimators";matching basic
+"What distinguishes exact matching from approximate matching?";"Exact matching assumes matched units are 'close enough' without accounting for distance, while approximate matching considers and corrects for distance between matches";matching intermediate
+"How is the Normalized Euclidean distance defined in matching?";"$d_{ij} = \sqrt{\sum_{k=1}^K \dfrac{(X_{ik} - X_{jk})^2}{\sigma_k^2}}$ (distance normalized by variance)";matching advanced
+"What is a covariate in matching context?";"A random variable assigned to individual units prior to treatment that satisfies the backdoor criterion and is exogenous to treatment";matching basic
+"Why do we normalize distances in approximate matching?";"To avoid sensitivity to covariate range and ensure fair comparison across different scales";matching intermediate
+"What is propensity score matching?";"A method that collapses multiple covariates into a single scalar (propensity score) representing the probability of treatment given X";matching basic
+"What is the key theorem behind propensity score matching?";"If CIA holds conditional on X, then it also holds conditional on p(X) (the propensity score)";matching advanced
+"How is the propensity score typically estimated?";"Using logit or probit models to ensure fitted values are bounded between 0 and 1";matching intermediate
+"What is the recommended trimming rule for propensity scores?";"Keep only observations on the interval [0.1,0.9] to ensure proper overlap";matching intermediate
+"What makes a good covariate for matching?";"1. Assigned prior to treatment<br>2. Not affected by treatment<br>3. Not a collider<br>4. Satisfies backdoor criterion";matching intermediate
+"What is bias-corrected matching?";"A matching estimator that accounts for the distance between matches by adjusting for the predicted difference in outcomes";matching advanced
+"How is ATT estimated in approximate matching?";"$\widehat{\delta}_{ATT}^{BC} = \dfrac{1}{N_T} \sum_{D_i=1} [(Y_i - Y_{j(i)}) - (\widehat{\mu}^0(X_i) - \widehat{\mu}^0(X_{j(i)}))]$";matching advanced
+"What are the key assumptions needed for matching methods?";"1. Conditional Independence Assumption (CIA)<br>2. Common Support<br>3. SUTVA";matching basic
+"Why might economists be skeptical of matching methods?";"They often believe selection on unobservables is more important than selection on observables, making CIA questionable";matching intermediate
+"What is the role of DAGs in selecting matching covariates?";"To identify variables that satisfy the backdoor criterion and avoid including colliders";matching intermediate
+"How does propensity score matching address dimensionality?";"By reducing multiple covariates to a single dimension (the propensity score)";matching basic
+"What is the difference between ATE and ATT in matching?";"ATE measures effect for entire population, ATT measures effect only for treated units";matching basic
+"Why is common support important in matching?";"To ensure valid counterfactuals exist for both treatment and control units";matching intermediate
+"What is the advantage of Mahalanobis distance over Euclidean?";"It accounts for covariance structure between variables, making it invariant to scale and correlation";matching advanced
+"What is the purpose of the $(2D_i - 1)$ term in exact matching?";"To switch the sign of the difference depending on whether unit i is in treatment (1) or control (-1)";matching intermediate
+"How does matching differ from regression adjustment?";"Matching focuses on finding similar units for comparison, while regression models the outcome function directly";matching intermediate
+"What are the trade-offs in choosing matching bandwidth?";"Wider bandwidth increases sample size but may introduce bias from less similar matches";matching advanced

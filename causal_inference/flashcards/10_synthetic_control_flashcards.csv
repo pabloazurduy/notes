@@ -1,0 +1,27 @@
+
+question;answer;tags
+"What is Synthetic Control?";"A method that creates a counterfactual by using a weighted average of control units (donor pool) to match pre-treatment characteristics of the treated unit";sc basic
+"What are the two main limitations of Diff-in-Diff that Synthetic Control addresses?";"1. Subjective control group selection introducing bias<br>2. Limited representation capacity of control groups for counterfactuals";sc basic
+"How is the synthetic control optimization problem formulated?";"$\min_{w} \sqrt{(X_1 - X_0 w)^T V (X_1 - X_0 w)}$ subject to $w_j \geq 0$ and $\sum w_j = 1$";sc advanced
+"What are the key constraints in synthetic control weights?";"1. Weights must be non-negative ($w_j \geq 0$)<br>2. Weights must sum to one ($\sum w_j = 1$)";sc basic
+"What is interpolation in synthetic control context?";"Creating counterfactuals using weighted combinations of actual control units, avoiding extrapolation beyond observed data";sc intermediate
+"How does synthetic control avoid extrapolation problems?";"By using interpolation between existing control units rather than extrapolating beyond the support of the data";sc intermediate
+"What is RMSPE in synthetic control?";"Root Mean Square Prediction Error: measure of fit between treated unit and synthetic control in pre-treatment period";sc intermediate
+"How is pre-treatment RMSPE calculated?";"$RMSPE = (\frac{1}{T-T_0} \sum_{t=T_0+t}^T (Y_{1t} - \sum_{j=2}^{J+1} w_j^* Y_{jt})^2)^{\frac{1}{2}}$";sc advanced
+"What is the purpose of the V matrix in synthetic control?";"A diagonal matrix of non-negative components reflecting the relative importance of covariates in the optimization";sc advanced
+"Why use lagged outcome variables as predictors?";"They help capture the effect of unobserved confounders and improve matching quality";sc intermediate
+"What is the placebo test in synthetic control?";"Applying synthetic control method to non-treated units to create a distribution of placebo effects for comparison";sc intermediate
+"How is statistical significance determined in synthetic control?";"By comparing the treatment effect to a distribution of placebo effects from non-treated units";sc basic
+"What is the ratio test in synthetic control?";"Ratio of post-treatment RMSPE to pre-treatment RMSPE, used to assess the magnitude of treatment effects";sc intermediate
+"Why might we drop control units from placebo tests?";"To focus on units with good pre-treatment fit (similar RMSPE to treated unit) for more meaningful comparison";sc intermediate
+"What bias concern did Ferman, Pinto, and Possebom (2020) raise?";"Specification searching in covariate selection can lead to false rejection rates higher than nominal levels";sc advanced
+"How can specification bias be addressed in synthetic control?";"By testing multiple specifications and checking result consistency across different covariate sets";sc intermediate
+"What advantages does synthetic control have over regression?";"1. Avoids extrapolation<br>2. Transparent weight selection<br>3. No access to post-treatment outcomes during design";sc basic
+"Why check pre-treatment fit in synthetic control?";"To ensure the synthetic control provides a credible counterfactual before treatment";sc basic
+"What role do placebo treatment dates play?";"They help verify if the synthetic control can predict outcomes well in non-treatment periods";sc intermediate
+"How is the p-value typically calculated in synthetic control?";"By determining the proportion of placebo effects larger than the treated unit's effect";sc intermediate
+"What makes a good donor pool in synthetic control?";"Units with similar characteristics to treated unit and no exposure to treatment or similar interventions";sc basic
+"Why is transparency an advantage in synthetic control?";"Explicit weights show each control unit's contribution to the counterfactual, making assumptions clear";sc intermediate
+"What is the main difference between synthetic control and DID?";"Synthetic control uses weighted combinations of controls rather than assuming parallel trends across groups";sc intermediate
+"How do we assess common support in synthetic control?";"By examining if control units can adequately reproduce pre-treatment characteristics of treated unit";sc intermediate
+"What role does cross-validation play in synthetic control?";"It helps select optimal model specifications by assessing predictive performance in pre-treatment period";sc advanced
