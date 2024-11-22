@@ -1,0 +1,27 @@
+
+question;answer;tags
+"What is the definition of independent events in probability?";"Two events A and B are independent if and only if P(A|B) = P(A). For independent events, P(A,B) = P(A)P(B).";probability basic
+"What is the Law of Total Probability?";"For any event A and a complete set of events Bn: P(A) = Σn P(A∩Bn)";probability basic
+"State Bayes' Rule.";"P(A|B) = [P(B|A)P(A)]/P(B)";probability basic
+"What are the key properties of expected value for constants and linear combinations?";"E(c) = c<br>E(aX + b) = aE(X) + b<br>E(ΣaiXi) = ΣaiE(Xi)";probability basic
+"What is the relationship between variance and expected value?";"Var(X) = E[(X - E(X))²] = E(X²) - [E(X)]²";probability intermediate
+"How does variance behave with linear transformations?";"For a constant a and random variable X:<br>Var(aX + b) = a²Var(X)";probability intermediate
+"What is covariance and what does it measure?";"Covariance measures linear dependence between two random variables:<br>Cov(X,Y) = E(XY) - E(X)E(Y)";probability intermediate
+"What is the relationship between correlation and covariance?";"Correlation is normalized covariance:<br>Cor(X,Y) = Cov(X,Y)/[√Var(X)√Var(Y)]";probability intermediate
+"What is the zero conditional mean assumption in regression?";"E(u|x) = E(u) = 0 for all values of x, meaning unobserved factors affecting y are uncorrelated with x.";regression basic
+"Why is the zero conditional mean assumption important for causality?";"It allows interpretation of coefficients as causal effects through the conditional expectation function E(y|x) = β₀ + β₁x.";regression advanced
+"What is the formula for the OLS estimator of β₁?";"β̂₁ = Côv(xi,yi)/V̂ar(xi)";regression basic
+"What are the two key properties of OLS residuals?";"1. Sum of residuals is zero: Σû_i = 0<br>2. Sample covariance between explanatory variables and residuals is zero: Σxiûi = 0";regression intermediate
+"What are the components of SST (Total Sum of Squares) decomposition?";"SST = SSE + SSR, where:<br>SST = Σ(yi - ȳ)²<br>SSE = Σ(ŷi - ȳ)²<br>SSR = Σûi²";regression intermediate
+"What is R² and how is it calculated?";"R² = SSE/SST = 1 - SSR/SST = Corr(yi,ŷi)². It represents the fraction of total variation in y explained by x.";regression basic
+"Why shouldn't we fixate on R² in causal inference?";"R² only measures explanatory power, not causality. For causal inference, we need the zero conditional mean assumption E(u|x) = 0.";regression advanced
+"What is the Law of Iterated Expectations (LIE)?";"The LIE states that an unconditional expectation equals the unconditional average of the conditional expectation: E(yi) = E{E(yi|xi)}";regression advanced
+"What is the CEF decomposition property?";"yi = E(yi|xi) + εi, where εi represents the deviation from the conditional expectation.";regression advanced
+"What is the Regression CEF Theorem?";"β = argmin_b E{[E(yi|xi) - xi'b]²}, showing OLS provides best linear approximation to the CEF.";regression advanced
+"How does the variance of the OLS estimator relate to error variance?";"V(β̂₁) = σ²/SST_x, showing estimator precision increases with x variance and decreases with error variance.";regression intermediate
+"What conditions are needed for OLS to be unbiased?";"1. Linear in parameters<br>2. Random sampling<br>3. No perfect collinearity<br>4. Zero conditional mean E(u|x) = 0";regression intermediate
+"What is heteroskedasticity in regression?";"When error variance varies with x: V(u|x) ≠ constant. This affects standard error estimation but not coefficient unbiasedness.";regression intermediate
+"Why do we need variation in the independent variable X?";"Without variation in X (i.e., if Var(X) = 0), we cannot estimate the relationship between X and Y since β̂₁ would be undefined.";regression basic
+"What is the conditional expectation function (CEF)?";"The CEF is E(y|x), representing the mean of outcome y for each value of x. It's the best predictor of y given x in MSE sense.";regression intermediate
+"How can we test for model misspecification?";"1. Plot residuals vs predicted values<br>2. Use Ramsey RESET test<br>3. Check for patterns in residuals<br>4. Test for zero conditional mean violation";regression advanced
+"What happens to OLS estimates when zero conditional mean is violated?";"Estimates become biased and inconsistent, meaning β̂ will not converge to true β even with infinite data.";regression advanced
