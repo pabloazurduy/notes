@@ -95,6 +95,7 @@ dcmp <- us_retail_employment |>
   model(stl = STL(Employed))
 components(dcmp)
 ```
+
 The first row shows $Y_t$ the second is the trend $T_t$, the third is the seasonal $S_t$ and the last is the remainder $R_t$.
 
 ![alt text](img/2_stl_decomposition_plot.png)
