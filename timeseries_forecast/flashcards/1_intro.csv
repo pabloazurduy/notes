@@ -1,0 +1,22 @@
+question;answer;tags
+"What are the three fundamental concepts in forecasting practice?";"1. Forecasting: predicting future based on historical data\n2. Goals: desired outcomes\n3. Planning: actions to align forecasts with goals";timeseries basic
+"What key questions should be addressed when planning a forecast?";"1. Level of aggregation?\n2. Time aggregation level?\n3. Forecast horizon?\n4. Update frequency?";timeseries basic
+"What is an explanatory model in time series?";"A model that uses predictor variables to explain variations in the target variable, e.g., electricity demand as a function of temperature, economy, population, etc.";timeseries basic
+"What is a time series model and how does it differ from explanatory models?";"A model that uses past values of a series to predict future values. Example: EDt+1 = f(EDt, EDt-1, EDt-2, ...). Unlike explanatory models, it only uses historical values.";timeseries intermediate
+"What is a mixed model in time series forecasting?";"A combination of explanatory and time series models that uses both predictor variables and historical values to make predictions";timeseries intermediate
+"Define point forecast in mathematical notation.";"$\\hat{y}_i = E(y_i|\\mathcal{I})$, where $\\hat{y}_i$ is the point forecast and $\\mathcal{I}$ represents all observed information";timeseries basic
+"What is the difference between trend and cycle in time series?";"Trend is a long-term increase or decrease in data, while cycle shows rises and falls not of fixed frequency (usually >2 years duration)";timeseries basic
+"What defines a seasonal pattern in time series?";"A pattern that occurs at fixed and known periods, such as time of year or day of week";timeseries basic
+"What is a seasonal plot and what does it reveal?";"A plot that shows the same time series split by seasonal periods, revealing how patterns change within and across seasons";timeseries intermediate
+"What is a subseasonal plot and how does it differ from a seasonal plot?";"A plot showing data for each season in separate mini time plots, emphasizing seasonal patterns and their changes over time";timeseries intermediate
+"What is the formula for correlation between variables x and y?";"r = Σ(xt-x̄)(yt-ȳ)/[√Σ(xt-x̄)²√Σ(yt-ȳ)²]";timeseries basic
+"What is the standard formula for correlation between variables x and y?";"$r = \\frac{\\sum(x_t-\\bar{x})(y_t-\\bar{y})}{\\sqrt{\\sum(x_t-\\bar{x})^2}\\sqrt{\\sum(y_t-\\bar{y})^2}}$";timeseries basic
+"What is a lag plot and what does it reveal about time series?";"A scatter plot of a time series against a lag of itself. Clustering along diagonal suggests autocorrelation.";timeseries intermediate
+"Define autocorrelation and its mathematical formula.";"Correlation between yt and yt-k. rk = Σ(yt-ȳ)(yt-k-ȳ)/Σ(yt-ȳ)². Measures relationship between observations at different time lags.";timeseries advanced
+"What is a correlogram and what does it show?";"A plot of autocorrelation function (ACF) values against lag k. Shows correlation structure and patterns in time series.";timeseries intermediate
+"How do you interpret ACF for trended data?";"Trended data shows large positive autocorrelations at small lags that slowly decrease as lag increases";timeseries intermediate
+"How do you interpret ACF for seasonal data?";"Seasonal data shows larger autocorrelations at seasonal lags (multiples of seasonal period) compared to other lags";timeseries intermediate
+"What is white noise in time series?";"A series where observations are uncorrelated and 95% of ACF spikes lie within ±1.96/√T bounds";timeseries basic
+"What does strong correlation at lag k=4 in quarterly data indicate?";"Indicates yearly seasonality, as observations are correlated with values from the same quarter in previous years";timeseries intermediate
+"How do you calculate the bounds for white noise in ACF plots?";"Bounds = ±1.96/√T, where T is the length of the time series. Used to test if series is significantly different from white noise.";timeseries advanced
+"What are h-step ahead forecasts and how are they notated?";"Forecasts h periods into future: ŷT+h|T = E(YT+h|Y1,...,YT), based on information available at time T";timeseries advanced

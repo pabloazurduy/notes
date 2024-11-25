@@ -1,0 +1,21 @@
+question;answer;tags
+"What is ACF(k) in time series features?";"The autocorrelation at lag k, measuring the correlation between time series values k periods apart";features basic
+"What does SUM_ACF10 measure and why is it useful?";"Sum of first squared 10 autocorrelations; indicates total autocorrelation in a time series and overall predictability";features intermediate
+"What is diff_ACF(k) and how is it calculated?";"Autocorrelation of the differenced series (ht = yt - yt-1) at lag k; measures correlation in changes rather than levels";features intermediate
+"How is seasonal strength calculated in STL decomposition?";"$F_s = \\max(0, 1 - \\text{Var}(R_t)/\\text{Var}(S_t + R_t))$, measuring proportion of variance explained by seasonal component";features advanced
+"How is trend strength calculated in STL decomposition?";"$F_t = \\max(0, 1 - \\text{Var}(R_t)/\\text{Var}(T_t + R_t))$, measuring proportion of variance explained by trend component";features advanced
+"What does seasonal_peak_year indicate?";"The timing (month/quarter) containing largest seasonal component, indicating peak seasonal behavior";features basic
+"What does seasonal_trough_year indicate?";"The timing (month/quarter) containing smallest seasonal component, indicating lowest seasonal point";features basic
+"What is spikiness and how is it measured?";"Variance of leave-one-out variances of remainder component Rt; measures prevalence of spikes in residuals";features advanced
+"What does linearity measure in time series features?";"Coefficient of linear regression applied to trend component, indicating strength of linear trend";features intermediate
+"What does curvature measure and how is it calculated?";"Based on coefficient from orthogonal quadratic regression on trend component; measures non-linear trend behavior";features advanced
+"What is stl_e_acf1?";"First autocorrelation coefficient of the remainder series; measures short-term dependence in residuals";features intermediate
+"What is stl_e_acf10?";"Sum of squares of first ten autocorrelation coefficients of remainder series; measures overall residual dependence";features intermediate
+"What is the Box-Pierce statistic used for?";"Testing if a time series is white noise; provides formal test of randomness in series";features intermediate
+"What is the Guerrero feature used for?";"Finding optimal λ value for Box-Cox transformation to stabilize variance";features advanced
+"How do seasonal strength and trend strength complement each other?";"They measure relative importance of seasonal and trend components in explaining series variation; helps identify dominant patterns";features intermediate
+"What's the relationship between ACF features and series predictability?";"Strong ACF values indicate high predictability; weak values suggest more random behavior";features intermediate
+"How do STL features help in choosing decomposition method?";"Strong seasonal/trend strengths suggest need for respective components in decomposition; weak values suggest simpler models";features advanced
+"What does high spikiness indicate about a time series?";"Suggests presence of outliers or irregular patterns that might need special handling in modeling";features intermediate
+"How can linearity and curvature guide model selection?";"High linearity suggests linear trends sufficient; high curvature indicates need for non-linear modeling";features advanced
+"Why are both ACF and STL features important for time series analysis?";"ACF reveals temporal dependencies while STL features capture structural components; together provide comprehensive series characterization";features advanced

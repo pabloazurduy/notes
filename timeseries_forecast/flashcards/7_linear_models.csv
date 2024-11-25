@@ -1,0 +1,21 @@
+question;answer;tags
+"What is the basic form of a linear regression model for time series forecasting?";"$y_t = \\beta_0 + \\beta_1x_t + \\varepsilon_t$, where $y_t$ is the time series value, $x_t$ is the predictor, and $\\varepsilon_t$ is the error term";linear_models basic
+"How can linear trend be incorporated into a time series regression model?";"By adding time t as a regressor to capture and clean up the trend component of the time series";linear_models basic
+"What are dummy variables in time series regression?";"Binary variables used to capture seasonal effects, weekdays, holidays, or other categorical influences on the time series";linear_models basic
+"What is the purpose of distributed lags in time series regression?";"To capture sustained time effects of a variable over multiple periods, like advertising impact over several months";linear_models intermediate
+"What are intervention variables and how do they differ from dummies?";"Variables that capture effects that persist over multiple periods once activated, unlike dummy variables that are periodic";linear_models intermediate
+"What is the basic formula for Fourier terms in seasonal modeling?";"$S_k(t) = \\sin(2\\pi kt/m)$ and $C_k(t) = \\cos(2\\pi kt/m)$, where $m$ is seasonal period and $k$ is frequency";linear_models advanced
+"Why are Fourier terms useful for seasonal patterns?";"They can approximate any periodic function and are especially useful for long seasonal periods as an alternative to dummy variables";linear_models intermediate
+"How is Adjusted R-squared calculated and what does it measure?";"$\\bar{R}^2 = 1-(1-R^2)(T-1)/(T-k-1)$; measures model fit while penalizing for additional predictors";linear_models intermediate
+"What is AIC and what does it measure in model selection?";"Akaike Information Criterion; measures information loss, balancing model fit against complexity";linear_models intermediate
+"How does BIC differ from AIC in feature selection?";"BIC has a larger penalty for additional predictors, typically resulting in simpler models than AIC";linear_models advanced
+"What is the main advantage of AICc over AIC?";"AICc corrects for small sample sizes where AIC tends to select too many predictors";linear_models intermediate
+"What are the steps in backward stepwise regression?";"1. Start with all predictors 2. Remove one at a time 3. Keep model if accuracy improves 4. Repeat until no improvement";linear_models basic
+"When should you use forward stepwise regression instead of backward?";"When the number of potential predictors is too large to start with a full model";linear_models intermediate
+"What is the difference between ex-ante and ex-post forecasts?";"Ex-ante uses predicted values of predictors, ex-post uses actual values; ex-post isn't a true forecast but useful for model evaluation";linear_models intermediate
+"What is harmonic regression?";"Regression using Fourier terms to model seasonal patterns, where K terms are used to approximate the seasonal wave form";linear_models advanced
+"How do you determine the number of Fourier terms (K) to include?";"Choose K that minimizes AIC, typically with K ≤ m/2 where m is the seasonal period";linear_models advanced
+"Why might you use scenario forecasting with regression models?";"To explore different possible futures by assuming different values for predictors rather than forecasting them";linear_models intermediate
+"What's the relationship between AIC and leave-one-out cross-validation?";"AIC approximates leave-one-out cross-validation MSE for linear models, providing faster computation";linear_models advanced
+"How can comparing ex-ante and ex-post forecasts be useful?";"It helps separate forecast errors due to poor predictor forecasts from errors due to poor model specification";linear_models advanced
+"What is the computational complexity of testing all possible predictor combinations?";"2^n where n is number of predictors, which is why stepwise methods are often used instead";linear_models intermediate

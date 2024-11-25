@@ -1,0 +1,41 @@
+question;answer;tags
+"What is dynamic regression in time series?";"A model that extends ARIMA by including exogenous variables while allowing autocorrelation in errors";dynamic_reg basic
+"What is a hierarchical time series?";"Time series that can be naturally disaggregated by various attributes in a nested structure";hierarchical basic
+"What are the main approaches for hierarchical forecasting?";"Bottom-up, top-down, and middle-out approaches for generating coherent forecasts across hierarchy levels";hierarchical intermediate
+"How does bottom-up hierarchical forecasting work?";"Generate forecasts for bottom-level series first, then aggregate upward to produce higher-level forecasts";hierarchical basic
+"What is the formula for average historical proportions in top-down forecasting?";"$p_j=\frac{1}{T}\sum_{t=1}^{T}\frac{y_{j,t}}{y_t}$ where $p_j$ is the proportion for series j";hierarchical advanced
+"How does multiple seasonality manifest in time series?";"Through different periodic patterns occurring simultaneously (e.g., daily, weekly, and annual patterns in hourly data)";advanced basic
+"What is Croston's method used for?";"Forecasting intermittent demand or time series with many zero values";advanced intermediate
+"How is Croston's forecast calculated?";"$\hat{y}_{T+h|T} = \hat{q}_{j+1|j}/\hat{a}_{j+1|j}$ where q represents non-zero demands and a inter-arrival times";advanced advanced
+"What are the challenges with weekly data?";"Non-integer seasonal period (52.18 weeks per year) makes traditional seasonal methods ineffective";advanced intermediate
+"How can moving holidays be handled in forecasting?";"Using dummy variables in models like ARIMA or specialized functions like prophet() with holiday() features";advanced intermediate
+"What is the proportion formula for historical averages in top-down forecasting?";"$p_j=(\sum_{t=1}^{T}\frac{y_{j,t}}{T})/(\sum_{t=1}^{T}\frac{y_t}{T})$";hierarchical advanced
+"How does STL handle multiple seasonality?";"By decomposing the series into multiple seasonal components with different periods plus trend and remainder";advanced intermediate
+"What are Fourier terms used for in complex seasonality?";"To model multiple seasonal patterns using sine and cosine terms with different seasonal periods";advanced intermediate
+"What is coherency in hierarchical forecasting?";"The property where forecasts at different levels sum up appropriately according to the hierarchy structure";hierarchical intermediate
+"Why might bottom-up forecasting be preferred over top-down?";"It preserves detail in lower-level series and often produces more accurate forecasts at disaggregated levels";hierarchical intermediate
+"What is the main limitation of Croston's method?";"It doesn't properly account for the discrete nature of count data despite being commonly used";advanced intermediate
+"How can discrete data be properly handled in forecasting?";"Using methods like Poisson regression, zero-inflated models, or Bayesian models with appropriate priors";advanced intermediate
+"What is dynamic harmonic regression?";"A regression model using Fourier terms for seasonality combined with ARIMA errors";advanced intermediate
+"How are multiple seasonal periods specified in STL?";"By explicitly defining each seasonal period in the decomposition (e.g., season(period=24) + season(period=168))";advanced intermediate
+"What's the benefit of forecast-based proportions in top-down approaches?";"They account for changing proportions over time, unlike historical proportions";hierarchical intermediate
+"What are the components of a complex seasonality model in daily data?";"Daily pattern, weekly pattern, and potentially annual pattern";advanced intermediate
+"How do you handle missing values in hierarchical forecasting?";"By either using methods that can handle missing values directly or imputing values that maintain hierarchical consistency";hierarchical intermediate
+"What is the relationship between K and seasonal periods in Fourier terms?";"K determines number of sine-cosine pairs, with larger K capturing more complex seasonal patterns";advanced intermediate
+"How does the prophet() function handle holidays differently from ARIMA?";"Prophet has built-in holiday() features that can automatically adjust for multiple holiday effects and their windows";advanced intermediate
+"What are the key assumptions in Croston's method?";"Demand sizes and intervals between demands are independent, and both follow simple exponential smoothing";advanced intermediate
+"How do you determine optimal Fourier terms K for multiple seasonality?";"By comparing models with different K values using accuracy metrics like AICc or cross-validation";advanced advanced
+"What is the advantage of using STL for multiple seasonality?";"It can handle any number of seasonal components flexibly and decompose them separately";advanced intermediate
+"How do time series aggregation levels affect forecast accuracy?";"Lower levels typically have more noise but better capture local patterns, while higher levels are smoother but may miss details";hierarchical intermediate
+"What is the middle-out approach in hierarchical forecasting?";"Forecasting at a middle level, then aggregating up and disaggregating down from that level";hierarchical intermediate
+"How do you handle non-linear trends in dynamic regression?";"By including polynomial terms or using transformation of time variable in the regression component";dynamic_reg intermediate
+"What is the impact of correlation between predictors in dynamic regression?";"Multicollinearity can make coefficient estimates unstable and hard to interpret";dynamic_reg advanced
+"How do you test for residual autocorrelation in dynamic regression?";"Using ACF plots and Ljung-Box test on the model residuals";dynamic_reg intermediate
+"What are the advantages of forecast reconciliation?";"Improves overall forecast accuracy and ensures coherence across all levels of hierarchy";hierarchical advanced
+"How do you handle heteroscedasticity in dynamic regression?";"Using weighted least squares or variance-stabilizing transformations";dynamic_reg advanced
+"What is the effect of outliers on hierarchical forecasting?";"They can distort proportions and relationships between levels, requiring robust methods or cleaning";hierarchical intermediate
+"How do you choose between bottom-up and top-down approaches?";"Consider data quality at each level, forecasting purpose, and computational resources";hierarchical intermediate
+"What is the role of cross-validation in multiple seasonality models?";"To validate model performance and avoid overfitting with complex seasonal patterns";advanced intermediate
+"How do you handle changing seasonal patterns over time?";"Using dynamic harmonic regression or methods that allow for evolving seasonality";advanced advanced
+"What are the computational challenges with high-frequency hierarchical data?";"Large data volumes and complex seasonal patterns require efficient algorithms and possibly parallel processing";advanced advanced
+"How do you incorporate external regressors in hierarchical forecasting?";"Including them at appropriate levels while maintaining coherence across the hierarchy";hierarchical advanced

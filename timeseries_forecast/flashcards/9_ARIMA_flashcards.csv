@@ -1,0 +1,27 @@
+
+question;answer;tags
+"What does ARIMA stand for in time series analysis?";"AutoRegressive Integrated Moving Average - a model combining autoregression, differencing, and moving average components";arima basic
+"What is the basic structure of an AR(1) model?";"$y_t = c + \phi_1y_{t-1} + \varepsilon_t$, where $\phi_1$ is the autoregressive parameter and $\varepsilon_t$ is white noise";arima basic
+"How do you interpret the value of φ in an AR(1) model?";"φ > 0 indicates positive correlation with previous values, φ < 0 indicates negative correlation, |φ| < 1 for stationarity";arima intermediate
+"What is the difference between AR and MA models?";"AR models use past values (yt-1), while MA models use past errors (εt-1) to predict current values";arima basic
+"What is the general form of an MA(1) model?";"$y_t = c + \varepsilon_t + \theta_1\varepsilon_{t-1}$, where θ1 is the moving average parameter";arima intermediate
+"What does the 'd' parameter represent in ARIMA(p,d,q)?";"The number of differences needed to make the time series stationary";arima basic
+"How do you interpret ARIMA(1,1,1) model structure?";"One autoregressive term (p=1), first difference (d=1), and one moving average term (q=1)";arima intermediate
+"What is the purpose of differencing in ARIMA models?";"To make non-stationary time series stationary by removing trends and seasonal patterns";arima basic
+"What is the formula for first differencing?";"$y'_t = y_t - y_{t-1}$ or $\nabla y_t$, removes linear trends";arima intermediate
+"What is the formula for second differencing?";"$y''_t = \nabla(y'_t) = \nabla^2y_t$, removes quadratic trends";arima intermediate
+"How do you determine if a series needs differencing?";"Using unit root tests (like KPSS or ADF) or examining ACF plots for slow decay";arima intermediate
+"What is the difference between seasonal and regular differencing?";"Regular differencing removes trends (∇yt), seasonal differencing removes seasonal patterns (∇myt)";arima intermediate
+"What is backshift notation and how is it used?";"Notation where By_t = y_{t-1}, simplifies writing ARIMA equations, e.g., (1-B)y_t = y_t - y_{t-1}";arima advanced
+"How do you write ARIMA(1,1,1) using backshift notation?";"$(1-\phi_1B)(1-B)y_t = c + (1+\theta_1B)\varepsilon_t$";arima advanced
+"What is the difference between ARIMA and SARIMA models?";"SARIMA adds seasonal components (P,D,Q)m to regular ARIMA(p,d,q) structure";arima intermediate
+"How do you interpret ACF and PACF plots for model selection?";"ACF shows direct correlations at all lags, PACF shows correlation at specific lag controlling for intermediate lags";arima intermediate
+"What pattern in ACF/PACF suggests an AR(1) model?";"PACF cuts off after lag 1, ACF decays exponentially";arima advanced
+"What pattern in ACF/PACF suggests an MA(1) model?";"ACF cuts off after lag 1, PACF decays exponentially";arima advanced
+"What is the invertibility condition for MA models?";"All roots of MA polynomial must lie outside unit circle, typically |θ| < 1 for MA(1)";arima advanced
+"What is the stationarity condition for AR models?";"All roots of AR polynomial must lie outside unit circle, typically |φ| < 1 for AR(1)";arima advanced
+"How do you handle seasonal ARIMA model selection?";"Look for significant spikes at seasonal lags in ACF/PACF and use seasonal differencing if needed";arima advanced
+"What's the difference between additive and multiplicative seasonality in SARIMA?";"Additive seasonality has constant amplitude, multiplicative has amplitude proportional to level";arima intermediate
+"Why might you choose ARIMA over ETS models?";"When data shows complex correlation structures, or when you need to include external regressors";arima intermediate
+"What is the role of information criteria (AIC/BIC) in ARIMA modeling?";"Help select optimal order (p,d,q) by balancing model complexity against fit";arima intermediate
+"How do you interpret residual diagnostics in ARIMA models?";"Check for normality, independence (Ljung-Box test), and constant variance in residuals";arima advanced

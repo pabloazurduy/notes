@@ -1,0 +1,26 @@
+question;answer;tags
+"What is Simple Exponential Smoothing (SES) and when is it appropriate?";"A method for forecasting data with no clear trend or seasonality, where forecasts are weighted averages of past observations";exponential_smoothing basic
+"What is the basic formula for Simple Exponential Smoothing?";"$\\hat{y}_{t+1} = \\alpha y_t + (1-\\alpha)\\hat{y}_t$ where $\\alpha$ is the smoothing parameter between 0 and 1";exponential_smoothing basic
+"How does the smoothing parameter α affect forecasts in SES?";"Larger α gives more weight to recent observations, smaller α produces smoother forecasts";exponential_smoothing basic
+"What are the components considered in ETS models?";"Error (E), Trend (T), and Seasonal (S) components, each can be None (N), Additive (A), or Multiplicative (M)";exponential_smoothing intermediate
+"What is the difference between additive and multiplicative seasonality?";"Additive seasonality has constant magnitude over time, multiplicative seasonality changes proportionally with level";exponential_smoothing intermediate
+"How does Holt's method differ from Simple Exponential Smoothing?";"Holt's adds a trend component with separate smoothing parameters for level and trend";exponential_smoothing basic
+"What are the two smoothing parameters in Holt's method?";"α for level and β for trend";exponential_smoothing basic
+"What is damped trend and why is it useful?";"Trend that gradually flattens over time, often more realistic for long-term forecasts";exponential_smoothing intermediate
+"How does damping factor φ affect trend in exponential smoothing?";"φ < 1 reduces trend impact over time; smaller φ means faster damping";exponential_smoothing intermediate
+"What are the three parameters in Holt-Winters' method?";"α (level), β (trend), and γ (seasonal) smoothing parameters";exponential_smoothing intermediate
+"What is the key difference between ETS(A,A,N) and ETS(M,A,N)?";"ETS(A,A,N) has additive errors while ETS(M,A,N) has multiplicative errors";exponential_smoothing advanced
+"How do you choose between additive and multiplicative seasonality?";"Use additive when seasonal variations are constant, multiplicative when they change with series level";exponential_smoothing intermediate
+"What is the advantage of state space models in exponential smoothing?";"They provide a framework for calculating prediction intervals and likelihood estimation";exponential_smoothing advanced
+"How are initial values typically chosen in exponential smoothing?";"Often estimated by minimizing sum of squared errors over first few observations";exponential_smoothing intermediate
+"What is the relationship between α and the weighted average age of data?";"Average age of data = $(1-\\alpha)/\\alpha$; smaller $\\alpha$ means older data has more influence";exponential_smoothing advanced
+"Why might you choose damped trend over regular trend?";"Damped trend often provides more realistic long-term forecasts by preventing explosive growth";exponential_smoothing intermediate
+"What is the main limitation of Simple Exponential Smoothing?";"Cannot handle trend or seasonal patterns well, only suitable for level data";exponential_smoothing basic
+"How does multiplicative error differ from additive error?";"Multiplicative errors scale with level of series, additive errors remain constant";exponential_smoothing advanced
+"What are the common methods for optimizing smoothing parameters?";"Maximum likelihood estimation or minimizing sum of squared errors";exponential_smoothing intermediate
+"Why is ETS(A,A,A) called 'Holt-Winters' additive method'?";"It combines Holt's trend method with additive seasonal components as developed by Winters";exponential_smoothing intermediate
+"What is the key advantage of ETS models over classical decomposition?";"ETS models automatically adjust components over time rather than assuming they're fixed";exponential_smoothing advanced
+"How do you interpret the three letters in ETS(A,A,N)?";"First letter (A) is Error type, second (A) is Trend type, third (N) is Seasonal type";exponential_smoothing basic
+"What happens when all smoothing parameters are set to zero?";"Forecasts become equivalent to naive forecasts using initial values";exponential_smoothing intermediate
+"Why might you use multiplicative errors instead of additive?";"When forecast errors are proportional to series level rather than constant";exponential_smoothing advanced
+"What is the main advantage of state space formulation?";"Provides consistent framework for handling various types of exponential smoothing and calculating prediction intervals";exponential_smoothing advanced

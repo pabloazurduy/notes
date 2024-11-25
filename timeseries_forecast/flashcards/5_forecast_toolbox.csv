@@ -1,0 +1,31 @@
+question;answer;tags
+"What are the main steps in the tidy forecasting process?";"1. Preparing data 2. Data visualization 3. Specifying model 4. Model estimation 5. Accuracy evaluation 6. Producing forecasts";forecasting basic
+"What is the Simple Mean forecasting method?";"A method where all future values are forecast as equal to the historical data average (mean)";forecasting basic
+"How does the Naïve forecasting method work?";"All future values are set equal to the last observed value in the time series";forecasting basic
+"What is the key difference between Naïve and Seasonal Naïve methods?";"Seasonal Naïve uses the last observed value from the same season, while Naïve uses the last overall observation";forecasting basic
+"How is the Drift method different from the Naïve method?";"Drift allows forecasts to increase/decrease over time based on the average historical change, essentially drawing a line between first and last observations";forecasting intermediate
+"What are residuals in forecasting?";"The difference between observed values and their forecasts: $e_t = y_t - \\hat{y}_t$";forecasting basic
+"What are the key assumptions needed for residual inference?";"1. Uncorrelated residuals 2. Zero mean residuals 3. Normal distribution (optional) 4. Constant variance (optional)";forecasting intermediate
+"What is the purpose of the Box-Pierce test?";"To check if residuals are indistinguishable from white noise, testing for randomness in the series";forecasting intermediate
+"What's the difference between Box-Pierce and Ljung-Box tests?";"Ljung-Box is more accurate for small samples, but both test how similar residuals are to white noise";forecasting advanced
+"Why does forecast variance tend to increase with horizon h?";"Because prediction errors accumulate over time as the forecast extends further into the future";forecasting intermediate
+"What is the standard formula for prediction intervals with normal distribution?";"$\\hat{y}_{T+h|T} \\pm 1.96 \\times \\sigma_h$, providing a 95% confidence interval";forecasting intermediate
+"What special consideration is needed when forecasting transformed data?";"The errors are normal in transformed space, not original space, requiring back-transformation of means and predictions";forecasting advanced
+"How does STL forecasting work?";"1. Forecast seasonal component using SNAIVE 2. Forecast adjusted component with trend methods 3. Combine both forecasts";forecasting intermediate
+"What is MAE and what are its limitations?";"Mean Absolute Error; main limitation is being scale-dependent, making it hard to compare across different series";forecasting basic
+"Why was sMAPE developed as an alternative to MAPE?";"To address MAPE's problems with zero/near-zero values and asymmetric penalty between positive and negative errors";forecasting intermediate
+"What is the main advantage of scaled errors like MASE?";"They are scale-independent and can be compared across different time series";forecasting intermediate
+"How is MASE calculated for seasonal data?";"By scaling errors against the seasonal naive forecast's MAE: $q_j = \\frac{e_j}{\\frac{1}{T-m}\\sum_{t=m+1}^T |y_t-y_{t-m}|}$";forecasting advanced
+"What is a quantile forecast?";"A forecast value fp,t where we expect the observation yt to be less than fp,t with probability p";forecasting intermediate
+"What does the Winkler score measure?";"Combines prediction interval width with penalties for observations outside the interval, balancing precision and accuracy";forecasting advanced
+"How does CRPS differ from other forecast evaluation metrics?";"It evaluates the entire distributional forecast by averaging all possible quantile scores";forecasting advanced
+"What is the key principle of time series cross-validation?";"Using multiple training-test splits that respect time ordering, with each test set following its training data";forecasting intermediate
+"What's the purpose of the 'gap' parameter in time series cross-validation?";"To discard observations between train and test sets, useful when dealing with seasonal or cyclical data";forecasting intermediate
+"When should you use RMSE vs MAE?";"RMSE when large errors are particularly undesirable (squares errors), MAE for linear error impact";forecasting intermediate
+"What makes MASE particularly useful for comparing forecasts?";"It's scale-free and interpretable: values < 1 indicate better performance than naive forecast";forecasting intermediate
+"How can you interpret a MASE value of 0.8?";"The forecast errors are 20% smaller than would be obtained using the naive forecast method";forecasting intermediate
+"Why might you choose sMAPE over MAPE?";"When dealing with data that might contain zeros or near-zeros, as sMAPE handles these cases better";forecasting intermediate
+"What's the main advantage of using scaled errors for evaluation?";"They allow fair comparisons between forecasts on different scales and across different time series";forecasting advanced
+"How does the CRPS skill score help in model comparison?";"It normalizes CRPS against a naive forecast, making it easier to interpret relative performance";forecasting advanced
+"What are the key components needed to implement time series cross-validation?";"Forecast horizon (h), number of splits, minimum training size, and optional gap between train and test sets";forecasting intermediate
+"When should you use distributional forecasts instead of point forecasts?";"When uncertainty quantification is important and you need to understand the range of possible outcomes";forecasting advanced

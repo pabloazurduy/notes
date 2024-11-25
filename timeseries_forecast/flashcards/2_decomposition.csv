@@ -1,0 +1,21 @@
+question;answer;tags
+"What are the three main components of time series decomposition?";"A time series can be decomposed into: 1) Seasonal component (St), 2) Trend-cycle component (Tt), and 3) Remainder component (Rt)";decomposition basic
+"What is the formula for additive decomposition?";"$y_t = S_t + T_t + R_t$, where $y_t$ is the data, $S_t$ is seasonal, $T_t$ is trend-cycle, and $R_t$ is remainder component";decomposition basic
+"What is the formula for multiplicative decomposition?";"$y_t = S_t \\times T_t \\times R_t$, where $y_t$ is the data, $S_t$ is seasonal, $T_t$ is trend-cycle, and $R_t$ is remainder component";decomposition basic
+"When should you use additive vs multiplicative decomposition?";"Use additive when seasonal fluctuations don't vary with level. Use multiplicative when seasonal variations are proportional to series level";decomposition intermediate
+"What is a Box-Cox transformation and why is it useful?";"A family of transformations that includes both logarithms and power transformations. It's useful to make seasonal variations more consistent across the series";decomposition intermediate
+"What are the key values of λ in Box-Cox transformations?";"λ=1: no transformation\nλ=1/2: square root\nλ=0: natural logarithm\nλ=-1: inverse +1";decomposition intermediate
+"How does logarithmic transformation affect multiplicative decomposition?";"It converts multiplicative relationships into additive ones: log(yt) = log(St) + log(Tt) + log(Rt)";decomposition intermediate
+"What is seasonally adjusted data?";"For additive: yt - St = Tt + Rt\nFor multiplicative: yt/St = Tt × Rt\nIt's the data with seasonal component removed to reveal underlying trend";decomposition basic
+"What is a moving average (MA) and what does it estimate?";"An m-MA averages m consecutive values centered on time t to estimate the trend-cycle component (Tt). Formula: T̂t = (1/m)Σyt+j from j=-k to k";decomposition basic
+"Why are odd-order moving averages commonly used?";"Odd-order MAs are symmetric, averaging k observations on either side of the middle value, making them more balanced for trend estimation";decomposition intermediate
+"What is a 2×m MA and when is it used?";"A 2×m MA is used for even-order moving averages. It averages two consecutive m-MA values to center the trend estimate properly";decomposition advanced
+"How does classical decomposition estimate seasonal components?";"1. Calculate trend using MA\n2. Detrend data by subtracting/dividing trend\n3. Average detrended values for each season\n4. Adjust seasonal components to sum to zero (additive) or m (multiplicative)";decomposition advanced
+"What are the main advantages of STL decomposition?";"1. Handles any seasonality type\n2. Seasonal component can change over time\n3. Controllable trend-cycle smoothness\n4. Can be robust to outliers";decomposition intermediate
+"What are the three main parameters in STL decomposition?";"1. trend window: controls trend smoothness\n2. season window: controls seasonal variation\n3. season 'periodic' option: for constant seasonality";decomposition intermediate
+"What population transformations are commonly used?";"Converting data to per-capita values (per person, per thousand, or per million) to remove population growth effects";decomposition basic
+"What are common calendar adjustments in time series?";"Adjustments for: 1) Number of working days in month\n2) Number of days in month\n3) Holidays and special events";decomposition basic
+"How is inflation adjustment performed?";"Using price index (z): If yt is original price, adjusted price xt = yt/zt × z2000 gives values in year 2000 dollars";decomposition intermediate
+"Why are logarithmic transformations useful?";"They make changes interpretable as relative (percentage) changes and can convert multiplicative relationships to additive ones";decomposition basic
+"How do you identify if data needs multiplicative decomposition?";"Check if seasonal variation increases with the level of the series. If seasonal patterns grow proportionally with level, use multiplicative";decomposition intermediate
+"What does the STL acronym stand for and what makes it versatile?";"'Seasonal and Trend decomposition using Loess'. Versatile because it handles any seasonality type, allows changing seasonal patterns, and can be robust to outliers";decomposition advanced
