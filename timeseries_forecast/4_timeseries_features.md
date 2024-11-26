@@ -13,13 +13,13 @@ here most of the features comes from the package `feats` that automatically esti
 
 ### STL features
 
-1. `seasonal_strength` : 
-    The strength of the seasonal component is    defined as the proportion of the variance of the seasonal component to the total variance of the time series.. So we define the strength of trend as:
+1. `trend_strength` : 
+    The strength of the trend component is defined as the proportion of the variance of the trend component to the total variance of the time series. So we define the strength of trend as:
     $$
     F_T = \max\left(0, 1 - \frac{\text{Var}(R_t)}{\text{Var}(T_t+R_t)}\right).
     $$
     This will give a measure of the strength of the trend between 0 and 1, the closer to 1 the stronger the trend (or explains more of the variance of the time series).
-1. `seasonal_streght`:
+1. `seasonal_strength`:
     The strength of seasonality is defined similarly, but with respect to the detrended data rather than the seasonally adjusted data:
     $$
     F_S = \max\left(0, 1 - \frac{\text{Var}(R_t)}{\text{Var}(S_{t}+R_t)}\right).
