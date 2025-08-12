@@ -78,9 +78,12 @@ but the $y$ is different in both regressions, in the *within* method $y_i = y_i-
 
 Given that we estimate the effect _"within"_ entities, we will weight the higher variance entities and omit the effect of the lower ones (because, yes, that's why we call it "mean" effect). There is a way to "fix that" [weighting by variance][1]. 
 
-### Two Way Fixed Effects 
+### Notes from Panel Data [The Brave and True]
 
-> TODO 
+Using the Panel data (and therefore DnD -thinking that DnD is just a specific case of Panel data) we have an easier time if we want to estimate ATT vs ATC (or ATE). The reason is that we have $Y(0)$ data for all the units pre treatment, so we can "extrapolate" easier the conterfactual for the treated units as control than the other way around. we only have $Y(1)$ for the treated units on the period after the intervention. 
+
+
+<img src="img/panel_causal_inf_python_atc.png" style='height:300px;'>
 
 
 
