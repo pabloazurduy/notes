@@ -113,7 +113,7 @@ where
 - $\alpha_i$ is the unit fixed effect.
 - $\gamma_t$ is the time fixed effect.
 - $W_{i,t}$ is the treatment status of unit $i$ at time $t$. (1 if treated, 0 otherwise)
-- $\epsilon_{i,t}$ is the idiosyncratic error term.
+- $\epsilon_{i,t}$ error
 
 ## Assumption: Strict Exogeneity
 
@@ -129,8 +129,7 @@ This translates into two main principles:
 
 ## Dynamic effect overtime (Lags and Leads)
 
-S
-
+Similar to [Lags and Leads](the_mixtape_summary_7.md#leads-and-lags), we can use leads and lags to check the parallel trends assumption (PTA) and the non-anticipatory assumption.
 
 [comment]: References
 [1]: <https://theeffectbook.net/ch-FixedEffects.html#:~:text=address%20the%20problem.-,23,-23%20The%20Gibbons>
