@@ -19,9 +19,9 @@ $$Y_{i,t} = \delta D_{i,t} + u_i + \varepsilon_{i,t}$$
 
 we will call $u_i$ the _"unobserved heterogeneity"_ (that varies by entity but not over time). and $\varepsilon_{i,t}$ called the "idiosyncratic error" will be the time-varying unobserved factors that determinate $Y_{i,t}$. Adding this factor is the same as adding a control by entity $u_i$, at the end $u_i$ is another parameter that we need to fit in our regression ( $\beta_i$ )
 
-**Why not run directly the regression?** $Y_{i,t} \sim D_{i,t}$?. we will get something like this:
+**Why not run directly the regression?** $Y_{i,t} \sim D_{i,t}$ ?. we will get something like this:
 
-$$Y_{i,t} = \delta D_{i,t} + \eta_{i,t}$$ 
+$$Y_{i,t} = \delta D_{i,t} + \eta_{i,t}$$
 
 where $\eta_{i,t} = u_i + \varepsilon_{i,t}$ is a composite error. that means that we have to assume  that $u_i \bot D_{i,t}$ This a assumption that is rarely hold in observational studies, the dag presented at the begging also explicitly link $u_i$ with $D_{i,t}$ breaking this premise.
 
@@ -78,14 +78,60 @@ but the $y$ is different in both regressions, in the *within* method $y_i = y_i-
 
 Given that we estimate the effect _"within"_ entities, we will weight the higher variance entities and omit the effect of the lower ones (because, yes, that's why we call it "mean" effect). There is a way to "fix that" [weighting by variance][1]. 
 
-### Notes from Panel Data [The Brave and True]
+## Notes from Panel Data + DnD [The Brave and True] 
 
 Using the Panel data (and therefore DnD -thinking that DnD is just a specific case of Panel data) we have an easier time if we want to estimate ATT vs ATC (or ATE). The reason is that we have $Y(0)$ data for all the units pre treatment, so we can "extrapolate" easier the conterfactual for the treated units as control than the other way around. we only have $Y(1)$ for the treated units on the period after the intervention. 
 
 
 <img src="img/panel_causal_inf_python_atc.png" style='height:300px;'>
 
+The parallel trends assumption is not scale invariant. The third plot from the following plots simply takes the data from the first plot and applies the log transformation to the outcome. This transformation takes a trend that was parallel and makes it convergent. I’m showing this to warn you to be very careful with DID. For instance, if you have level data, but want to measure the effect as a percent change, converting the outcome to a percentage can mess up your trends.
+
+<img src="img/panel_parallel_trend_assumption.png" style='height:300px;'>
+
+In the paper “When Is Parallel Trends Sensitive to Functional Form?” Jonathan Roth and Pedro Sant’Anna derive a more strict
+version of parallel trends that is invariant to monotonic transformation of the outcome and discuss in which situation that assumption is plausible.
+
+Similar to CIA, the parallel trend assumption can be written in terms of "period -time- independence" of the "growth rate":
+
+$$ (\Delta Y_0, \Delta Y_1 ) \perp T $$
+
+In other words, treatment and control groups have the same counterfactual growth.
+
+Is possible to hold a "conditional parallel trends" assumption, meaning that we can control for other observed variables and then hold the PTA (parallel trend assumption). like a CIA for independence, a CPTA. 
+
+## Other assumptions 
+
+1. Non anticipatory assumption: The treated units are not affected before the treatment is implemented because of the treatment, ex: black friday. 
+2. SUTVA: The Stable Unit Treatment Value Assumption states that the treatment status of one unit does not affect the outcome of another unit. A common example of a violation of this assumption are the spatial spillover, for example when people can move from one city to another, A paper by Kyle Butts presents a method to correct for these spatial spillovers, which can be modeled with the following formula:
+
+$$ Y_{i,t} = \tau_{i,t}W_{i,t} + \eta_0 S_i (1-W_{i,t}) + \eta_1 S_i W_{i,t} + \alpha_i + \gamma_t + \epsilon_{i,t} $$
+
+where 
+
+- $S_i$ is a binary variable that indicates if the unit $i$ was "deemed close enough" to a treated unit.
+- $\alpha_i$ is the unit fixed effect.
+- $\gamma_t$ is the time fixed effect.
+- $W_{i,t}$ is the treatment status of unit $i$ at time $t$. (1 if treated, 0 otherwise)
+- $\epsilon_{i,t}$ is the idiosyncratic error term.
+
+## Assumption: Strict Exogeneity
+
+Strict Exogeneity is a stronger assumption that can imply the parallel trend assumption (PTA). It states that:
+
+$$ E[\epsilon_{i,t} | X_{i,t}, \alpha_{i}] = 0 $$
+
+This translates into two main principles:
+1. **No time-varying confounders**: All unobservable confounders $U_i$ are constant over time.
+2. **No feedback**: Past outcomes $Y_{i,t-1}$ do not influence the current treatment assignment $W_{i,t}$. If you want to [condition on past outcomes][2], also known as "sequential ignorability", you can't control for time fixed effects; you must choose one or the other.
+3. **No carryover**: In principle, we assume that there is no effect from past treatment $W_{i,t-1}$ on future outcomes $Y_{i,t}$. However, this assumption is not strictly necessary, and you can add lagged treatment terms to the model $\theta W_{i,t-1}$. 
+4. **No lagged dependent variable**: In principle, we assume that there is no effect from past outcomes $Y_{i,t-1}$ on current outcomes $Y_{i,t}$. However, this assumption is not strictly necessary, and you can add lagged outcome terms to the model. Adding past $Y$ doesn't hinder identification.
+
+## Dynamic effect overtime (Lags and Leads)
+
+S
 
 
-[comment]: References 
+[comment]: References
 [1]: <https://theeffectbook.net/ch-FixedEffects.html#:~:text=address%20the%20problem.-,23,-23%20The%20Gibbons>
+[2]: <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3979613>
