@@ -68,7 +68,7 @@ Nevertheless multiple ways have been proposed  to check the parallel trends assu
 3. leads and lags model
 
 
-### leads and lags model{###leads-and-lags}    
+### leads and lags model
 (checking PTA and non-anticipatory assumption)
 
 As with many contemporary DD designs, Miller et al. (2019) evaluate the pre-treatment leads instead of plotting the raw data by treatment and control. Post-estimation, they plotted regression coefficients with 95% confidence intervals on their treatment leads and lags. Including leads and lags into the DD model allowed the reader to check both the degree to which the post-treatment treatment effects were dynamic, and whether the two groups were comparable on outcome dynamics pre-treatment. Models like this one usually follow a form like:

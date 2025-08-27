@@ -112,6 +112,7 @@ where
 - $S_i$ is a binary variable that indicates if the unit $i$ was "deemed close enough" to a treated unit.
 - $\alpha_i$ is the unit fixed effect.
 - $\gamma_t$ is the time fixed effect.
+- $\tau_{i,j}$ is the treatment effect on the unit $i$ and time $t$
 - $W_{i,t}$ is the treatment status of unit $i$ at time $t$. (1 if treated, 0 otherwise)
 - $\epsilon_{i,t}$ error
 
@@ -129,7 +130,10 @@ This translates into two main principles:
 
 ## Dynamic effect overtime (Lags and Leads)
 
-Similar to [Lags and Leads](the_mixtape_summary_7.md#leads-and-lags), we can use leads and lags to check the parallel trends assumption (PTA) and the non-anticipatory assumption.
+Similar to [Lags and Leads](the_mixtape_summary_7.md###leads-and-lags-model), if we assume that the effectiveness of the treatment $\tau_{i,t}$ changes over time per period $t$ we can model this problem in a way that also allow us to verify the PTA and the non-anticipatory assumption.
+
+In the text instead of using a binary variable specification the author suggest to run "t" regressions where we move the "treatment period" on each of the t periods in the dataset. we keep only the untreated periods before t as the "untreated time" and then we force "t" to be the treated time. 
+
 
 [comment]: References
 [1]: <https://theeffectbook.net/ch-FixedEffects.html#:~:text=address%20the%20problem.-,23,-23%20The%20Gibbons>
