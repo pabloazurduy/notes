@@ -134,6 +134,15 @@ Similar to [Lags and Leads](the_mixtape_summary_7.md###leads-and-lags-model), if
 
 In the text instead of using a binary variable specification the author suggest to run "t" regressions where we move the "treatment period" on each of the t periods in the dataset. we keep only the untreated periods before t as the "untreated time" and then we force "t" to be the treated time. 
 
+## Adding covariates
+
+Sometimes you can't hold directly the parallel trend assumption (PTA), but, analogous to CIA, when conditioning for certain covariates $\phi_i$ you can hold a "conditional parallel trend assumption" (CPTA), that 
+
+$$ (\Delta Y_0, \Delta Y_1 ) \perp T \tag{PTA} $$
+
+
+
+
 
 [comment]: References
 [1]: <https://theeffectbook.net/ch-FixedEffects.html#:~:text=address%20the%20problem.-,23,-23%20The%20Gibbons>
