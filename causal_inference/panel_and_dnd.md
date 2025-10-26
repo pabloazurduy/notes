@@ -143,7 +143,6 @@ $$ (\Delta Y_0, \Delta Y_1 ) \perp T \tag{PTA} $$
 
 
 
-
 [comment]: References
 [1]: <https://theeffectbook.net/ch-FixedEffects.html#:~:text=address%20the%20problem.-,23,-23%20The%20Gibbons>
 [2]: <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3979613>
