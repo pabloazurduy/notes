@@ -37,7 +37,7 @@ fig = plt.figure(figsize=(14, 6))
 ax1 = fig.add_subplot(121, projection='3d')
 
 # Create sphere surface
-u = np.linspace(0, 2 * np. pi, 50)
+u = np.linspace(0, 2 * np.pi, 50)
 v = np.linspace(0, np.pi, 50)
 x_sphere = 2 * np.outer(np.cos(u), np.sin(v))
 y_sphere = 2 * np.outer(np.sin(u), np.sin(v))
@@ -62,7 +62,7 @@ ax1.quiver(point[0], point[1], point[2],
 
 size = 1.5
 xx, yy = np.meshgrid(np.linspace(point[0]-size, point[0]+size, 10),
-                     np. linspace(point[1]-size, point[1]+size, 10))
+                     np.linspace(point[1]-size, point[1]+size, 10))
 
 # Tangent plane:  gradient · (r - point) = 0
 # 2x(X-x₀) + 2y(Y-y₀) + 2z(Z-z₀) = 0
@@ -117,7 +117,7 @@ gradient2 = grad_g2(*point2)
 u = np.linspace(0, 2 * np.pi, 50)
 v = np.linspace(0, np.pi, 50)
 x_ellipsoid = 2 * np.outer(np.cos(u), np.sin(v))
-y_ellipsoid = 3 * np.outer(np. sin(u), np.sin(v))
+y_ellipsoid = 3 * np.outer(np.sin(u), np.sin(v))
 z_ellipsoid = np.outer(np.ones(np.size(u)), np.cos(v))
 
 # Plot the ellipsoid
@@ -136,7 +136,7 @@ ax2.quiver(point2[0], point2[1], point2[2],
 
 # Create tangent plane
 size = 1.0
-xx2, yy2 = np. meshgrid(np.linspace(point2[0]-size, point2[0]+size, 10),
+xx2, yy2 = np.meshgrid(np.linspace(point2[0]-size, point2[0]+size, 10),
                        np.linspace(point2[1]-size, point2[1]+size, 10))
 
 zz2 = point2[2] - (gradient2[0]*(xx2-point2[0]) + gradient2[1]*(yy2-point2[1]))/gradient2[2]
@@ -185,7 +185,7 @@ dot1 = np.dot(gradient, tangent_vec1)
 dot2 = np.dot(gradient, tangent_vec2)
 
 print(f"\nGradient · Tangent1 = {dot1:.10f}  (should be ≈ 0)")
-print(f"Gradient · Tangent2 = {dot2:. 10f}  (should be ≈ 0)")
+print(f"Gradient · Tangent2 = {dot2:.10f}  (should be ≈ 0)")
 
 print("\n--- Ellipsoid Example ---")
 print(f"Point: {point2}")
