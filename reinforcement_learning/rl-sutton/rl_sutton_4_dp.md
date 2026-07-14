@@ -13,20 +13,20 @@ As you can see in the upper formula, we are using the previous estimate $v_k$ to
 
 In pseudocode we can define the algorithm as follows:
 
-
-<!-- Code-like block that still allows LaTeX rendering -->
-<div style="background: #323436;border:1px solid #897878;padding:12px;border-radius:6px;font-family:SFMono-Regular,Menlo,Monaco,monospace;white-space:pre;overflow:auto;">
-Input: policy $\pi$, threshold $\theta$, discount factor $\gamma$
-Initialize $v(s)$ arbitrarily for all $s \in S$
-Repeat:
-    $\Delta \leftarrow 0$
-    For each $s \in S$:
-        $v_{old} \leftarrow v(s)$
-        $v(s) \leftarrow \sum_{a} \pi(a|s) \sum_{s^{\prime},r} p(s^{\prime},r|s,a)\left[r + \gamma v(s^{\prime})\right]$
-        $\Delta \leftarrow \max(\Delta, |v_{old} - v(s)|)$
-Until $\Delta < \theta$
-</div>
-
+$$
+\begin{aligned}
+& \textbf{Algorithm: } \text{Policy Evaluation} \\
+& \text{Input: policy } \pi, \text{ threshold } \theta \\
+& \text{Initialize } V(s) \leftarrow 0 \text{ for all } s \in \mathcal{S} \\
+& \textbf{Repeat:} \\
+& \quad \Delta \leftarrow 0 \\
+& \quad \textbf{For each } s \in \mathcal{S}: \\
+& \qquad v \leftarrow V(s) \\
+& \qquad V(s) \leftarrow \sum_{a} \pi(a|s) \sum_{s', r} p(s', r|s, a) [r + \gamma V(s')] \\
+& \qquad \Delta \leftarrow \max(\Delta, |v - V(s)|) \\
+& \textbf{Until } \Delta < \theta
+\end{aligned}
+$$
 
 
 
