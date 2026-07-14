@@ -65,12 +65,10 @@ Given the nature of the norms, a higher value norm $\geq \ell_2$ will overweight
 
 **STD deviation:** The standard deviation is generally denoted $\sigma$ (the Greek letter sigma), and it is the square root of the variance, which is the average of the squared deviation from the mean. 
 
-$$
-\sigma = \sqrt{VAR} 
-$$
-$$
-\text{VAR} = \sigma^2= \frac{1}{n}\sum_n{(x_i - \mu)^2}
-$$
+$$\sigma = \sqrt{VAR} $$
+
+$$\text{VAR} = \sigma^2= \frac{1}{n}\sum_n{(x_i - \mu)^2}$$
+
 When a feature has a bell-shaped normal distribution (also called a Gaussian distribution), which is very common, the “68-95-99.7” rule applies:about 68% of the values fall within $1\sigma$ of the mean, 95% within $2\sigma$, and 99.7% within $3\sigma$.
 
 #### Stratified Sampling Split 
