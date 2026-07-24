@@ -41,7 +41,11 @@ $$ q_{\pi^{\prime}}(s, \pi^{\prime}(s)) \ge v_{\pi}(s) $$
 
 The theorem states that if the above condition holds for all possible states then the policy $\pi^{\prime}$ is optimal. 
 
+hence by construction we can define an optimal policy $\pi^{\prime}$ as follows:
 
+$$ \pi^{\prime}(s) = \argmax_a q_{\pi}(s, a) = \argmax_{a} \sum_{s^{\prime},r} p(s^{\prime},r|s,a)[r + \gamma v_{\pi}(s^{\prime})]$$
+
+by construction we know that this new policy $\pi^{\prime}$ will hold the condition of the policy improvement theorem, hence we can say that $\pi^{\prime}$ is better than $\pi$. And given the optimal conditions from bellman equations we can say that $\pi^{\prime}$ is optimal.
 
 
 [//]: <> (References)
