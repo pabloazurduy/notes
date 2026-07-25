@@ -392,11 +392,11 @@ Given that SVM is a linear separation -and not all feature spaces can be separat
 
 the prediction function for SVM is equal to:
 
-$$f(x)= sign(w*x-b^*)$$ 
+$$ f(x)=\operatorname{sign}(w*x-b^*) $$
 
 The output of this function is $\{+1,-1\}$  that can easily be mapped to $\{1,0\}$ the binary output -in this case $y_i = \{+1,-1\}$. In the "hard" version of the algorithm we solve the following optimization problem
 
-$$\min ||w||_2$$
+$$ \min ||w||_2 $$
 
 $$s.t. \quad y_i (w*x_i-b)\ge 1$$
 
