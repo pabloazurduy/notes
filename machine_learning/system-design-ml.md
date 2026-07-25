@@ -121,7 +121,17 @@ making model smallers can make the prediction run faster. here we list a few tec
 
 4. **Quantization**: we can reduce the precision of the weights of the model, for example from 32 bits to 16 bits or even 8 bits. This will reduce the memory footprint and the computation time, but it can also reduce the accuracy of the model.
 
+#### model allocation 
 
+we can deploy the model as a service in the cloud (more costly but more scalable), or we can deploy the model in the edge (device or browser WASM). 
+
+### Chapter 8: Data Distribution shifts and monitoring 
+
+**Degenerate Feedback loop**: when the model is deployed in production, it can change the distribution of the data that it sees, for example if a model is deployed to recommend movies to users, it can change the distribution of the movies that users watch, which can change the distribution of the data that the model sees.
+
+To correct the Degenerate Feedback we can use several techniques, in general the idea is to estimate the counterfactual distribution of the data without the model, one simple possibility is introduce randomness, have a holdout group, or enforce an exploration policy (like tiktok, where every new video is shown to a small group of users, and then based on their feedback it is shown to more users).
+
+Another idea is to separate the ranking and the liking model, so one will be predicting solely based on the rank how likely is for the user to click on the video, and the other one will be to predict given that the video was shown what is the probability of liking it. somehow isolating the ranking bias. 
 
 
 
