@@ -244,6 +244,7 @@ direction LR
     img_noise --> Model 
     Model --> img_clean
 ```
+
 each pixel will be one prediction with a number between `[0,255]` 
 
 ### Chapter 4 
@@ -431,19 +432,20 @@ $$
 
 A Gini coefficient of 0 will represent a leaf with only one class, while a Gini of anything positive will have more than one class. The Gini coefficient is `1 - sum((ratios)**2)` the only clear scenario is when one ratio is 1 and the others are 0 (pure node), the other distances are weirder to explain, but probably a more impure node is when the ratios are equal (same number of samples of all classes). In the case of 2 classes, the Gini coefficient will have numbers between `0` to `0.5` (50%/50%) any other proportion e.g.: (70%/30%) will have something less than `<0.5`.
 
-Finally, the CART algorithm will operate by iterating over this. Given a feature $k$ and a split-threshold $t_k$ we will choose those values minimizing the following cost function:
+The CART algorithm will find for every node $k$ (the splitting feature) and a split-threshold $t_k$ that will minimize the following cost function:
 
 $$
 \min_{k, t_k} J(k,t_k) = \frac{m_{left}}{m} G_{left} + \frac{m_{right}}{m}G_{right}
 $$
 
-This algorithm stops when a hyperparameter stopping criteria is reached, such as, `max_depth`, `max_leafs_nodes`, `min_samples_leaf` etc.
+This algorithm stops when a hyperparameter stopping criteria is reached, such as, `max_depth`, `max_leafs_nodes`, `min_samples_leaf` etc. The CART algorithm is a greedy algorithm, it will always choose the best split at each node, but it will not guarantee optimality. 
 
 There is a second metric that we can use in CART called `entropy`. Entropy is similar to Gini Impurity, in the sense that is 0 when there's only one class in the node and positive otherwise. 
 
 $$ 
 \text{Entropy:} \quad H_i = \sum_{k \in n}{p_{i,k}log_2(p_{i,k})}
 $$
+
 Both Entropy and Gini can be used exchangeable on the CART algorithm, they produce similar results, Gini is faster to compute.
 As you can observe the CART algorithm is a greedy algorithm and will not guarantee optimality, however the full problem is known to be NP-Complete $O(exp(n))$
 
@@ -456,6 +458,10 @@ $$
 \min_{k, t_k} J(k,t_k) = \frac{m_{left}}{m} MSE_{left} + \frac{m_{right}}{m}MSE_{right}
 $$
 
+where the MSE is calculated over the true $y$ values of the samples in the node vs the mean of the $\hat{y}$ values in that node (prediction) 
+
+$$ MSE_i = \frac{1}{m_i}\sum_{j \in m_i}{(y_j - \hat{y}_i)^2}$$
+    
 ### Chapter 7
 #### Ensemble Methods
 --aggregated method categories-- 
