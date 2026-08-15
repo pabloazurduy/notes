@@ -16,13 +16,13 @@ The initial state $X_0$ has an arbitrary probability distribution. A finite-stat
 
 Without loss of generality you can take a random variable $Z_n$ which depends on the last $m$ states $Z_{n-1}, \ldots, Z_{n-m}$ and define a new markov chain $X_n = (Z_n, Z_{n-1}, \ldots, Z_{n-m})$ with a new state definition. 
 
-### classification of states
+### Classification of states
 
-We define a **walk** as any sequence of states from the Markov chain where there is a non-zero probability of moving from one state to the next.
+1. We define a **walk** as any sequence of states from the Markov chain where there is a non-zero probability of moving from one state to the next.
 
-We define a **path** as **a walk that does not repeat any states**.
+2. We define a **path** as **a walk that does not repeat any states**.
 
-Finally, a **cycle** is a walk that starts and ends at the same state, with no other node repeated. It is similar to a path, but since a path cannot repeat any node (including the start and end), a cycle does not qualify as a path.
+3. Finally, a **cycle** is a walk that starts and ends at the same state, with no other node repeated. It is similar to a path, but since a path cannot repeat any node (including the start and end), a cycle does not qualify as a path.
 
 A state $j$ is **accessible** from state $i$ if there is a walk from state $i$ to state $j$. This is a transitive property, meaning if $i \rightarrow j$ and $j \rightarrow k$, then $i \rightarrow k$.
 
