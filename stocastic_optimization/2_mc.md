@@ -68,7 +68,7 @@ In general for any state, if there's a walk that is connected to a loop (a state
 **Theorem**: All the states in a class have the same period.
 
 If I have a class that is periodic, with period $d$ that means that I can sub-partition that class into $d$ sub-classes, where each sub-class only communicates with the next sub-class in a circular manner. (transient sets of states)
-<img src="partition-subclasses.png" style='height:200px;'>
+<img src="partition-sub.png" style='height:200px;'>
 
 Think that I would always need at least $d$ steps to return to the same state, and given that all states in a class have the same period, I can assume that I can split the class into d
 
@@ -104,10 +104,69 @@ nonincreasing means $P_{ij}^{(n+1)} \leq P_{ij}^{(n)}$ and nondecreasing $P_{ij}
 
 This means that, given that for a column $j$ all the elements will converge to the same value $\pi_j$, the min and max of the elements of that column will not decrease or not increase respectively, and they will converge to the same value $\pi_j$.
 
+$\pi_j$ will give us, when $n \to \infty$, the fraction of time that the chain spends in state $j$.
+
+We can extend the results of the previous theorem to the ergodic unichains, an ergodic unichain is similar to an ergodic chain but we add a finite number of transient states. It is easy to see that the transient states will eventually be left and the chain will converge to the ergodic class, hence the limit $\lim_{n \to \infty} P_{ij}^{(n)}$ exists and is independent of the starting state $i$.
+
+In the case of unichains, the steady-state vector $\pi$  has positive entries for the recurrent states and zero entries for the transient states.
+
+In the case of a markov chain that is formed by multiple ergodic classes (hence **not a ergodic chain**), the steady vector will have m-solutions where m is the number of ergodic classes, and each solution will have positive entries for the recurrent states in one of the ergodic classes and zero entries for all other states. Then it is true that $[P]$ will converge but the rows will not necessarily converge to the same values.
+
+In the case of a recurrent chain with period $d$ we can split the chain into $d$ sub-classes. If we take $[P^d]$ then each one of the sub-classes will be ergodic and hence $[P^{dn}]$ will converge to a limit $\pi$.
+
+## Markov Eigenvalues and Eigenvectors
+
+For an ergodic markov chain we know that we have $\pi$ vector that holds 
+
+$$\pi = \pi [P]$$
+
+for ergodic unichains (ergodic class plus transient states) we have something slightly different. 
+
+$$[P] = \begin{bmatrix} [P_{T}] & [P_{TR}] \\ 0 & [P_{R}] \end{bmatrix}$$
+
+where $[P_{R}]$ is the transition matrix for the recurrent states and $[P_{T}]$ is the transition matrix for the transient states. The idea is that each transient state can go to a recurrent class will hold the same steady state vector as before. 
+
+If you only have one ergodic class, then to calculate the steady state you can ignore all the rest of the chain and just calculate the steady state for the ergodic class, that $\pi_R$ will be your steady state vector. 
+
+#### Linear Algebra recap
+
+A vector $\vec{v}$ is an eigenvector of $[A]$ if there exists a scalar $\lambda$ such that $[A]\vec{v} = \lambda \vec{v}$. The scalar $\lambda$ is called the eigenvalue associated with the eigenvector $\vec{v}$.
+
+for every stocastic matrix $[P]$ we have that $\lambda = 1$ is an eigenvalue with the eigenvector $\vec{v} = \vec{1} = (1, 1, \dots, 1)^T$.
+
+A square matrix $[A]$ is singular if there is a vector $\vec{v} \neq 0$ such that $[A]\vec{v} = 0$. 
+
+Therefore $\lambda$ is an eigenvalue of $[P]$ if and only if $[P - \lambda I]$ is singular for some eigenvector $\vec{v} \neq 0$. (which means there's a solution for $[P - \lambda I]\vec{v} = 0$ different than zero)
+
+Let be $a_1, \dots, a_n$ the columns of $[A]$, then $[A]$ is singular if and only if the columns are linearly dependent. 
+
+The square matrix $[A]$ is singular if and only if $\det([A]) = 0$.
+
+**Summary**: 
+$\lambda$ is an eigenvalue of $[P]$ if and only if:
+1. $[P - \lambda I]$ is singular. 
+1. $\det([P - \lambda I]) = 0$ 
+1. exists a vector $\vec{v} \neq 0$ such that $[P]\vec{v} = \lambda \vec{v}$.
+1. $\vec{u}[P] = \lambda \vec{u}$ for some vector $\vec{u} \neq 0$.
 
 
-[//]: <> (References)
+but we know that for a stocastic matrix $[P]$ we have that $\lambda = 1$ is an eigenvalue with the eigenvector $\vec{e} = \vec{1} = (1, 1, \dots, 1)^T$. This means that $[P - I]$ is singular. 
+
+this means that there's a row vector $\pi \neq 0$ such that $\pi [P] = \pi$. (given by the implications of the point 3 above). This only guarantees that there is a solution $\pi$ not that is a probability vector.
+
+The determinant of a square matrix $[A]$ of size M is given by:
+
+$$\det([A]) = \sum_{\mu \in S_M} \text{sgn}(\mu) \prod_{i=1}^{M} A_{i, \mu(i)}$$
+
+This equation will tell us that $\det([P-\lambda I])$ is a polynomial in $\lambda$ of degree $M$. This means there are at most $M$ roots of the equation $\det([P-\lambda I]) = 0$ and hence at most $M$ eigenvalues. 
+
+some eigen values might be the same, and if $k$ of these roots are equal to $\lambda$ then we say that $\lambda$ has multiplicity $k$.
+
+We can guarantee then that for all finite markov chains we will have one $\pi$ vector that is a probability vector. but that does't imply that the limit $\lim_{n \to \infty} P_{ij}^{(n)}$ exists. Because it can have multiple $pi$ vectors. 
+
+
+[//]:2_mc.md> (References)
 [1]: <https://www.youtube.com/watch?v=cE6OD7DkCSU>
 
-[//]: <> (Some snippets)
+[//]:2_mc.md> (Some snippets)
 [//]: # (add an image <img src="" style='height:400px;'>)
