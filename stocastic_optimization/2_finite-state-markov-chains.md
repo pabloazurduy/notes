@@ -65,12 +65,17 @@ This is known as the **Chapman-Kolmogorov equation**, and it shows that $[P^{(n+
 
 ### Steady-state and $[P^n]$ for large $n$
 
+The matrix $[P^n]$ is the $n$-step transition matrix. The entry $P_{ij}^{(n)}$ represents the probability of being in state $j$ after $n$ steps, $\Pr(X_n = j \mid X_0 = i)$. If the past dies out is possible that with $ n \to \infty$, $P_{ij}^n$ becomes independent of the starting state $i$ and $n$. which also means that all rows will tend to have the same values (given that $P_{ij}^n \to P_j = \pi_j$ fixed value). 
 
+Given that the steady state matrix $\pi$ by definition will not have any change if we multiply by the original transition matrix $[P]$, $\pi [P] = \pi$, then it is easier to find the steady state matrix $\pi$ by solving the system of equations $\pi [P] = \pi$ rather than computing $[P^n]$ for large $n$.
 
+A **Steady state vector** (or a steady state distribution) for an M-state markov chaing with transition matrix $[P]$ is a row vector $\pi$ that satisfies. 
 
+$$\pi [P] = \pi, \quad \sum_{i=1}^{M} \pi_i = 1, \quad \pi_i \ge 0, 1 \le i \le M$$
 
+if $\pi$ is taken as the initial probability mass function (PMF) of the nchain at time 0 then the PMF is maintained forever. This doesn't mean that $\pi$ is unique, two different $P$ can converge to different steady state vectors. However, For a finite state markov chain the equation $\pi = \pi[P]$ always has a probability vector solution. 
 
-
+A **unichain** is a finite state markov chain that contains a single recurrent class plus perhaps some transient states. An **ergodic unichain** is a unichain for which the recurrent class is ergodic. 
 
 
 
