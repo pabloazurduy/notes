@@ -162,7 +162,75 @@ This equation will tell us that $\det([P-\lambda I])$ is a polynomial in $\lambd
 
 some eigen values might be the same, and if $k$ of these roots are equal to $\lambda$ then we say that $\lambda$ has multiplicity $k$.
 
-We can guarantee then that for all finite markov chains we will have one $\pi$ vector that is a probability vector. but that does't imply that the limit $\lim_{n \to \infty} P_{ij}^{(n)}$ exists. Because it can have multiple $pi$ vectors. 
+We can guarantee then that for all finite markov chains we will have one $\pi$ vector that is a probability vector. but that does't imply that the limit $\lim_{n \to \infty} P_{ij}^{(n)}$ exists. Because it can have multiple $\pi$ vectors. 
+
+The equation $\det([P-\lambda I]) = 0$ will give you the possible eigenvalues for the matrix $[P]$ then for each one of those eigen values you can find the corresponding eigenvectors by solving the equation: 
+$$ \pi [P] = \lambda \pi$$
+$$ [P] \vec{v} = \lambda \vec{v}$$
+
+There are known as the "right eigenvectors" and the "left eigenvectors" respectively. For two different eigenvalues $\lambda_1 \neq \lambda_2$ the corresponding left and right eigenvectors are orthogonal, meaning that $\vec{v_1} \vec{v_2} = 0$.
+
+**Definition** A row vector $\vec{\pi}$ is a **left** eigenvector of $[P]$ of eigenvalue $\lambda$ if $\vec{\pi} \neq 0$ and $\vec{\pi}[P] = \lambda \vec{\pi}$, i.e., $\sum_{i} \pi_i P_{ij} = \lambda \pi_j$ for all $j$. A column vector $\vec{v}$ is a **right eigenvector** of eigenvalue $\lambda$ if $\vec{v} \neq 0$ and $[P]\vec{v} = \lambda \vec{v}$, i.e., $\sum_{j} P_{ij} v_j = \lambda v_i$ for all $i$.
+
+
+
+Let be $[U]$ the matrix whose columns are the right eigenvectors of $[P]$. If U is invertible then we can write $[P] = [U][\Lambda][U^{-1}]$ where $[\Lambda]$ is a diagonal matrix with the eigenvalues of $[P]$ in the diagonal. with this decomposition we can write:
+
+$$[P^n] = [U][\Lambda^n][U^{-1}]$$
+
+and hence we can calculate $[P^n]$ for any $n$. if and only if we have $M$ different eigenvalues. 
+
+$$[P^n] = \sum_{i=1}^{M} \lambda_i^n \vec{v}^{i} (\vec{\pi}^{i})$$
+
+
+**Theorem** the left eigenvector $\pi$ of eigen value $\lambda = 1$ is a steady state vector. if is normalized to $\pi \vec{e} = 1$ 
+
+Then it concludes that for every finite markov chain we have at least one steady state vector $\pi$ that is a probability vector. This again, doesn't guarantee that the limit $\lim_{n \to \infty} P_{ij}^{(n)}$ exists.
+
+**Theorem** every eigenvalue $\lambda$ of a stocastic matrix $[P]$ satisfies $|\lambda| \le 1$. 
+
+If you think about the multiplication of the matrix $[P]^n = [U][\Lambda^n][U^{-1}]$ if the eigenvalues are higher than 1 then $\lambda^n$ will diverge and hence $[P]^n$ will not longer hold the probability properties.
+
+both theorems hold for any finite markov chain. 
+
+#### Ergodic Unichain
+
+If we have an ergodic unichain we will have that one eigen value is equal to 1 and all other are strictly less than 1. Also given that an ergodic unichain matrix looks like:
+
+$$[P] = \begin{bmatrix} [P_{T}] & [P_{TR}] \\ 0 & [P_{R}] \end{bmatrix}$$
+
+Then 
+$$det(P) = det(P_{T})det(P_{R})$$
+
+Finally the eigenvalues of $[P]$ are the eigenvalues of $[P_{T}]$ and $[P_{R}]$. 
+
+If $\pi$ is the steady state vector of $[P_{R}]$, then the steady state vector of $[P]$ will be of the form:
+$$\pi = \begin{bmatrix} 0, \dots, 0 , \pi_1, \dots, \pi_{r} \end{bmatrix}$$
+
+and $\pi$ is a left eigenvector of $[P]$, $\pi [P] = \pi$.
+
+
+the rate of convergence of $[P^n]$ to the limit $\pi$ is determined by the second largest eigenvalue $\lambda_2$ of $[P]$.
+
+#### Periodic Unichain
+
+for a periodic unichain of period $d$, there will be $d$ eigenvalues of magnitude 1, and $[P^n]$ will not converge.
+
+
+### Multi ergodic classes
+
+supose you have a markov chain with $l$ ergodic classes. Then you will have $l$ eigenvalues equal to 1 and all other eigenvalues will be strictly less than 1.
+
+This will convert to a set of block of rows were each block will have the same steady state vector $\pi$ for each ergodic class.
+
+$$[P] = \begin{bmatrix} [P_{T}] & [P_{TR_1}] & [P_{TR_2}] \\ 0 & [P_{R_1}] & 0 \\ 0 & 0 & [P_{R_2}] \end{bmatrix}$$
+
+we will also have 
+$$det(P) = det(P_{T})det(P_{R_1})det(P_{R_2})$$
+If $\pi_1$ is a left eigenvector of $[P_{R_1}]$ then $(0, \pi_1, 0)$ is a left eigenvector of $[P]$. if $\pi_2$ is a left eigenvector of $[P_{R_2}]$ then $(0, 0, \pi_2)$ is a left eigenvector of $[P]$.
+
+
+
 
 
 [//]:2_mc.md> (References)
