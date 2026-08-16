@@ -84,12 +84,31 @@ $$\mathbb{E}[Z_{n}|Z_{n-1}, \dots , Z_1]\geq Z_{n-1} \text{ for all } n\geq1. \t
 Similarly, a supermartingale is defined as (which is a martingale that decreases in value)
 $$\mathbb{E}[Z_{n}|Z_{n-1}, \dots , Z_1]\leq Z_{n-1} \text{ for all } n\geq1. \tag{4}$$
 
+A martingale is both a submartingale and a supermartingale.
+
 #### Jensen's inequality
 
 given a convex function $h(x)$ and a random variable $X$, Jensen's inequality states that
 
 $$\mathbb{E}[h(X)] \geq h(\mathbb{E}[X]).$$
 
+**Theorem** if $\{Z_n; n \geq 1\}$ is a martingale and if $\mathbb{E}[|h(Z_n)|] < \infty$ and $h(x)$ is convex, then $\{h(Z_n); n \geq 1\}$ is a submartingale.
+
+### Stopped martingales 
+
+A stopping rule is any type or rule that for a random process the rule only depends on the past values of the process $Z_1, \dots, Z_n$.
+
+We will define a stopping trial $J$ as random variable such that $\{J=n\}$ must by specified  by the values of $Z_1, \dots, Z_n$.
+
+A defective stopping rv rule $J$ is defective if there's a non 0 probability that $\{J = \infty\}$ or $\{J < -\infty\}$. A possible defective stopping trial is a rule in which stopping might never happen. (for example a random walk RW with a single threshold)
+
+A stopped process $\{Z^*_n; n \geq 1\}$ for a possible defective stopping time $J$ on a process $\{Z_n; n \geq 1\}$ satisfies $Z^*_n = Z_{n}$ if $n\leq J$ and $Z^*_n = Z_{J}$ if $n > J$. A stopped process a process that will stop given certain rule, even if the original rv continues. 
+
+For example, a given gambling strategy, where $Z_n$ is the net worth at time $n$, could be modified to stop when $Z_n$ reaches some given value. Then $Z^*_n$ would remain at that value forever after while $Z_n$ follows the original strategy.
+
+**Theorem** If $J$ is a possible defective stopping rule for a martingale (submartingale) $\{Z_n; n \geq 1\}$, then the stopped process $\{Z^*_n; n \geq 1\}$ is also a martingale (submartingale).
+
+**Theorem** (Martingale convergence theorem) Let $\{Z_n; n \geq 1\}$ be a martingale and assume that there is some finite $M$ such that $\mathbb{E}[Z_n^2] \leq M$ for all $n$. Then there is a rv $Z$ such that $Z_n \to Z$ with probability 1.
 
 [//]: <> (References)
 [1]: <https://www.youtube.com/watch?v=GwVjWQykCDw&list=PLEEF5322B331C1B98&index=24>
