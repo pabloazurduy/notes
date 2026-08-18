@@ -1,0 +1,1379 @@
+{
+  "format": "ml-interview-quiz/v1",
+  "title": "Machine Learning Depth Check",
+  "description": "Medium-to-very-hard machine learning interview questions based on the local notes, excluding deep learning.",
+  "questions": [
+    {
+      "id": "ml-001",
+      "topic": "Ensembles",
+      "difficulty": "hard",
+      "prompt": "Suppose each of \\(B\\) regression trees has prediction variance \\(\\sigma^2\\), and every pair of tree predictions has correlation \\(\\rho\\). Assuming equal variance and correlation, what is the variance of their average?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(\\sigma^2 / B\\), regardless of \\(\\rho\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(\\sigma^2\\left[\\rho + \\frac{1-\\rho}{B}\\right]\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(\\frac{\\sigma^2(1-\\rho)}{B}\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(\\frac{\\sigma^2\\rho}{B}\\)"
+        }
+      ],
+      "answer": "B",
+      "explanation": "The average contains \\(B\\) variance terms and \\(B(B-1)\\) covariance terms. Dividing their sum by \\(B^2\\) gives \\(\\sigma^2[\\rho+(1-\\rho)/B]\\), showing why reducing correlation is central to random forests."
+    },
+    {
+      "id": "ml-002",
+      "topic": "Ensembles",
+      "difficulty": "hard",
+      "prompt": "In a standard random forest with \\(\\mathtt{max\\_features}=\\sqrt{p}\\), when is the random subset of candidate features normally sampled?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Once for the entire forest"
+        },
+        {
+          "id": "B",
+          "text": "Once per tree and reused at every node"
+        },
+        {
+          "id": "C",
+          "text": "Independently at each split node of each tree"
+        },
+        {
+          "id": "D",
+          "text": "Only at the root node of each tree"
+        }
+      ],
+      "answer": "C",
+      "explanation": "A fresh feature subset is normally drawn at every node. CART then chooses the best split only among those candidates, decorrelating trees throughout their structure."
+    },
+    {
+      "id": "ml-003",
+      "topic": "Validation",
+      "difficulty": "very hard",
+      "prompt": "A target encoder is fitted once on the full training set before a random forest is trained. The forest's out-of-bag score is then reported. What is the central problem?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "OOB scoring cannot be used for classification"
+        },
+        {
+          "id": "B",
+          "text": "Each OOB row influenced its encoded features through its target, so the estimate leaks outcome information"
+        },
+        {
+          "id": "C",
+          "text": "Bootstrap samples contain only about 36.8% of the observations"
+        },
+        {
+          "id": "D",
+          "text": "Target encoding forces all trees to have identical bootstraps"
+        }
+      ],
+      "answer": "B",
+      "explanation": "An observation is out-of-bag only with respect to a tree fit. If preprocessing used its target beforehand, the prediction is no longer out-of-sample. Encoding must be learned without the evaluated row, typically inside the resampling procedure."
+    },
+    {
+      "id": "ml-004",
+      "topic": "Decision Trees",
+      "difficulty": "very hard",
+      "prompt": "In weakest-link cost-complexity pruning, an internal node \\(t\\) replaces its subtree \\(T_t\\) at which effective \\(\\alpha\\)? Let \\(R\\) denote training leaf risk and \\(|L(T_t)|\\) the number of subtree leaves.",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(\\frac{R(t)-R(T_t)}{|L(T_t)|-1}\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(\\frac{R(T_t)-R(t)}{|L(T_t)|}\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(\\frac{R(t)}{R(T_t)}\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(\\frac{R(t)+R(T_t)}{|L(T_t)|+1}\\)"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Pruning increases empirical risk by \\(R(t)-R(T_t)\\) while removing \\(|L(T_t)|-1\\) leaves. Their ratio is the \\(\\alpha\\) at which the pruned and unpruned objectives tie."
+    },
+    {
+      "id": "ml-005",
+      "topic": "Boosting",
+      "difficulty": "hard",
+      "prompt": "For binary gradient boosting that minimizes logistic cross-entropy using a logit-valued model \\(F(x)\\), what pseudo-residual is fitted at the current iteration?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(y-\\sigma(F(x))\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(y-F(x)\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(\\operatorname{sign}(y-F(x))\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(\\sigma(F(x))[1-\\sigma(F(x))]\\)"
+        }
+      ],
+      "answer": "A",
+      "explanation": "The negative derivative of binary cross-entropy with respect to the logit is \\(y-p\\), where \\(p=\\sigma(F(x))\\). A second-order method may also use \\(p(1-p)\\) as curvature."
+    },
+    {
+      "id": "ml-006",
+      "topic": "Boosting",
+      "difficulty": "very hard",
+      "prompt": "A second-order boosted tree approximates the loss in one leaf as \\(Gw+\\tfrac12(H+\\lambda)w^2\\), where \\(G\\) and \\(H\\) sum gradients and Hessians. Ignoring L1 regularization, what is the optimal leaf weight?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(\\frac{G}{H+\\lambda}\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(-\\frac{H}{G+\\lambda}\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(-\\frac{G}{H+\\lambda}\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(-\\frac{GH}{\\lambda}\\)"
+        }
+      ],
+      "answer": "C",
+      "explanation": "Differentiating the quadratic gives \\(G+(H+\\lambda)w=0\\), hence \\(w^*=-G/(H+\\lambda)\\)."
+    },
+    {
+      "id": "ml-007",
+      "topic": "Boosting",
+      "difficulty": "hard",
+      "prompt": "In binary AdaBoost, a weak learner has weighted error \\(\\epsilon=0.60\\). What does its coefficient \\(\\alpha=\\tfrac12\\log[(1-\\epsilon)/\\epsilon]\\) imply?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "It receives a negative coefficient, so its predictions are effectively reversed"
+        },
+        {
+          "id": "B",
+          "text": "It receives the largest positive coefficient so far"
+        },
+        {
+          "id": "C",
+          "text": "It receives coefficient zero"
+        },
+        {
+          "id": "D",
+          "text": "The coefficient is undefined because epsilon must be below 0.25"
+        }
+      ],
+      "answer": "A",
+      "explanation": "An error above \\(0.5\\) makes \\(\\log[(1-\\epsilon)/\\epsilon]\\) negative. Reversing a binary learner's predictions would instead give error \\(0.40\\)."
+    },
+    {
+      "id": "ml-008",
+      "topic": "Metrics",
+      "difficulty": "hard",
+      "prompt": "A strictly increasing transformation is applied to every score produced by a binary classifier. Which statement is necessarily true on a fixed dataset with no ties introduced?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "ROC AUC is unchanged, but probability calibration may change"
+        },
+        {
+          "id": "B",
+          "text": "Log loss and Brier score are unchanged"
+        },
+        {
+          "id": "C",
+          "text": "Accuracy at threshold \\(0.5\\) is unchanged"
+        },
+        {
+          "id": "D",
+          "text": "Expected calibration error is unchanged"
+        }
+      ],
+      "answer": "A",
+      "explanation": "ROC AUC depends only on ranking, which a strictly increasing transformation preserves. Calibration and threshold-based decisions depend on the score values themselves."
+    },
+    {
+      "id": "ml-009",
+      "topic": "Metrics",
+      "difficulty": "hard",
+      "prompt": "For a non-informative classifier whose ranking is random, what is the expected precision-recall AUC baseline approximately equal to?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "0.5 for every dataset"
+        },
+        {
+          "id": "B",
+          "text": "The positive-class prevalence"
+        },
+        {
+          "id": "C",
+          "text": "One minus the positive-class prevalence"
+        },
+        {
+          "id": "D",
+          "text": "The squared positive-class prevalence"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Under random ranking, the expected fraction of positives among retrieved examples is the dataset prevalence. Unlike ROC AUC, the PR baseline changes with class balance."
+    },
+    {
+      "id": "ml-010",
+      "topic": "Metrics",
+      "difficulty": "very hard",
+      "prompt": "A classifier outputs perfectly calibrated probabilities. You want to maximize F1 on a deployment population. Why is threshold \\(0.5\\) not generally optimal?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Calibration guarantees only ranking, not probability accuracy"
+        },
+        {
+          "id": "B",
+          "text": "F1 is a non-decomposable objective whose optimum depends on the score distribution and prevalence"
+        },
+        {
+          "id": "C",
+          "text": "F1 can only be optimized by an uncalibrated classifier"
+        },
+        {
+          "id": "D",
+          "text": "Threshold 0.5 always maximizes recall and therefore cannot maximize F1"
+        }
+      ],
+      "answer": "B",
+      "explanation": "A \\(0.5\\) Bayes threshold is tied to equal misclassification costs for decomposable 0-1 loss. F1 couples decisions through aggregate precision and recall, so its optimal threshold is population-dependent."
+    },
+    {
+      "id": "ml-011",
+      "topic": "Validation",
+      "difficulty": "hard",
+      "prompt": "You use cross-validation to select hyperparameters and report the best candidate's mean score from those same folds. What is the most defensible correction when an unbiased performance estimate matters?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Use nested cross-validation, with tuning confined to each outer training fold"
+        },
+        {
+          "id": "B",
+          "text": "Increase the number of hyperparameter candidates"
+        },
+        {
+          "id": "C",
+          "text": "Fit preprocessing on all data before cross-validation"
+        },
+        {
+          "id": "D",
+          "text": "Report only the best individual fold"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Selection exploits noise in the inner validation scores. An untouched outer fold estimates the performance of the entire model-selection procedure."
+    },
+    {
+      "id": "ml-012",
+      "topic": "Validation",
+      "difficulty": "very hard",
+      "prompt": "A medical dataset has repeated visits per patient, and the model will be deployed on entirely new patients. Which split strategy best targets deployment performance?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Randomly stratify visits so every fold has the same label rate"
+        },
+        {
+          "id": "B",
+          "text": "Place all visits from a patient in the same fold, while preserving temporal constraints if deployment is prospective"
+        },
+        {
+          "id": "C",
+          "text": "Duplicate rare-patient visits before splitting"
+        },
+        {
+          "id": "D",
+          "text": "Use leave-one-visit-out cross-validation"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Visit-level splitting leaks patient-specific information across folds. Grouping by patient matches the new-patient target, and a time-aware boundary is additionally needed for prospective deployment."
+    },
+    {
+      "id": "ml-013",
+      "topic": "Linear Models",
+      "difficulty": "hard",
+      "prompt": "Why is feature scaling usually important before ridge regression?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Ridge is invariant to arbitrary rescaling of individual features"
+        },
+        {
+          "id": "B",
+          "text": "The \\(L_2\\) penalty acts on coefficient magnitudes, so feature units otherwise determine effective regularization"
+        },
+        {
+          "id": "C",
+          "text": "Scaling makes the \\(L_2\\) penalty equivalent to \\(L_1\\)"
+        },
+        {
+          "id": "D",
+          "text": "Unscaled data makes the normal equations mathematically undefined"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Rescaling a feature inversely rescales the coefficient needed for the same predictions, but the penalty changes. Standardization makes penalty strength more comparable across features."
+    },
+    {
+      "id": "ml-014",
+      "topic": "Linear Models",
+      "difficulty": "very hard",
+      "prompt": "Two standardized columns of a design matrix are exactly identical. Under lasso regression, which statement is correct?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Their two coefficients are always uniquely determined and equal"
+        },
+        {
+          "id": "B",
+          "text": "Predictions can be unique while coefficient allocation between duplicate columns is non-unique"
+        },
+        {
+          "id": "C",
+          "text": "Lasso must assign both coefficients to zero"
+        },
+        {
+          "id": "D",
+          "text": "The \\(L_1\\) penalty becomes strictly convex and ensures uniqueness"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Only the sum of the duplicate coefficients affects fitted values. Multiple allocations can have the same \\(L_1\\) norm and objective, so coefficients need not be unique even when fitted predictions are."
+    },
+    {
+      "id": "ml-015",
+      "topic": "Linear Models",
+      "difficulty": "hard",
+      "prompt": "Compared with pure lasso, why can elastic net be preferable when many predictors are strongly correlated?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Its \\(L_2\\) component can encourage correlated predictors to enter or shrink together"
+        },
+        {
+          "id": "B",
+          "text": "It removes all regularization bias"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees the globally correct causal variables"
+        },
+        {
+          "id": "D",
+          "text": "It is invariant to target leakage"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Lasso often selects one arbitrary member of a correlated group. Adding an \\(L_2\\) term stabilizes the solution and can produce a grouping effect while retaining sparsity from \\(L_1\\)."
+    },
+    {
+      "id": "ml-016",
+      "topic": "Linear Models",
+      "difficulty": "very hard",
+      "prompt": "In unregularized logistic regression, the classes are perfectly linearly separable. What happens to the maximum-likelihood estimate under ordinary assumptions?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "It has a unique finite solution at the maximum-margin hyperplane"
+        },
+        {
+          "id": "B",
+          "text": "Coefficient norms can diverge while likelihood approaches its supremum, so no finite MLE exists"
+        },
+        {
+          "id": "C",
+          "text": "All coefficients converge to zero"
+        },
+        {
+          "id": "D",
+          "text": "The Hessian becomes positive definite everywhere and forces convergence"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Scaling a separating vector increases confidence without misclassifying training points, continually improving likelihood toward a non-attained limit. Regularization restores a finite optimum."
+    },
+    {
+      "id": "ml-017",
+      "topic": "Kernel Methods",
+      "difficulty": "hard",
+      "prompt": "For an RBF-kernel SVM, what is the usual qualitative effect of decreasing \\(\\gamma\\) while increasing \\(C\\)?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Narrower kernels and stronger regularization"
+        },
+        {
+          "id": "B",
+          "text": "Wider, smoother kernel influence but a larger penalty for training violations"
+        },
+        {
+          "id": "C",
+          "text": "A linear kernel regardless of the new values"
+        },
+        {
+          "id": "D",
+          "text": "No change because gamma and C always cancel exactly"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Lower \\(\\gamma\\) makes each example's radial influence broader, usually smoothing the boundary. Higher \\(C\\) penalizes margin violations more strongly, pushing toward closer training fit."
+    },
+    {
+      "id": "ml-018",
+      "topic": "Kernel Methods",
+      "difficulty": "very hard",
+      "prompt": "Why must a proposed kernel generally produce a positive semidefinite Gram matrix for every finite input set?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "It ensures the kernel corresponds to inner products in some feature space and preserves convexity of the SVM dual"
+        },
+        {
+          "id": "B",
+          "text": "It ensures every feature vector has unit norm"
+        },
+        {
+          "id": "C",
+          "text": "It makes all training points linearly independent"
+        },
+        {
+          "id": "D",
+          "text": "It guarantees zero generalization error"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Positive semidefiniteness is the finite-sample signature of a valid inner-product kernel. It also makes the relevant quadratic optimization well behaved and convex."
+    },
+    {
+      "id": "ml-019",
+      "topic": "Probabilistic Models",
+      "difficulty": "hard",
+      "prompt": "A naive Bayes text classifier receives two nearly duplicate features that are both highly predictive. What failure is especially likely?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "It may count essentially the same evidence twice and output overconfident posteriors"
+        },
+        {
+          "id": "B",
+          "text": "Its class-conditional likelihood becomes discriminative rather than generative"
+        },
+        {
+          "id": "C",
+          "text": "Its decision boundary must become nonlinear"
+        },
+        {
+          "id": "D",
+          "text": "Duplicate features are automatically removed by Bayes' rule"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Conditional independence is violated by duplicate signals. Their likelihood contributions multiply as if independent, often preserving useful rankings but exaggerating confidence."
+    },
+    {
+      "id": "ml-020",
+      "topic": "Dimensionality Reduction",
+      "difficulty": "hard",
+      "prompt": "Among all rank-\\(k\\) linear reconstructions of centered data under squared error, which subspace does PCA select?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "The span of the \\(k\\) covariance eigenvectors with the smallest eigenvalues"
+        },
+        {
+          "id": "B",
+          "text": "The span of the \\(k\\) covariance eigenvectors with the largest eigenvalues"
+        },
+        {
+          "id": "C",
+          "text": "Any \\(k\\) original coordinate axes"
+        },
+        {
+          "id": "D",
+          "text": "The \\(k\\) features most correlated with an external target"
+        }
+      ],
+      "answer": "B",
+      "explanation": "The leading eigenvectors maximize captured variance and, equivalently, minimize squared orthogonal reconstruction error among rank-\\(k\\) linear projections."
+    },
+    {
+      "id": "ml-021",
+      "topic": "Dimensionality Reduction",
+      "difficulty": "hard",
+      "prompt": "One feature is measured in dollars with variance \\(10^8\\), and another in ratios with variance \\(0.01\\). PCA is applied to the covariance matrix without scaling. What is the main consequence?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "PCA automatically normalizes both features because eigenvectors have unit norm"
+        },
+        {
+          "id": "B",
+          "text": "The dollar feature can dominate leading components because PCA is sensitive to measurement scale"
+        },
+        {
+          "id": "C",
+          "text": "Both features contribute equally by definition"
+        },
+        {
+          "id": "D",
+          "text": "Only the feature with smaller variance can appear in the first component"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Unit-norm loading vectors do not standardize input variance. PCA on a covariance matrix emphasizes large-scale variables unless that scale is substantively intended."
+    },
+    {
+      "id": "ml-024",
+      "topic": "Clustering",
+      "difficulty": "very hard",
+      "prompt": "Why can unconstrained maximum likelihood for a Gaussian mixture be ill-posed?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "A component can collapse its covariance around one observation and drive likelihood toward infinity"
+        },
+        {
+          "id": "B",
+          "text": "Gaussian densities can never overlap"
+        },
+        {
+          "id": "C",
+          "text": "Mixture weights are required to be equal"
+        },
+        {
+          "id": "D",
+          "text": "EM always finds the global minimum instead of a maximum"
+        }
+      ],
+      "answer": "A",
+      "explanation": "A component centered on a data point with vanishing covariance can assign that point unbounded density. Covariance floors, priors, or other regularization prevent this degeneracy."
+    },
+    {
+      "id": "ml-026",
+      "topic": "Nearest Neighbors",
+      "difficulty": "very hard",
+      "prompt": "What phenomenon most directly undermines Euclidean k-nearest neighbors as irrelevant dimensions are added?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Distances tend to concentrate, reducing contrast between near and far points"
+        },
+        {
+          "id": "B",
+          "text": "The triangle inequality stops holding"
+        },
+        {
+          "id": "C",
+          "text": "Euclidean distance becomes negative"
+        },
+        {
+          "id": "D",
+          "text": "The number of training examples automatically decreases"
+        }
+      ],
+      "answer": "A",
+      "explanation": "In high dimensions, relative distance contrast can shrink, so the nearest point is not much nearer than typical points. Irrelevant coordinates amplify this curse of dimensionality."
+    },
+    {
+      "id": "ml-027",
+      "topic": "Latent Variable Models",
+      "difficulty": "very hard",
+      "prompt": "Under exact E- and M-steps, what does the standard EM algorithm guarantee at each iteration?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "The observed-data likelihood does not decrease, but convergence may be to a local optimum or saddle point"
+        },
+        {
+          "id": "B",
+          "text": "The global maximum is reached in one iteration"
+        },
+        {
+          "id": "C",
+          "text": "Every parameter changes by the same amount"
+        },
+        {
+          "id": "D",
+          "text": "The complete-data likelihood is maximized over latent variables and parameters jointly"
+        }
+      ],
+      "answer": "A",
+      "explanation": "EM alternates a tight lower-bound construction and maximization, yielding monotonic non-decrease of observed likelihood. That guarantee is local, not global."
+    },
+    {
+      "id": "ml-029",
+      "topic": "Probabilistic Predictions",
+      "difficulty": "hard",
+      "prompt": "Why is the Brier score called a strictly proper scoring rule for binary probabilistic predictions?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "In expectation, reporting the true conditional probability uniquely minimizes the score"
+        },
+        {
+          "id": "B",
+          "text": "It depends only on the ranking of scores"
+        },
+        {
+          "id": "C",
+          "text": "It is always numerically equal to classification error"
+        },
+        {
+          "id": "D",
+          "text": "It ignores calibration and measures only sharpness"
+        }
+      ],
+      "answer": "A",
+      "explanation": "For squared probability error, the expected score is uniquely minimized by the true event probability. This rewards honest probabilistic forecasts, not merely correct rankings."
+    },
+    {
+      "id": "ml-044",
+      "topic": "Interpretability",
+      "difficulty": "very hard",
+      "prompt": "Two features are strongly correlated and carry nearly interchangeable signal. Why can ordinary permutation importance misleadingly assign low importance to either one?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "After one feature is permuted, the correlated partner can retain much of the predictive information"
+        },
+        {
+          "id": "B",
+          "text": "Permutation importance retrains the model until both coefficients become zero"
+        },
+        {
+          "id": "C",
+          "text": "Correlated features cannot be permuted"
+        },
+        {
+          "id": "D",
+          "text": "Permutation importance measures only training runtime"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Marginally breaking one feature may have little effect when another feature substitutes for it. Grouped or conditional permutation schemes can address different notions of importance."
+    },
+    {
+      "id": "ml-045",
+      "topic": "Interpretability",
+      "difficulty": "very hard",
+      "prompt": "What key modeling choice distinguishes interventional from conditional SHAP-style explanations for dependent features?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Interventional methods break feature dependence when marginalizing missing features; conditional methods preserve dependence through a conditional distribution"
+        },
+        {
+          "id": "B",
+          "text": "Interventional methods never require model predictions"
+        },
+        {
+          "id": "C",
+          "text": "Conditional methods are defined only for linear regression"
+        },
+        {
+          "id": "D",
+          "text": "The two are always identical whenever features are correlated"
+        }
+      ],
+      "answer": "A",
+      "explanation": "The background distribution encodes what 'missing' means. Breaking dependencies can evaluate unrealistic combinations; conditioning respects observed associations but changes the attribution semantics."
+    },
+    {
+      "id": "ml-046",
+      "topic": "Distribution Shift",
+      "difficulty": "very hard",
+      "prompt": "Under ideal covariate shift, which relationship is assumed?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(P_{\\text{train}}(x)\\ne P_{\\text{test}}(x)\\), while \\(P(y\\mid x)\\) remains the same"
+        },
+        {
+          "id": "B",
+          "text": "\\(P_{\\text{train}}(y)\\) differs, but \\(P(x\\mid y)\\) remains the same by definition"
+        },
+        {
+          "id": "C",
+          "text": "\\(P(y\\mid x)\\) changes arbitrarily while \\(P(x)\\) is fixed"
+        },
+        {
+          "id": "D",
+          "text": "The train and test joint distributions are identical"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Covariate shift changes the input distribution while preserving the labeling mechanism. With support overlap, test risk can be estimated using weights \\(P_{\\text{test}}(x)/P_{\\text{train}}(x)\\)."
+    },
+    {
+      "id": "ml-047",
+      "topic": "Distribution Shift",
+      "difficulty": "very hard",
+      "prompt": "A classifier was trained under class prior \\(\\pi_{\\text{train}}(y)\\), but deployment has a different class prior while \\(P(x\\mid y)\\) is unchanged. What shift is this, and what can be adjusted in principle?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Label shift; posterior probabilities or decision rules can be corrected using estimated prior ratios"
+        },
+        {
+          "id": "B",
+          "text": "Pure covariate shift; no prediction adjustment is possible"
+        },
+        {
+          "id": "C",
+          "text": "Concept drift; only feature standardization is needed"
+        },
+        {
+          "id": "D",
+          "text": "No shift, because P(x|y) is unchanged"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Label shift changes \\(P(y)\\) while retaining class-conditional feature distributions. With identifiable priors and a suitable classifier, prior-ratio correction can update posteriors."
+    },
+    {
+      "id": "ml-048",
+      "topic": "Causal Inference",
+      "difficulty": "very hard",
+      "prompt": "In the causal graph \\(X\\to Z\\leftarrow Y\\), with no other path between \\(X\\) and \\(Y\\), what typically happens if you condition on \\(Z\\)?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Conditioning opens the collider path and can induce a spurious association between X and Y"
+        },
+        {
+          "id": "B",
+          "text": "Conditioning blocks an otherwise open confounding path"
+        },
+        {
+          "id": "C",
+          "text": "X becomes a deterministic cause of Y"
+        },
+        {
+          "id": "D",
+          "text": "The graph becomes equivalent to X -> Y -> Z"
+        }
+      ],
+      "answer": "A",
+      "explanation": "A collider blocks the path when unconditioned. Conditioning on the collider, or often one of its descendants, can create dependence between its causes."
+    },
+    {
+      "id": "ml-049",
+      "topic": "Causal Inference",
+      "difficulty": "very hard",
+      "prompt": "For \\(Z\\) to be a valid instrumental variable for estimating the causal effect of treatment \\(X\\) on outcome \\(Y\\), which combination is central?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Z affects X, is independent of unmeasured X-Y confounders, and affects Y only through X"
+        },
+        {
+          "id": "B",
+          "text": "Z predicts Y perfectly and is caused by Y"
+        },
+        {
+          "id": "C",
+          "text": "Z is independent of X and directly affects Y"
+        },
+        {
+          "id": "D",
+          "text": "Z must be a post-treatment mediator between X and Y"
+        }
+      ],
+      "answer": "A",
+      "explanation": "These are relevance, independence, and exclusion restrictions. Further assumptions, such as monotonicity, are often needed to identify a local average treatment effect."
+    },
+    {
+      "id": "ml-050",
+      "topic": "Experimentation",
+      "difficulty": "very hard",
+      "prompt": "A team runs a conventional fixed-horizon p-value test every hour and stops the experiment the first time \\(p<0.05\\). Under the null, what is the main statistical issue?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Repeated unplanned looks inflate the probability of at least one false positive above the nominal level"
+        },
+        {
+          "id": "B",
+          "text": "Optional stopping always makes the test overly conservative"
+        },
+        {
+          "id": "C",
+          "text": "The treatment effect necessarily becomes negative"
+        },
+        {
+          "id": "D",
+          "text": "The p-value becomes a Bayesian posterior probability"
+        }
+      ],
+      "answer": "A",
+      "explanation": "A fixed-horizon threshold does not control type-I error under continuous peeking. Preplanned group-sequential boundaries, \\(\\alpha\\)-spending, or always-valid sequential methods are appropriate alternatives."
+    },
+    {
+      "id": "ml-051",
+      "topic": "Metrics",
+      "difficulty": "medium",
+      "prompt": "A regression dataset contains a few very large residuals. Compared with MAE, how will RMSE usually react?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "It will be less affected because square roots remove outliers"
+        },
+        {
+          "id": "B",
+          "text": "It will be more affected because residuals are squared before averaging"
+        },
+        {
+          "id": "C",
+          "text": "It will always equal MAE"
+        },
+        {
+          "id": "D",
+          "text": "It will ignore the largest residuals"
+        }
+      ],
+      "answer": "B",
+      "explanation": "RMSE is \\(\\sqrt{\\frac1m\\sum_i e_i^2}\\), so large residuals receive quadratic weight. MAE uses \\(\\frac1m\\sum_i |e_i|\\) and is generally more robust to outliers.",
+      "reference": "P1-ml-oreilly.md — Performance Metrics"
+    },
+    {
+      "id": "ml-052",
+      "topic": "Validation",
+      "difficulty": "medium",
+      "prompt": "The positive class represents 5% of a classification dataset. What is the main purpose of a stratified train/test split?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Preserve approximately the same class proportions in each split"
+        },
+        {
+          "id": "B",
+          "text": "Guarantee identical feature distributions in each split"
+        },
+        {
+          "id": "C",
+          "text": "Place all positive examples in the test set"
+        },
+        {
+          "id": "D",
+          "text": "Remove the need for a validation set"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Stratification controls the label composition of each split, reducing the chance that a rare class is severely underrepresented by random sampling.",
+      "reference": "P1-ml-oreilly.md — Stratified Sampling Split"
+    },
+    {
+      "id": "ml-053",
+      "topic": "Statistics",
+      "difficulty": "medium",
+      "prompt": "Let \\(X\\) be symmetrically distributed around zero and let \\(Y=X^2\\). What can happen to Pearson correlation between \\(X\\) and \\(Y\\)?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "It must equal 1 because \\(Y\\) is determined by \\(X\\)"
+        },
+        {
+          "id": "B",
+          "text": "It must equal -1 because squaring reverses negative values"
+        },
+        {
+          "id": "C",
+          "text": "It can be near zero despite a deterministic nonlinear relationship"
+        },
+        {
+          "id": "D",
+          "text": "It is undefined for every symmetric distribution"
+        }
+      ],
+      "answer": "C",
+      "explanation": "Pearson's \\(r\\) measures linear association. Symmetry can make positive and negative linear contributions cancel even though \\(Y\\) is completely determined by \\(X\\).",
+      "reference": "P1-ml-oreilly.md — Correlation (Pearson's r)"
+    },
+    {
+      "id": "ml-054",
+      "topic": "Preprocessing",
+      "difficulty": "medium",
+      "prompt": "Where should a median imputer learn its per-feature medians when evaluating a model?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "From the combined training and test data"
+        },
+        {
+          "id": "B",
+          "text": "From the training data only, then reused to transform validation and test data"
+        },
+        {
+          "id": "C",
+          "text": "Independently from each individual test row"
+        },
+        {
+          "id": "D",
+          "text": "Only from rows that contain no missing values anywhere"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Fitting the imputer on validation or test data leaks information about those distributions. The learned training medians should be reused for every later transform.",
+      "reference": "P1-ml-oreilly.md — Data Imputation"
+    },
+    {
+      "id": "ml-055",
+      "topic": "Preprocessing",
+      "difficulty": "medium",
+      "prompt": "Which expression describes standardization using training-set statistics?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(z=x/(x_{\\max}-x_{\\min})\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(z=x-\\sigma_{\\text{train}}\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(z=(x-x_{\\min})/x_{\\max}\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(z=(x-\\mu_{\\text{train}})/\\sigma_{\\text{train}}\\)"
+        }
+      ],
+      "answer": "D",
+      "explanation": "Standardization subtracts the training mean and divides by the training standard deviation. Unlike min-max scaling, it does not force values into a fixed range.",
+      "reference": "P1-ml-oreilly.md — Value Normalization"
+    },
+    {
+      "id": "ml-056",
+      "topic": "Metrics",
+      "difficulty": "medium",
+      "prompt": "A classifier produces \\(TP=80\\), \\(FP=20\\), and \\(FN=40\\). What is its precision?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(80/(80+20)=0.80\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(80/(80+40)\\approx0.67\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(20/(20+80)=0.20\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\((80+20)/(80+20+40)\\approx0.71\\)"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Precision asks what fraction of predicted positives are correct: \\(\\text{Precision}=TP/(TP+FP)=80/100=0.80\\).",
+      "reference": "P1-ml-oreilly.md — Classification Metrics: Confusion Matrix"
+    },
+    {
+      "id": "ml-057",
+      "topic": "Metrics",
+      "difficulty": "medium",
+      "prompt": "As the decision threshold of a fixed binary score model increases, which behavior is generally correct?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Recall must increase and precision must decrease"
+        },
+        {
+          "id": "B",
+          "text": "Both recall and precision must increase"
+        },
+        {
+          "id": "C",
+          "text": "Recall cannot increase; precision often increases but can occasionally decrease"
+        },
+        {
+          "id": "D",
+          "text": "Neither metric can change"
+        }
+      ],
+      "answer": "C",
+      "explanation": "Raising the threshold can only remove predicted positives, so recall is non-increasing. Precision often improves, but removing a true positive can make it fall locally.",
+      "reference": "P1-ml-oreilly.md — Precision Recall Trade-off"
+    },
+    {
+      "id": "ml-058",
+      "topic": "Multiclass Classification",
+      "difficulty": "medium",
+      "prompt": "How many binary classifiers does a one-versus-one strategy train for \\(K=8\\) classes?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(8\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(16\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(64\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(8(8-1)/2=28\\)"
+        }
+      ],
+      "answer": "D",
+      "explanation": "One-versus-one trains a classifier for every unordered class pair, giving \\(K(K-1)/2\\) models.",
+      "reference": "P1-ml-oreilly.md — One-versus-one strategy"
+    },
+    {
+      "id": "ml-059",
+      "topic": "Optimization",
+      "difficulty": "medium",
+      "prompt": "Why can gradient descent converge slowly when input features have very different scales?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "The loss automatically becomes non-convex"
+        },
+        {
+          "id": "B",
+          "text": "The objective can become an elongated bowl, causing inefficient zig-zagging"
+        },
+        {
+          "id": "C",
+          "text": "The gradient becomes exactly zero at initialization"
+        },
+        {
+          "id": "D",
+          "text": "Feature scaling removes all local minima"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Unequal scales can make curvature badly conditioned. A single learning rate then progresses slowly along shallow directions while oscillating along steep ones.",
+      "reference": "P1-ml-oreilly.md — Gradient Descent"
+    },
+    {
+      "id": "ml-060",
+      "topic": "Optimization",
+      "difficulty": "medium",
+      "prompt": "Why is a decreasing learning schedule often used with stochastic gradient descent?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Large early steps explore quickly, while smaller later steps reduce oscillation near a minimum"
+        },
+        {
+          "id": "B",
+          "text": "It makes every stochastic gradient equal to the full-batch gradient"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees convergence to the global optimum for every non-convex loss"
+        },
+        {
+          "id": "D",
+          "text": "It removes the need to shuffle training examples"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Single-example gradients are noisy. Decaying the step size retains fast early movement but allows later updates to settle more closely around a minimum.",
+      "reference": "P1-ml-oreilly.md — Stochastic Gradient Descent"
+    },
+    {
+      "id": "ml-061",
+      "topic": "Model Diagnosis",
+      "difficulty": "medium",
+      "prompt": "A learning curve shows training and validation errors that are both high and close together after using all available data. What is the most likely diagnosis?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Severe target leakage"
+        },
+        {
+          "id": "B",
+          "text": "High variance that more regularization will worsen"
+        },
+        {
+          "id": "C",
+          "text": "High bias or underfitting"
+        },
+        {
+          "id": "D",
+          "text": "Perfect generalization"
+        }
+      ],
+      "answer": "C",
+      "explanation": "When both errors plateau at similarly poor levels, the model cannot fit even the training data well. More data alone is unlikely to fix this high-bias pattern.",
+      "reference": "P1-ml-oreilly.md — Learning Curves"
+    },
+    {
+      "id": "ml-062",
+      "topic": "Model Diagnosis",
+      "difficulty": "medium",
+      "prompt": "What is the usual bias-variance effect of increasing regularization strength?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Lower bias and higher variance"
+        },
+        {
+          "id": "B",
+          "text": "Higher bias and lower variance"
+        },
+        {
+          "id": "C",
+          "text": "Lower irreducible error"
+        },
+        {
+          "id": "D",
+          "text": "No effect unless the target is categorical"
+        }
+      ],
+      "answer": "B",
+      "explanation": "Stronger regularization restricts model flexibility. This usually increases approximation bias while reducing sensitivity to the particular training sample.",
+      "reference": "P1-ml-oreilly.md — Bias Variance Trade-off"
+    },
+    {
+      "id": "ml-063",
+      "topic": "Kernel Methods",
+      "difficulty": "medium",
+      "prompt": "In a soft-margin SVM, what is the usual effect of decreasing \\(C\\)?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Margin violations become more costly and the margin narrows"
+        },
+        {
+          "id": "B",
+          "text": "The kernel is removed"
+        },
+        {
+          "id": "C",
+          "text": "Every training point must become a support vector"
+        },
+        {
+          "id": "D",
+          "text": "Margin violations become less costly, usually allowing a wider, more regularized margin"
+        }
+      ],
+      "answer": "D",
+      "explanation": "A smaller \\(C\\) places less weight on hinge-loss violations relative to margin size, so the classifier tolerates more violations in exchange for stronger regularization.",
+      "reference": "P1-ml-oreilly.md — Support Vector Machine and the separation problem"
+    },
+    {
+      "id": "ml-064",
+      "topic": "Decision Trees",
+      "difficulty": "medium",
+      "prompt": "A binary classification node contains class proportions \\(0.8\\) and \\(0.2\\). What is its Gini impurity?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(1-(0.8^2+0.2^2)=0.32\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(0.8-0.2=0.60\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(0.8^2+0.2^2=0.68\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(1-0.8=0.20\\)"
+        }
+      ],
+      "answer": "A",
+      "explanation": "Gini impurity is \\(G=1-\\sum_k p_k^2\\). Substituting the two proportions gives \\(1-0.64-0.04=0.32\\).",
+      "reference": "P1-ml-oreilly.md — Decision Trees: CART algorithm"
+    },
+    {
+      "id": "ml-065",
+      "topic": "Ensembles",
+      "difficulty": "medium",
+      "prompt": "What distinguishes bagging from pasting when constructing each learner's training subset?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Bagging trains sequentially; pasting trains in parallel"
+        },
+        {
+          "id": "B",
+          "text": "Bagging samples only features; pasting samples only labels"
+        },
+        {
+          "id": "C",
+          "text": "Bagging samples observations with replacement; pasting samples without replacement"
+        },
+        {
+          "id": "D",
+          "text": "Bagging is for regression; pasting is for classification"
+        }
+      ],
+      "answer": "C",
+      "explanation": "Bootstrap aggregation draws with replacement, so a row can appear multiple times. Pasting constructs subsets without replacement.",
+      "reference": "P1-ml-oreilly.md — Ensemble Methods"
+    },
+    {
+      "id": "ml-066",
+      "topic": "Ensembles",
+      "difficulty": "medium",
+      "prompt": "When a bootstrap sample of size \\(m\\) is drawn from \\(m\\) observations, approximately what fraction of observations are out-of-bag for one learner?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "\\(1/m\\)"
+        },
+        {
+          "id": "B",
+          "text": "\\(e^{-1}\\approx36.8\\%\\)"
+        },
+        {
+          "id": "C",
+          "text": "\\(50\\%\\)"
+        },
+        {
+          "id": "D",
+          "text": "\\(1-e^{-1}\\approx63.2\\%\\)"
+        }
+      ],
+      "answer": "B",
+      "explanation": "The probability a row is never drawn is \\((1-1/m)^m\\), which approaches \\(e^{-1}\\). The complementary \\(63.2\\%\\) is the expected unique in-bag fraction.",
+      "reference": "P1-ml-oreilly.md — Out of Bag Evaluation"
+    },
+    {
+      "id": "ml-067",
+      "topic": "Ensembles",
+      "difficulty": "medium",
+      "prompt": "Why should a stacking meta-learner usually train on held-out or out-of-fold base-model predictions?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "To force all base models to make identical predictions"
+        },
+        {
+          "id": "B",
+          "text": "To make hard voting equivalent to soft voting"
+        },
+        {
+          "id": "C",
+          "text": "To eliminate the need for a final estimator"
+        },
+        {
+          "id": "D",
+          "text": "To prevent the meta-learner from exploiting overly optimistic in-sample base predictions"
+        }
+      ],
+      "answer": "D",
+      "explanation": "Base models can look unrealistically accurate on their own training rows. Out-of-fold predictions give the meta-learner features that better resemble inference-time behavior.",
+      "reference": "P1-ml-oreilly.md — Stacking"
+    },
+    {
+      "id": "ml-068",
+      "topic": "Dimensionality Reduction",
+      "difficulty": "medium",
+      "prompt": "What does setting \\(\\operatorname{PCA}(\\mathtt{n\\_components}=0.95)\\) request in scikit-learn?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Keep the smallest number of components whose cumulative explained variance is at least 95%"
+        },
+        {
+          "id": "B",
+          "text": "Discard exactly 95% of the original features"
+        },
+        {
+          "id": "C",
+          "text": "Keep components with individual variance greater than 0.95"
+        },
+        {
+          "id": "D",
+          "text": "Use 95 principal components regardless of the data"
+        }
+      ],
+      "answer": "A",
+      "explanation": "A fractional component setting is an explained-variance target. PCA chooses enough leading components to reach the requested cumulative proportion.",
+      "reference": "P1-ml-oreilly.md — PCA and How to choose the number of dimensions"
+    },
+    {
+      "id": "ml-069",
+      "topic": "Clustering",
+      "difficulty": "medium",
+      "prompt": "Why does k-means commonly run several initializations and keep the result with the lowest inertia?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Each initialization uses a different value of \\(k\\)"
+        },
+        {
+          "id": "B",
+          "text": "Inertia is guaranteed to be identical across initializations"
+        },
+        {
+          "id": "C",
+          "text": "Different starting centroids can converge to different local solutions"
+        },
+        {
+          "id": "D",
+          "text": "Multiple initializations make k-means density based"
+        }
+      ],
+      "answer": "C",
+      "explanation": "K-means decreases inertia during a run but is sensitive to its starting centroids. Repeating initialization reduces the chance of retaining a poor local solution.",
+      "reference": "P1-ml-oreilly.md — K Means algorithm"
+    },
+    {
+      "id": "ml-070",
+      "topic": "ML Systems",
+      "difficulty": "medium",
+      "prompt": "Which serving setup best matches a fraud model that must score each transaction before authorization?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "A weekly batch job optimized only for throughput"
+        },
+        {
+          "id": "B",
+          "text": "Online serving optimized for low prediction latency"
+        },
+        {
+          "id": "C",
+          "text": "Offline training with no prediction endpoint"
+        },
+        {
+          "id": "D",
+          "text": "A precomputed table that never uses transaction context"
+        }
+      ],
+      "answer": "B",
+      "explanation": "The decision is needed synchronously for each new transaction, making online low-latency serving the natural fit. Batch serving is better when predictions can be accumulated or precomputed.",
+      "reference": "system-design-ml.md — Model deployment and prediction serving"
+    }
+  ]
+}

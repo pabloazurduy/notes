@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A file-driven machine learning interview quiz.">
+  <title>Question practice</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"]],
+        displayMath: [["\\[", "\\]"]]
+      },
+      options: {
+        skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #171717;
+      --muted: #6f6f6f;
+      --line: #dedede;
+      --soft: #f6f6f6;
+      --accent: #2457d6;
+      --correct: #176b4d;
+      --wrong: #a33b32;
+      --danger: #9e332b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    .file-button {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    .file-button:focus-within,
+    .choice:focus-within,
+    summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner,
+    main {
+      width: min(720px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      min-height: 58px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .file-button,
+    .text-button {
+      padding: 0;
+      border: 0;
+      color: var(--muted);
+      background: transparent;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      text-underline-offset: 3px;
+    }
+
+    .file-button:hover,
+    .text-button:hover {
+      color: var(--ink);
+      text-decoration-color: currentColor;
+    }
+
+    .file-button input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    main {
+      padding: 72px 0;
+    }
+
+    h1,
+    h2,
+    p {
+      margin-top: 0;
+    }
+
+    .load-screen {
+      max-width: 560px;
+      padding-top: 8vh;
+    }
+
+    .load-screen h1 {
+      margin-bottom: 12px;
+      font-size: clamp(2rem, 6vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.045em;
+    }
+
+    .intro {
+      max-width: 500px;
+      margin-bottom: 32px;
+      color: var(--muted);
+    }
+
+    .load-status {
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .status-title {
+      margin-bottom: 2px;
+      font-weight: 650;
+    }
+
+    .status-detail,
+    .error,
+    .edit-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .error {
+      margin-top: 12px;
+      color: var(--wrong);
+    }
+
+    .load-actions,
+    .question-actions,
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .button {
+      min-height: 42px;
+      padding: 9px 16px;
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      color: #fff;
+      background: var(--ink);
+      font-weight: 650;
+    }
+
+    .button:hover {
+      background: #333;
+    }
+
+    .button:disabled {
+      cursor: not-allowed;
+      opacity: 0.35;
+    }
+
+    .button.secondary {
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .button.secondary:hover {
+      background: var(--soft);
+    }
+
+    details {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    code,
+    .meta {
+      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    }
+
+    .progress {
+      height: 2px;
+      margin-bottom: 34px;
+      overflow: hidden;
+      background: var(--line);
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--ink);
+      transition: width 180ms ease;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.6;
+      text-transform: uppercase;
+    }
+
+    .danger {
+      flex: 0 0 auto;
+      color: var(--danger);
+    }
+
+    .danger:hover {
+      color: var(--danger);
+    }
+
+    .question-title {
+      margin-bottom: 30px;
+      font-size: 1.08rem;
+      font-weight: 620;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+    }
+
+    .choices {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .choice {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 12px;
+      align-items: center;
+      min-height: 54px;
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .choice:hover {
+      border-color: #a8a8a8;
+    }
+
+    .choice.selected {
+      border-color: var(--ink);
+      background: var(--soft);
+    }
+
+    .choice.correct {
+      border-color: var(--correct);
+      background: #f3f8f6;
+    }
+
+    .choice.incorrect {
+      border-color: var(--wrong);
+      background: #fbf5f4;
+    }
+
+    .choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice-key {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+      font-size: 0.76rem;
+    }
+
+    .selected .choice-key {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .correct .choice-key {
+      border-color: var(--correct);
+      color: var(--correct);
+    }
+
+    .incorrect .choice-key {
+      border-color: var(--wrong);
+      color: var(--wrong);
+    }
+
+    .choice-text {
+      font-size: 0.96rem;
+    }
+
+    mjx-container[jax="CHTML"][display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .feedback {
+      margin-top: 24px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--correct);
+      background: var(--soft);
+    }
+
+    .feedback.wrong {
+      border-left-color: var(--wrong);
+    }
+
+    .feedback-title {
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .feedback-copy {
+      margin: 0;
+      color: #484848;
+      font-size: 0.92rem;
+    }
+
+    .question-actions {
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .edit-note {
+      margin-top: 16px;
+    }
+
+    .results-screen {
+      max-width: 560px;
+      padding-top: 8vh;
+    }
+
+    .results-screen h1 {
+      margin-bottom: 6px;
+      font-size: clamp(3rem, 10vw, 5rem);
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .result-label {
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .result-message {
+      max-width: 500px;
+      margin-bottom: 28px;
+      color: var(--muted);
+    }
+
+    .breakdown {
+      display: flex;
+      gap: 28px;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .breakdown strong {
+      display: block;
+      color: var(--ink);
+      font-size: 1rem;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 520px) {
+      .topbar-inner {
+        min-height: 54px;
+      }
+
+      .topbar-actions {
+        gap: 10px;
+      }
+
+      main {
+        padding-top: 48px;
+      }
+
+      .load-screen,
+      .results-screen {
+        padding-top: 4vh;
+      }
+
+      .question-header {
+        display: block;
+      }
+
+      .danger {
+        margin-top: 8px;
+      }
+
+      .question-actions {
+        align-items: stretch;
+      }
+
+      .question-actions .button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">Practice</span>
+      <div class="topbar-actions">
+        <button class="text-button" id="export-button" type="button" hidden>Download edited JSON</button>
+        <label class="file-button" for="question-file">
+          Open file
+          <input id="question-file" type="file" accept=".json,application/json">
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="load-screen" id="load-screen">
+      <h1>Question practice</h1>
+      <p class="intro">Medium to very-hard questions. Answer first, then read the explanation.</p>
+
+      <div class="load-status" aria-live="polite">
+        <p class="status-title" id="status-title">Looking for questions.json</p>
+        <p class="status-detail" id="status-detail">Or choose a compatible JSON file.</p>
+      </div>
+
+      <div class="load-actions">
+        <button class="button" id="start-button" type="button" hidden>Start</button>
+        <label class="button secondary file-button" for="question-file">Choose JSON</label>
+      </div>
+      <p class="error" id="load-error" role="alert" hidden></p>
+
+      <details>
+        <summary>Question format</summary>
+        <p>Use <code>question-bank/v1</code> (or legacy <code>ml-interview-quiz/v1</code>). Each question needs <code>id</code>, <code>topic</code>, <code>difficulty</code>, <code>prompt</code>, <code>choices</code>, <code>answer</code>, and <code>explanation</code>. A <code>reference</code> is optional.</p>
+      </details>
+    </section>
+
+    <section id="quiz-screen" hidden>
+      <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+      <div class="question-header">
+        <p class="meta" id="question-meta"></p>
+        <button class="text-button danger" id="delete-button" type="button">Delete question</button>
+      </div>
+
+      <h1 class="question-title" id="question-prompt" tabindex="-1"></h1>
+
+      <fieldset class="choices" id="choices">
+        <legend class="visually-hidden">Choose one answer</legend>
+      </fieldset>
+
+      <div class="feedback" id="feedback" role="status" aria-live="polite" hidden>
+        <div class="feedback-title" id="feedback-title"></div>
+        <p class="feedback-copy" id="feedback-copy"></p>
+      </div>
+
+      <div class="question-actions">
+        <span class="status-detail" id="live-score">0 correct</span>
+        <button class="button" id="check-button" type="button" disabled>Check answer</button>
+        <button class="button" id="next-button" type="button" hidden>Next</button>
+      </div>
+      <p class="edit-note" id="edit-note" role="status" aria-live="polite" hidden></p>
+    </section>
+
+    <section class="results-screen" id="results-screen" hidden>
+      <p class="result-label">Practice complete</p>
+      <h1 id="final-score">0 / 0</h1>
+      <p class="result-message" id="result-message"></p>
+      <div class="breakdown" id="breakdown"></div>
+      <div class="result-actions">
+        <button class="button" id="restart-button" type="button">Practice again</button>
+        <label class="button secondary file-button" for="question-file">Open another file</label>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const SUPPORTED_FORMATS = new Set(["question-bank/v1", "ml-interview-quiz/v1"]);
+    const state = {
+      dataset: null,
+      sourceName: "questions.json",
+      questions: [],
+      displayChoices: [],
+      index: 0,
+      selected: null,
+      locked: false,
+      answers: [],
+      dirty: false
+    };
+
+    const elements = {
+      loadScreen: document.querySelector("#load-screen"),
+      quizScreen: document.querySelector("#quiz-screen"),
+      resultsScreen: document.querySelector("#results-screen"),
+      questionFile: document.querySelector("#question-file"),
+      exportButton: document.querySelector("#export-button"),
+      startButton: document.querySelector("#start-button"),
+      statusTitle: document.querySelector("#status-title"),
+      statusDetail: document.querySelector("#status-detail"),
+      loadError: document.querySelector("#load-error"),
+      progressBar: document.querySelector("#progress-bar"),
+      questionMeta: document.querySelector("#question-meta"),
+      questionPrompt: document.querySelector("#question-prompt"),
+      choices: document.querySelector("#choices"),
+      deleteButton: document.querySelector("#delete-button"),
+      feedback: document.querySelector("#feedback"),
+      feedbackTitle: document.querySelector("#feedback-title"),
+      feedbackCopy: document.querySelector("#feedback-copy"),
+      liveScore: document.querySelector("#live-score"),
+      checkButton: document.querySelector("#check-button"),
+      nextButton: document.querySelector("#next-button"),
+      editNote: document.querySelector("#edit-note"),
+      finalScore: document.querySelector("#final-score"),
+      resultMessage: document.querySelector("#result-message"),
+      breakdown: document.querySelector("#breakdown"),
+      restartButton: document.querySelector("#restart-button")
+    };
+
+    function clearMath(containers) {
+      if (window.MathJax?.typesetClear) {
+        window.MathJax.typesetClear(containers);
+      }
+    }
+
+    function typesetMath(containers) {
+      if (!window.MathJax?.typesetPromise) return;
+      window.MathJax.typesetPromise(containers).catch(() => {
+        // Keep the quiz usable if mathematical typesetting fails.
+      });
+    }
+
+    function typesetVisibleMath() {
+      if (elements.quizScreen.hidden) return;
+      const containers = [elements.questionPrompt, elements.choices];
+      if (!elements.feedback.hidden) containers.push(elements.feedback);
+      typesetMath(containers);
+    }
+
+    function validateDataset(data) {
+      if (!data || typeof data !== "object") {
+        throw new Error("The file does not contain a JSON object.");
+      }
+      if (!SUPPORTED_FORMATS.has(data.format)) {
+        throw new Error(`Expected one of: ${[...SUPPORTED_FORMATS].join(", ")}.`);
+      }
+      if (typeof data.title !== "string" || !data.title.trim()) {
+        throw new Error("The question set needs a title.");
+      }
+      if (!Array.isArray(data.questions) || data.questions.length === 0) {
+        throw new Error("The question set needs at least one question.");
+      }
+
+      const questionIds = new Set();
+      data.questions.forEach((question, index) => {
+        const label = `Question ${index + 1}`;
+        ["id", "topic", "difficulty", "prompt", "answer", "explanation"].forEach((field) => {
+          if (typeof question[field] !== "string" || !question[field].trim()) {
+            throw new Error(`${label} needs a non-empty \"${field}\" field.`);
+          }
+        });
+        if (questionIds.has(question.id)) {
+          throw new Error(`Question ID \"${question.id}\" is duplicated.`);
+        }
+        questionIds.add(question.id);
+
+        if (!Array.isArray(question.choices) || question.choices.length < 2) {
+          throw new Error(`${label} needs at least two choices.`);
+        }
+        const choiceIds = new Set();
+        question.choices.forEach((choice) => {
+          if (!choice || typeof choice.id !== "string" || !choice.id.trim() || typeof choice.text !== "string" || !choice.text.trim()) {
+            throw new Error(`${label} has a choice without a valid id and text.`);
+          }
+          if (choiceIds.has(choice.id)) {
+            throw new Error(`${label} contains duplicate choice ID \"${choice.id}\".`);
+          }
+          choiceIds.add(choice.id);
+        });
+        if (!choiceIds.has(question.answer)) {
+          throw new Error(`${label}'s answer does not match any choice ID.`);
+        }
+      });
+      return data;
+    }
+
+    function showScreen(name) {
+      elements.loadScreen.hidden = name !== "load";
+      elements.quizScreen.hidden = name !== "quiz";
+      elements.resultsScreen.hidden = name !== "results";
+    }
+
+    function setDataset(data, sourceName) {
+      state.dataset = validateDataset(data);
+      state.sourceName = sourceName;
+      state.dirty = false;
+      elements.exportButton.hidden = true;
+      document.title = `${state.dataset.title} · Practice`;
+      elements.statusTitle.textContent = state.dataset.title;
+      elements.statusDetail.textContent = `${state.dataset.questions.length} questions ready.`;
+      elements.startButton.hidden = false;
+      elements.loadError.hidden = true;
+      elements.progressBar.style.width = "0%";
+      showScreen("load");
+    }
+
+    function showLoadError(message) {
+      elements.loadError.textContent = message;
+      elements.loadError.hidden = false;
+    }
+
+    async function loadBundledQuestions() {
+      try {
+        const response = await fetch("questions.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        setDataset(await response.json(), "questions.json");
+      } catch (error) {
+        elements.statusTitle.textContent = "Choose questions.json";
+        elements.statusDetail.textContent = "Direct file mode cannot load nearby files automatically.";
+      }
+    }
+
+    function shuffled(items) {
+      const copy = [...items];
+      for (let index = copy.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+      }
+      return copy;
+    }
+
+    function startQuiz() {
+      if (!state.dataset || state.dataset.questions.length === 0) return;
+      state.questions = shuffled(state.dataset.questions);
+      state.displayChoices = [];
+      state.index = 0;
+      state.selected = null;
+      state.locked = false;
+      state.answers = [];
+      elements.editNote.hidden = true;
+      showScreen("quiz");
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderQuestion() {
+      const question = state.questions[state.index];
+      const position = state.index + 1;
+      const correctCount = state.answers.filter((answer) => answer.correct).length;
+
+      clearMath([elements.questionPrompt, elements.choices, elements.feedback]);
+      state.selected = null;
+      state.locked = false;
+      state.displayChoices = shuffled(question.choices).map((choice, index) => ({
+        ...choice,
+        displayId: String.fromCharCode(65 + index)
+      }));
+
+      elements.progressBar.style.width = `${(position / state.questions.length) * 100}%`;
+      elements.questionMeta.textContent = `Question ${position} of ${state.questions.length} · ${question.topic} · ${question.difficulty}`;
+      elements.questionPrompt.textContent = question.prompt;
+      elements.liveScore.textContent = `${correctCount} correct`;
+      elements.choices.replaceChildren();
+
+      state.displayChoices.forEach((choice) => {
+        const label = document.createElement("label");
+        label.className = "choice";
+        label.dataset.choiceId = choice.id;
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "answer";
+        input.value = choice.id;
+        input.addEventListener("change", () => {
+          if (state.locked) return;
+          state.selected = choice.id;
+          elements.choices.querySelectorAll(".choice").forEach((item) => item.classList.remove("selected"));
+          label.classList.add("selected");
+          elements.checkButton.disabled = false;
+        });
+
+        const key = document.createElement("span");
+        key.className = "choice-key";
+        key.textContent = choice.displayId;
+
+        const text = document.createElement("span");
+        text.className = "choice-text";
+        text.textContent = choice.text;
+
+        label.append(input, key, text);
+        elements.choices.append(label);
+      });
+
+      elements.feedback.hidden = true;
+      elements.feedback.classList.remove("wrong");
+      elements.checkButton.hidden = false;
+      elements.checkButton.disabled = true;
+      elements.nextButton.hidden = true;
+      elements.nextButton.textContent = position === state.questions.length ? "See score" : "Next";
+      typesetMath([elements.questionPrompt, elements.choices]);
+      elements.questionPrompt.focus();
+    }
+
+    function checkAnswer() {
+      if (!state.selected || state.locked) return;
+      const question = state.questions[state.index];
+      const isCorrect = state.selected === question.answer;
+      state.locked = true;
+      state.answers.push({
+        questionId: question.id,
+        difficulty: question.difficulty,
+        selected: state.selected,
+        correct: isCorrect
+      });
+
+      elements.choices.querySelectorAll(".choice").forEach((choiceElement) => {
+        const choiceId = choiceElement.dataset.choiceId;
+        choiceElement.querySelector("input").disabled = true;
+        if (choiceId === question.answer) choiceElement.classList.add("correct");
+        if (choiceId === state.selected && !isCorrect) choiceElement.classList.add("incorrect");
+      });
+
+      const answerChoice = state.displayChoices.find((choice) => choice.id === question.answer);
+      elements.feedback.classList.toggle("wrong", !isCorrect);
+      elements.feedbackTitle.textContent = isCorrect
+        ? "Correct."
+        : `Answer: ${answerChoice.displayId}. ${answerChoice.text}`;
+      elements.feedbackCopy.textContent = question.explanation;
+      elements.feedback.hidden = false;
+      elements.checkButton.hidden = true;
+      elements.nextButton.hidden = false;
+      elements.liveScore.textContent = `${state.answers.filter((answer) => answer.correct).length} correct`;
+      typesetMath([elements.feedback]);
+      elements.nextButton.focus();
+    }
+
+    function nextQuestion() {
+      if (state.index === state.questions.length - 1) {
+        showResults();
+        return;
+      }
+      state.index += 1;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteCurrentQuestion() {
+      const question = state.questions[state.index];
+      const shortPrompt = question.prompt.length > 90 ? `${question.prompt.slice(0, 87)}…` : question.prompt;
+      if (!window.confirm(`Delete this question?\n\n${shortPrompt}`)) return;
+
+      state.questions.splice(state.index, 1);
+      state.dataset.questions = state.dataset.questions.filter((item) => item.id !== question.id);
+      state.answers = state.answers.filter((answer) => answer.questionId !== question.id);
+      state.dirty = true;
+      elements.exportButton.hidden = false;
+      elements.editNote.textContent = "Question deleted. Download the edited JSON to keep this change.";
+      elements.editNote.hidden = false;
+
+      if (state.questions.length === 0) {
+        elements.statusTitle.textContent = "No questions remain";
+        elements.statusDetail.textContent = "Open another file or download the edited JSON.";
+        elements.startButton.hidden = true;
+        showScreen("load");
+        return;
+      }
+
+      const answeredIds = new Set(state.answers.map((answer) => answer.questionId));
+      const nextUnansweredIndex = state.questions.findIndex((item) => !answeredIds.has(item.id));
+      if (nextUnansweredIndex === -1) {
+        showResults();
+        return;
+      }
+      state.index = nextUnansweredIndex;
+      renderQuestion();
+    }
+
+    function exportDataset() {
+      if (!state.dataset) return;
+      const json = `${JSON.stringify(state.dataset, null, 2)}\n`;
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const baseName = state.sourceName.replace(/\.json$/i, "") || "questions";
+      link.href = url;
+      link.download = `${baseName}-edited.json`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      state.dirty = false;
+      elements.editNote.textContent = `Downloaded ${link.download}.`;
+      elements.editNote.hidden = false;
+    }
+
+    function showResults() {
+      const score = state.answers.filter((answer) => answer.correct).length;
+      const total = state.questions.length;
+      const percent = total ? Math.round((score / total) * 100) : 0;
+      elements.progressBar.style.width = "100%";
+      elements.finalScore.textContent = `${score} / ${total}`;
+      elements.resultMessage.textContent = `${percent}% correct. Review the explanations you missed, then try another shuffled run.`;
+      elements.breakdown.replaceChildren();
+
+      [...new Set(state.answers.map((answer) => answer.difficulty))].forEach((difficulty) => {
+        const answers = state.answers.filter((answer) => answer.difficulty === difficulty);
+        const correct = answers.filter((answer) => answer.correct).length;
+        const item = document.createElement("span");
+        const value = document.createElement("strong");
+        value.textContent = `${correct} / ${answers.length}`;
+        item.append(value, difficulty);
+        elements.breakdown.append(item);
+      });
+
+      showScreen("results");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    elements.questionFile.addEventListener("change", async (event) => {
+      const [file] = event.target.files;
+      if (!file) return;
+      try {
+        setDataset(JSON.parse(await file.text()), file.name);
+      } catch (error) {
+        showLoadError(error instanceof SyntaxError ? "The selected file is not valid JSON." : error.message);
+      } finally {
+        event.target.value = "";
+      }
+    });
+
+    elements.startButton.addEventListener("click", startQuiz);
+    elements.restartButton.addEventListener("click", startQuiz);
+    elements.checkButton.addEventListener("click", checkAnswer);
+    elements.nextButton.addEventListener("click", nextQuestion);
+    elements.deleteButton.addEventListener("click", deleteCurrentQuestion);
+    elements.exportButton.addEventListener("click", exportDataset);
+
+    window.addEventListener("beforeunload", (event) => {
+      if (!state.dirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    });
+
+    window.addEventListener("load", typesetVisibleMath);
+
+    loadBundledQuestions();
+  </script>
+</body>
+</html>

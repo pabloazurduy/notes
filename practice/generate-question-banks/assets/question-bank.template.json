@@ -1,0 +1,22 @@
+{
+  "format": "question-bank/v1",
+  "title": "Question bank title",
+  "description": "Audience, scope, and difficulty range.",
+  "questions": [
+    {
+      "id": "topic-001",
+      "topic": "Topic name",
+      "difficulty": "medium",
+      "prompt": "Write one unambiguous question here.",
+      "choices": [
+        { "id": "A", "text": "Alternative A" },
+        { "id": "B", "text": "Alternative B" },
+        { "id": "C", "text": "Alternative C" },
+        { "id": "D", "text": "Alternative D" }
+      ],
+      "answer": "A",
+      "explanation": "Explain the decisive reasoning.",
+      "reference": "source-file.md — Relevant section"
+    }
+  ]
+}

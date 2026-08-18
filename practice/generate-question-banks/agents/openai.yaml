@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Question Banks"
+  short_description: "Create sourced, validated quiz question banks"
+  default_prompt: "Use $generate-question-banks to create a sourced, balanced question bank for my topic."

@@ -1,0 +1,457 @@
+{
+  "format": "question-bank/v1",
+  "title": "Stochastic Optimization Foundations",
+  "description": "Thirty source-grounded questions covering probability, finite-state Markov chains, Markov rewards, dynamic programming, and martingales, with an even easy-to-medium progression.",
+  "questions": [
+    {
+      "id": "sto-001",
+      "topic": "Probability axioms",
+      "difficulty": "easy",
+      "prompt": "If \\(P(A)=0.35\\), what is \\(P(A^c)\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(0.65\\)" },
+        { "id": "B", "text": "\\(0.35\\)" },
+        { "id": "C", "text": "\\(1.35\\)" },
+        { "id": "D", "text": "It cannot be determined." }
+      ],
+      "answer": "A",
+      "explanation": "An event and its complement partition the sample space, so \\(P(A^c)=1-P(A)=1-0.35=0.65\\).",
+      "reference": "stocastic_optimization/probability-cheatsheet.md — Axioms and immediate rules"
+    },
+    {
+      "id": "sto-002",
+      "topic": "Conditional probability",
+      "difficulty": "easy",
+      "prompt": "When \\(P(B)>0\\), which expression defines \\(P(A\\mid B)\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(P(A)/P(B)\\)" },
+        { "id": "B", "text": "\\(P(A\\cap B)/P(B)\\)" },
+        { "id": "C", "text": "\\(P(A\\cup B)/P(B)\\)" },
+        { "id": "D", "text": "\\(P(B\\mid A)P(B)\\)" }
+      ],
+      "answer": "B",
+      "explanation": "Conditioning restricts the sample space to \\(B\\), so the probability assigned to \\(A\\) is \\(P(A\\cap B)/P(B)\\).",
+      "reference": "stocastic_optimization/probability-cheatsheet.md — Conditional probability, independence, Bayes"
+    },
+    {
+      "id": "sto-003",
+      "topic": "Independence",
+      "difficulty": "easy",
+      "prompt": "Which equality defines independence of two events \\(A\\) and \\(B\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(P(A\\cup B)=P(A)+P(B)\\)" },
+        { "id": "B", "text": "\\(P(A\\mid B)=P(B\\mid A)\\)" },
+        { "id": "C", "text": "\\(P(A\\cap B)=P(A)P(B)\\)" },
+        { "id": "D", "text": "\\(P(A\\cap B)=0\\)" }
+      ],
+      "answer": "C",
+      "explanation": "Independence means the joint probability factors into the product of the marginal probabilities. Disjoint nonzero-probability events are not independent.",
+      "reference": "stocastic_optimization/1_probability_gallager.md — Axioms of probability"
+    },
+    {
+      "id": "sto-004",
+      "topic": "Random variables",
+      "difficulty": "easy",
+      "prompt": "What does the cumulative distribution function \\(F_X(x)\\) represent?",
+      "choices": [
+        { "id": "A", "text": "\\(P(X=x)\\) for every type of random variable" },
+        { "id": "B", "text": "\\(P(X>x)\\)" },
+        { "id": "C", "text": "\\(E[X\\mid X\\le x]\\)" },
+        { "id": "D", "text": "\\(P(X\\le x)\\)" }
+      ],
+      "answer": "D",
+      "explanation": "By definition, the CDF accumulates probability through \\(x\\): \\(F_X(x)=P(X\\le x)\\).",
+      "reference": "stocastic_optimization/1_probability_gallager.md — Random variables"
+    },
+    {
+      "id": "sto-005",
+      "topic": "Expectation",
+      "difficulty": "easy",
+      "prompt": "Does \\(E[X+Y]=E[X]+E[Y]\\) require \\(X\\) and \\(Y\\) to be independent?",
+      "choices": [
+        { "id": "A", "text": "No; linearity of expectation does not require independence." },
+        { "id": "B", "text": "Yes; otherwise the covariance term must be added." },
+        { "id": "C", "text": "Yes, unless both variables have mean zero." },
+        { "id": "D", "text": "No, but only when both variables are discrete." }
+      ],
+      "answer": "A",
+      "explanation": "Linearity of expectation holds for dependent and independent variables. Covariance appears when expanding variance, not expectation.",
+      "reference": "stocastic_optimization/1_probability_gallager.md — Expected value"
+    },
+    {
+      "id": "sto-006",
+      "topic": "Probability distributions",
+      "difficulty": "easy",
+      "prompt": "If \\(X\\sim\\operatorname{Exponential}(\\lambda)\\), what is \\(E[X]\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(\\lambda\\)" },
+        { "id": "B", "text": "\\(1/\\lambda\\)" },
+        { "id": "C", "text": "\\(1/\\lambda^2\\)" },
+        { "id": "D", "text": "\\(e^{-\\lambda}\\)" }
+      ],
+      "answer": "B",
+      "explanation": "For an exponential waiting time with rate \\(\\lambda\\), the mean is \\(1/\\lambda\\); its variance is \\(1/\\lambda^2\\).",
+      "reference": "stocastic_optimization/1_probability_gallager.md — Table 1.1"
+    },
+    {
+      "id": "sto-007",
+      "topic": "Markov property",
+      "difficulty": "easy",
+      "prompt": "For a first-order Markov chain, what part of the history is needed to determine the conditional distribution of \\(X_n\\)?",
+      "choices": [
+        { "id": "A", "text": "The complete history \\(X_0,\\ldots,X_{n-1}\\)" },
+        { "id": "B", "text": "Only the initial state \\(X_0\\)" },
+        { "id": "C", "text": "Only the most recent state \\(X_{n-1}\\)" },
+        { "id": "D", "text": "Only the two most recent states" }
+      ],
+      "answer": "C",
+      "explanation": "The Markov property says that, conditioned on \\(X_{n-1}\\), earlier states add no information about the distribution of \\(X_n\\).",
+      "reference": "stocastic_optimization/2_finite-state-markov-chains.md — Markov Chains"
+    },
+    {
+      "id": "sto-008",
+      "topic": "Transition matrices",
+      "difficulty": "easy",
+      "prompt": "Which property must a finite-state Markov transition matrix \\(P\\) satisfy?",
+      "choices": [
+        { "id": "A", "text": "Every column sums to zero." },
+        { "id": "B", "text": "Every entry is strictly positive." },
+        { "id": "C", "text": "The matrix must be symmetric." },
+        { "id": "D", "text": "Its entries are nonnegative and every row sums to one." }
+      ],
+      "answer": "D",
+      "explanation": "Each row is the probability distribution over the next state from one current state, so its entries are nonnegative and sum to one.",
+      "reference": "stocastic_optimization/2_finite-state-markov-chains.md — Matrix representation"
+    },
+    {
+      "id": "sto-009",
+      "topic": "State accessibility",
+      "difficulty": "easy",
+      "prompt": "Suppose \\(P_{ij}=0\\), but \\(P_{ij}^{(3)}>0\\). What follows?",
+      "choices": [
+        { "id": "A", "text": "State \\(j\\) is accessible from \\(i\\), although not in one step." },
+        { "id": "B", "text": "State \\(j\\) is not accessible from \\(i\\)." },
+        { "id": "C", "text": "States \\(i\\) and \\(j\\) must communicate." },
+        { "id": "D", "text": "State \\(i\\) must be recurrent." }
+      ],
+      "answer": "A",
+      "explanation": "Accessibility requires a positive-probability walk of some length. A zero one-step probability does not rule out a positive three-step path.",
+      "reference": "stocastic_optimization/2_mc.md — Accesibility"
+    },
+    {
+      "id": "sto-010",
+      "topic": "Communicating states",
+      "difficulty": "easy",
+      "prompt": "When do two Markov-chain states \\(i\\) and \\(j\\) communicate?",
+      "choices": [
+        { "id": "A", "text": "When \\(P_{ij}=P_{ji}\\)" },
+        { "id": "B", "text": "When each state is accessible from the other" },
+        { "id": "C", "text": "When both states have a self-loop" },
+        { "id": "D", "text": "When they have the same stationary probability" }
+      ],
+      "answer": "B",
+      "explanation": "Communication is mutual accessibility: there is a positive-probability walk from \\(i\\) to \\(j\\) and another from \\(j\\) to \\(i\\).",
+      "reference": "stocastic_optimization/2_mc.md — Communication"
+    },
+    {
+      "id": "sto-011",
+      "topic": "Recurrent states",
+      "difficulty": "easy",
+      "prompt": "Which statement best describes a recurrent state in a finite Markov chain?",
+      "choices": [
+        { "id": "A", "text": "It has no outgoing transitions." },
+        { "id": "B", "text": "It is visited at every time step." },
+        { "id": "C", "text": "After entering it, the chain returns to it with probability one." },
+        { "id": "D", "text": "It has stationary probability equal to one." }
+      ],
+      "answer": "C",
+      "explanation": "A recurrent state is returned to with probability one. It need not be absorbing or occupied at every step.",
+      "reference": "stocastic_optimization/2_finite-state-markov-chains.md — Classification of states"
+    },
+    {
+      "id": "sto-012",
+      "topic": "Periodicity",
+      "difficulty": "easy",
+      "prompt": "How is the period \\(d(i)\\) of a state \\(i\\) defined?",
+      "choices": [
+        { "id": "A", "text": "The smallest \\(n\\) such that \\(P_{ii}^{(n)}>0\\)" },
+        { "id": "B", "text": "The largest \\(n\\) such that \\(P_{ii}^{(n)}>0\\)" },
+        { "id": "C", "text": "The number of states accessible from \\(i\\)" },
+        { "id": "D", "text": "The greatest common divisor of return times \\(n\\) with \\(P_{ii}^{(n)}>0\\)" }
+      ],
+      "answer": "D",
+      "explanation": "The period is the greatest common divisor of all possible positive-probability return times. A state is aperiodic when this value is one.",
+      "reference": "stocastic_optimization/2_finite-state-markov-chains.md — Classification of states"
+    },
+    {
+      "id": "sto-013",
+      "topic": "Stationary distributions",
+      "difficulty": "easy",
+      "prompt": "Which conditions define a stationary distribution \\(\\pi\\) for a row-stochastic transition matrix \\(P\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(\\pi P=\\pi\\), \\(\\pi_i\\ge0\\), and \\(\\sum_i\\pi_i=1\\)" },
+        { "id": "B", "text": "\\(P\\pi=0\\) and \\(\\sum_i\\pi_i=0\\)" },
+        { "id": "C", "text": "\\(\\pi P=0\\) and every \\(\\pi_i>0\\)" },
+        { "id": "D", "text": "\\(P^n=\\pi\\) for every finite \\(n\\)" }
+      ],
+      "answer": "A",
+      "explanation": "A stationary distribution is unchanged by one transition and is a valid probability vector: \\(\\pi P=\\pi\\), with nonnegative entries summing to one.",
+      "reference": "stocastic_optimization/2_finite-state-markov-chains.md — Steady-state and P^n for large n"
+    },
+    {
+      "id": "sto-014",
+      "topic": "Markov rewards",
+      "difficulty": "easy",
+      "prompt": "For state rewards \\(r_j\\), what is the expected reward specifically at time \\(n\\), given \\(X_0=i\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(r_i+n\\sum_j r_j\\)" },
+        { "id": "B", "text": "\\(\\sum_j r_j P_{ij}^{(n)}\\)" },
+        { "id": "C", "text": "\\(\\sum_{k=0}^{n-1}\\sum_j r_jP_{ij}^{(k)}\\)" },
+        { "id": "D", "text": "\\(\\max_j r_jP_{ij}^{(n)}\\)" }
+      ],
+      "answer": "B",
+      "explanation": "At time \\(n\\), the chain is in state \\(j\\) with probability \\(P_{ij}^{(n)}\\); weighting each state reward by that probability gives the expectation. Choice C is cumulative reward.",
+      "reference": "stocastic_optimization/3_mc_rewards_dp.md — Markov Rewards and Dynamic Programming"
+    },
+    {
+      "id": "sto-015",
+      "topic": "Martingales",
+      "difficulty": "easy",
+      "prompt": "Which conditional-expectation property characterizes an integrable martingale \\(\\{Z_n\\}\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(E[Z_n\\mid Z_{n-1},\\ldots,Z_1]=0\\)" },
+        { "id": "B", "text": "\\(E[Z_n\\mid Z_{n-1},\\ldots,Z_1]\\ge Z_{n-1}\\) only" },
+        { "id": "C", "text": "\\(E[Z_n\\mid Z_{n-1},\\ldots,Z_1]=Z_{n-1}\\)" },
+        { "id": "D", "text": "\\(E[Z_n]=Z_{n-1}\\) for every realized history" }
+      ],
+      "answer": "C",
+      "explanation": "A martingale has zero conditional drift: after conditioning on the available history, the expected next value equals the current value.",
+      "reference": "stocastic_optimization/9_martingales.md — Martingales"
+    },
+    {
+      "id": "sto-016",
+      "topic": "Probability rules",
+      "difficulty": "medium",
+      "prompt": "If \\(P(A)=0.5\\), \\(P(B)=0.4\\), and \\(P(A\\cap B)=0.2\\), what is \\(P(A\\cup B)\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(0.20\\)" },
+        { "id": "B", "text": "\\(0.50\\)" },
+        { "id": "C", "text": "\\(0.90\\)" },
+        { "id": "D", "text": "\\(0.70\\)" }
+      ],
+      "answer": "D",
+      "explanation": "Use inclusion-exclusion: \\(P(A\\cup B)=P(A)+P(B)-P(A\\cap B)=0.5+0.4-0.2=0.7\\).",
+      "reference": "stocastic_optimization/probability-cheatsheet.md — Axioms and immediate rules"
+    },
+    {
+      "id": "sto-017",
+      "topic": "Bayes' rule",
+      "difficulty": "medium",
+      "prompt": "Suppose \\(P(A)=0.10\\), \\(P(B\\mid A)=0.80\\), and \\(P(B)=0.20\\). What is \\(P(A\\mid B)\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(0.40\\)" },
+        { "id": "B", "text": "\\(0.16\\)" },
+        { "id": "C", "text": "\\(0.25\\)" },
+        { "id": "D", "text": "\\(0.80\\)" }
+      ],
+      "answer": "A",
+      "explanation": "Bayes' rule gives \\(P(A\\mid B)=P(B\\mid A)P(A)/P(B)=0.80\\times0.10/0.20=0.40\\).",
+      "reference": "stocastic_optimization/1_probability_gallager.md — Axioms of probability"
+    },
+    {
+      "id": "sto-018",
+      "topic": "Indicator variables",
+      "difficulty": "medium",
+      "prompt": "A uniformly random permutation of \\(n\\) items is generated. Let \\(I_i\\) indicate that item \\(i\\) remains in position \\(i\\). What is the expected number of fixed points?",
+      "choices": [
+        { "id": "A", "text": "\\(1/n\\), because only one position can match" },
+        { "id": "B", "text": "\\(1\\), because \\(E[\\sum_i I_i]=\\sum_iP(I_i=1)=n(1/n)\\)" },
+        { "id": "C", "text": "\\(n/2\\), by symmetry" },
+        { "id": "D", "text": "It cannot be found because the indicators are dependent." }
+      ],
+      "answer": "B",
+      "explanation": "Each position is fixed with probability \\(1/n\\). Linearity of expectation applies even though the indicators are dependent, so the expected count is \\(n\\times(1/n)=1\\).",
+      "reference": "stocastic_optimization/probability-cheatsheet.md — Indicators"
+    },
+    {
+      "id": "sto-019",
+      "topic": "Variance",
+      "difficulty": "medium",
+      "prompt": "Independent random variables \\(X\\) and \\(Y\\) have \\(\\operatorname{Var}(X)=2\\) and \\(\\operatorname{Var}(Y)=3\\). What is \\(\\operatorname{Var}(2X-Y)\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(1\\)" },
+        { "id": "B", "text": "\\(7\\)" },
+        { "id": "C", "text": "\\(11\\)" },
+        { "id": "D", "text": "\\(25\\)" }
+      ],
+      "answer": "C",
+      "explanation": "Independence makes the covariance zero, so \\(\\operatorname{Var}(2X-Y)=2^2\\operatorname{Var}(X)+(-1)^2\\operatorname{Var}(Y)=8+3=11\\).",
+      "reference": "stocastic_optimization/probability-cheatsheet.md — Expectation and variance"
+    },
+    {
+      "id": "sto-020",
+      "topic": "Concentration bounds",
+      "difficulty": "medium",
+      "prompt": "A random variable has mean \\(10\\) and variance \\(4\\). What upper bound does Chebyshev's inequality give for \\(P(|X-10|\\ge4)\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(1/16\\)" },
+        { "id": "B", "text": "\\(1/2\\)" },
+        { "id": "C", "text": "\\(3/4\\)" },
+        { "id": "D", "text": "\\(1/4\\)" }
+      ],
+      "answer": "D",
+      "explanation": "Chebyshev gives \\(P(|X-\\mu|\\ge t)\\le\\sigma^2/t^2\\). Here that is \\(4/4^2=1/4\\).",
+      "reference": "stocastic_optimization/probability-cheatsheet.md — Limits and bounds"
+    },
+    {
+      "id": "sto-021",
+      "topic": "Central limit theorem",
+      "difficulty": "medium",
+      "prompt": "Let \\(S_n=\\sum_{i=1}^nX_i\\), where the \\(X_i\\) are iid with mean \\(\\mu\\) and finite positive variance \\(\\sigma^2\\). Which quantity converges in distribution to \\(\\mathcal N(0,1)\\)?",
+      "choices": [
+        { "id": "A", "text": "\\((S_n-n\\mu)/(\\sigma\\sqrt n)\\)" },
+        { "id": "B", "text": "\\((S_n-\\mu)/\\sigma\\)" },
+        { "id": "C", "text": "\\((S_n-n\\mu)/(n\\sigma)\\)" },
+        { "id": "D", "text": "\\(S_n/n\\) without centering or scaling" }
+      ],
+      "answer": "A",
+      "explanation": "The sum has mean \\(n\\mu\\) and standard deviation \\(\\sigma\\sqrt n\\), so the CLT centers and scales it as \\((S_n-n\\mu)/(\\sigma\\sqrt n)\\).",
+      "reference": "stocastic_optimization/1_probability_gallager.md — Central limit theorem"
+    },
+    {
+      "id": "sto-022",
+      "topic": "Multi-step transitions",
+      "difficulty": "medium",
+      "prompt": "For \\(P=\\begin{bmatrix}0.8&0.2\\\\0.3&0.7\\end{bmatrix}\\), what is the two-step probability of moving from state 1 to state 2?",
+      "choices": [
+        { "id": "A", "text": "\\(0.14\\)" },
+        { "id": "B", "text": "\\(0.30\\)" },
+        { "id": "C", "text": "\\(0.44\\)" },
+        { "id": "D", "text": "\\(0.50\\)" }
+      ],
+      "answer": "B",
+      "explanation": "Sum over the intermediate state: \\(P_{12}^{(2)}=P_{11}P_{12}+P_{12}P_{22}=0.8(0.2)+0.2(0.7)=0.30\\).",
+      "reference": "stocastic_optimization/2_finite-state-markov-chains.md — Matrix representation"
+    },
+    {
+      "id": "sto-023",
+      "topic": "Communicating classes",
+      "difficulty": "medium",
+      "prompt": "A three-state chain has positive-probability transitions \\(1\\to2\\), \\(2\\to1\\), \\(2\\to3\\), and \\(3\\to3\\), with no others. What are its communicating classes?",
+      "choices": [
+        { "id": "A", "text": "One class: \\(\\{1,2,3\\}\\)" },
+        { "id": "B", "text": "Three classes: \\(\\{1\\},\\{2\\},\\{3\\}\\)" },
+        { "id": "C", "text": "Two classes: \\(\\{1,2\\}\\) and \\(\\{3\\}\\)" },
+        { "id": "D", "text": "Two classes: \\(\\{1,3\\}\\) and \\(\\{2\\}\\)" }
+      ],
+      "answer": "C",
+      "explanation": "States 1 and 2 can reach each other, so they communicate. State 3 cannot return to either of them, so it forms its own class even though it is accessible from state 2.",
+      "reference": "stocastic_optimization/2_mc.md — Class"
+    },
+    {
+      "id": "sto-024",
+      "topic": "Periodicity",
+      "difficulty": "medium",
+      "prompt": "A state can return to itself in \\(4\\), \\(6\\), \\(10\\), and all sufficiently large even numbers of steps, but never in an odd number of steps. What is its period?",
+      "choices": [
+        { "id": "A", "text": "\\(1\\)" },
+        { "id": "B", "text": "\\(4\\)" },
+        { "id": "C", "text": "\\(10\\)" },
+        { "id": "D", "text": "\\(2\\)" }
+      ],
+      "answer": "D",
+      "explanation": "The period is the greatest common divisor of all possible return times. The return times are even and include 4 and 6, whose gcd is 2.",
+      "reference": "stocastic_optimization/2_mc.md — Periodic States"
+    },
+    {
+      "id": "sto-025",
+      "topic": "Stationary distributions",
+      "difficulty": "medium",
+      "prompt": "For \\(P=\\begin{bmatrix}0.7&0.3\\\\0.2&0.8\\end{bmatrix}\\), which stationary distribution satisfies \\(\\pi P=\\pi\\)?",
+      "choices": [
+        { "id": "A", "text": "\\(\\pi=(0.4,0.6)\\)" },
+        { "id": "B", "text": "\\(\\pi=(0.5,0.5)\\)" },
+        { "id": "C", "text": "\\(\\pi=(0.6,0.4)\\)" },
+        { "id": "D", "text": "\\(\\pi=(0.7,0.3)\\)" }
+      ],
+      "answer": "A",
+      "explanation": "The balance equation gives \\(0.3\\pi_1=0.2\\pi_2\\). Together with \\(\\pi_1+\\pi_2=1\\), this yields \\(\\pi=(0.4,0.6)\\).",
+      "reference": "stocastic_optimization/2_finite-state-markov-chains.md — Steady-state and P^n for large n"
+    },
+    {
+      "id": "sto-026",
+      "topic": "Ergodic unichains",
+      "difficulty": "medium",
+      "prompt": "A finite ergodic unichain has one ergodic recurrent class and several transient states. What must be true of its stationary distribution?",
+      "choices": [
+        { "id": "A", "text": "It assigns equal mass to every state." },
+        { "id": "B", "text": "It assigns zero mass to transient states and positive mass within the recurrent class." },
+        { "id": "C", "text": "It assigns all mass to the initial state." },
+        { "id": "D", "text": "It does not exist because transient states are present." }
+      ],
+      "answer": "B",
+      "explanation": "Transient states are eventually left, so their long-run stationary mass is zero. The stationary probability is supported on the unique recurrent class.",
+      "reference": "stocastic_optimization/2_mc.md — Steady-state and P^n for large n"
+    },
+    {
+      "id": "sto-027",
+      "topic": "Long-run Markov rewards",
+      "difficulty": "medium",
+      "prompt": "An ergodic unichain has stationary distribution \\(\\pi=(0.25,0.75)\\) and state rewards \\(r=(2,6)\\). What is its steady-state gain per step?",
+      "choices": [
+        { "id": "A", "text": "\\(2\\)" },
+        { "id": "B", "text": "\\(4\\)" },
+        { "id": "C", "text": "\\(5\\)" },
+        { "id": "D", "text": "\\(6\\)" }
+      ],
+      "answer": "C",
+      "explanation": "The steady-state gain is \\(g=\\sum_j\\pi_jr_j=0.25(2)+0.75(6)=0.5+4.5=5\\).",
+      "reference": "stocastic_optimization/3_mc_rewards_dp.md — Markov Rewards and Dynamic Programming"
+    },
+    {
+      "id": "sto-028",
+      "topic": "First-passage time",
+      "difficulty": "medium",
+      "prompt": "State 1 is the target. From state 2, the chain moves to state 1 with probability \\(0.25\\) and stays in state 2 with probability \\(0.75\\). What is the expected first-passage time \\(v_2\\) to state 1?",
+      "choices": [
+        { "id": "A", "text": "\\(1\\) step" },
+        { "id": "B", "text": "\\(2\\) steps" },
+        { "id": "C", "text": "\\(3\\) steps" },
+        { "id": "D", "text": "\\(4\\) steps" }
+      ],
+      "answer": "D",
+      "explanation": "First-step analysis gives \\(v_2=1+0.75v_2+0.25v_1\\) with \\(v_1=0\\). Thus \\(0.25v_2=1\\), so \\(v_2=4\\).",
+      "reference": "stocastic_optimization/3_mc_rewards_dp.md — Expected first-passage-time"
+    },
+    {
+      "id": "sto-029",
+      "topic": "Dynamic programming",
+      "difficulty": "medium",
+      "prompt": "At state \\(i\\), action \\(a\\) gives immediate reward \\(1\\) and then reaches terminal rewards \\(4\\) and \\(0\\) with equal probability. Action \\(b\\) gives immediate reward \\(0\\) and reaches terminal reward \\(4\\) with probability one. For a one-step horizon, which action is optimal and what is its value?",
+      "choices": [
+        { "id": "A", "text": "Choose \\(b\\); the value is \\(4\\)." },
+        { "id": "B", "text": "Choose \\(a\\); the value is \\(5\\)." },
+        { "id": "C", "text": "Choose \\(a\\); the value is \\(3.5\\)." },
+        { "id": "D", "text": "The actions tie at value \\(3\\)." }
+      ],
+      "answer": "A",
+      "explanation": "Action \\(a\\) has value \\(1+0.5(4)+0.5(0)=3\\). Action \\(b\\) has value \\(0+1(4)=4\\), so \\(b\\) is optimal.",
+      "reference": "stocastic_optimization/3_mc_rewards_dp.md — Dynamic Programming"
+    },
+    {
+      "id": "sto-030",
+      "topic": "Martingales and Jensen's inequality",
+      "difficulty": "medium",
+      "prompt": "If \\(\\{Z_n\\}\\) is a martingale and \\(h\\) is convex with the required expectations finite, what kind of process is \\(\\{h(Z_n)\\}\\)?",
+      "choices": [
+        { "id": "A", "text": "It must be a supermartingale." },
+        { "id": "B", "text": "It is a submartingale." },
+        { "id": "C", "text": "It must remain a martingale." },
+        { "id": "D", "text": "It cannot be classified without independence across time." }
+      ],
+      "answer": "B",
+      "explanation": "Conditional Jensen gives \\(E[h(Z_n)\\mid\\mathcal F_{n-1}]\\ge h(E[Z_n\\mid\\mathcal F_{n-1}])=h(Z_{n-1})\\), which is the submartingale condition.",
+      "reference": "stocastic_optimization/9_martingales.md — Jensen's inequality"
+    }
+  ]
+}
